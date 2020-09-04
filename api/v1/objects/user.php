@@ -2,6 +2,7 @@
 class user{
   
     // database connection and table name
+    // todo
     private $conn;
     private $table_name = "users";
   
