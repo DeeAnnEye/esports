@@ -4,7 +4,7 @@ class user{
     // database connection and table name
     // todo
     private $conn;
-    private $table_name = "users";
+    private $table_name1 = "users";
   
     // object properties
     public $user_id;
