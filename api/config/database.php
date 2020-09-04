@@ -2,6 +2,7 @@
 class Database{
   
     // specify your own database credentials
+    //todo
     private $host = "localhost";
     private $db_name = "esports";
     private $username = "root";
