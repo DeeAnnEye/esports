@@ -92,7 +92,59 @@ class event{
     }
 
     public function createEvent($data){
-    //    todo
+        try {
+                         
+    // query to insert record
+    $query = "INSERT INTO " . $this->table_name . 
+    " SET event_id=0,
+          event_name=:event_name,
+          event_start=:event_start,
+          event_end=:event_end,
+          game_id=:game_id,
+          max_participants=:max_participants,
+          permission=:permission,
+          created=:created,
+          createdby=:createdby,
+          modified=:modified,
+          modifiedby=:modifiedby,
+          last_date_of_registration=:last_date_of_registration";
+
+          // prepare query
+    $stmt = $this->conn->prepare($query);
+
+          // sanitize
+    $this->event_name=htmlspecialchars(strip_tags($data['event_name']));
+    $this->event_start=htmlspecialchars(strip_tags($data['event_start']));
+    $this->event_end=htmlspecialchars(strip_tags($data['event_end']));
+    $this->game_id=htmlspecialchars(strip_tags($data['game_id']));
+    $this->max_participants=htmlspecialchars(strip_tags($data['max_participants']));
+    $this->permission=htmlspecialchars(strip_tags($data['permission']));
+    $this->created=htmlspecialchars(strip_tags($data['created']));
+    $this->createdby=htmlspecialchars(strip_tags($data['createdby']));
+    $this->modified=htmlspecialchars(strip_tags($data['modified']));
+    $this->modifiedby=htmlspecialchars(strip_tags($data['modifiedby']));
+    $this->last_date_of_registration=htmlspecialchars(strip_tags($data['last_date_of_registration']));
+          
+    // print_r($data);  
+
+    $stmt->bindParam(":event_name", $this->event_name);
+    $stmt->bindParam(":event_start", $this->event_start);
+    $stmt->bindParam(":event_end", $this->event_end);
+    $stmt->bindParam(":game_id", $this->game_id);
+    $stmt->bindParam(":max_participants", $this->max_participants);
+    $stmt->bindParam(":permission", $this->permission);
+    $stmt->bindParam(":created", $this->created);
+    $stmt->bindParam(":createdby", $this->createdby);
+    $stmt->bindParam(":modified", $this->modified);
+    $stmt->bindParam(":modifiedby", $this->modifiedby);
+    $stmt->bindParam(":last_date_of_registration", $this->last_date_of_registration);
+    
+      // execute query
+      return json_encode(["success" => $stmt->execute()]);
+    } catch (PDOException $e) {
+        throw $e;
+        
+    }
          
 }    
 
