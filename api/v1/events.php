@@ -1,7 +1,7 @@
 <?php
 
 include_once('../config/database.php');
-include_once('./objects/user.php');
+include_once('./objects/event.php');
 
 $db = new Database();
 
@@ -9,10 +9,12 @@ $db = new Database();
 $conn = $db->getConnection();
 
 if($conn) {
-  // echo "Database Connected!";
+
+//   echo "Database Connected!";
+
 }
 
-$user = new User($conn);
+$event = new Event($conn);
 
 
 $req = $_SERVER['REQUEST_METHOD'];
@@ -22,22 +24,22 @@ switch($_SERVER['REQUEST_METHOD'])
 
 case 'GET': 
   $id = $_GET['id'];
-  echo $user->getUserById($id); 
+  echo $event->getEventById($id); 
   break;
 case 'POST': 
   $post= $_POST;
   if (isset($post['create'])){
-  echo $user->createUser($post);
+  echo $event->createEvent($post);
   } elseif (isset($post['update'])){
     $id =  $_GET['id'];
-    echo $user->updateUser($id,$post);
+    echo $event->updateEvent($id,$post);
   } else {
-  echo $user->getUsers();
+  echo $event->getEvents();
   }
 break; 
   case 'DELETE': 
     $id =  $_GET['id'];
-    echo $user->deleteUser($id);   
+    echo $event->deleteEvent($id);   
 break;
 // case 'PUT':
 //   $id = $_GET['id'];
@@ -46,5 +48,7 @@ break;
 //   echo $user->updateUser($id,$post);
 
 default:
+
 }
 
+?>
