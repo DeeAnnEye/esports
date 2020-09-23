@@ -41,11 +41,6 @@ break;
     $id =  $_GET['id'];
     echo $event->deleteEvent($id);   
 break;
-// case 'PUT':
-//   $id = $_GET['id'];
-//   $post= $_;
-
-//   echo $user->updateUser($id,$post);
 
 default:
 
