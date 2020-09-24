@@ -26,6 +26,7 @@ class event{
     }
     
     public function getEvents(){
+
          // select all query
     $query = "SELECT * from events where 1 order by event_name";
 
@@ -64,6 +65,7 @@ class event{
     }
 
     public function getEventById($id){
+
               // select all query
     $query = "SELECT * from events where 1 and event_id=$id";
               
@@ -79,6 +81,7 @@ class event{
     }
 
      public function deleteEvent($id){
+         
         //  query to inactivate
         $query = "update events set active=0 where 1 and event_id = ?";
               

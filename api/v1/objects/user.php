@@ -29,6 +29,7 @@ class user{
     }
 
     public function getUsers() {  
+
     // select all query
     $query = "SELECT * from users where 1 order by first_name";
               
@@ -71,6 +72,7 @@ class user{
 
     }
     public function getUserById($id) {
+
           // select all query
     $query = "SELECT * from users where 1 and user_id=$id";
               
@@ -86,6 +88,7 @@ class user{
   
     }
     public function deleteUser($id) {
+        
         // query to inactivate
         $query = "update users set active=0 where 1 and user_id = ?";
               
