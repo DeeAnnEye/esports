@@ -19,7 +19,36 @@ class team{
     }
 
     public function getTeams(){
-        // todo
+
+          // select all query
+    $query = "SELECT * from teams where 1 order by name";
+
+    // prepare query statement
+    $stmt = $this->conn->prepare($query);
+
+     // execute query
+   $stmt->execute();
+
+   $teams = [];
+
+   while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+       // extract row
+       // this will make $row['name'] to
+       // just $name only
+         
+       $team_item=array(
+           "id" => $row['id'],
+           "name" => $row['name'],
+           "created" => $row['created'],
+           "createdby" => $row['createdby'],
+           "modified" => $row['modified'],
+           "modifiedby" => $row['modifiedby']                    
+       );
+ 
+       array_push($teams, $team_item);
+   }
+ 
+   return json_encode($teams);
     }
 
     public function getTeamById(){

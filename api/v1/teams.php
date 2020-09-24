@@ -18,29 +18,29 @@ $team = new Team($conn);
 
 $req = $_SERVER['REQUEST_METHOD'];
 
-// switch($_SERVER['REQUEST_METHOD'])
-// {
+switch($_SERVER['REQUEST_METHOD'])
+{
 
-// case 'GET': 
-//   $id = $_GET['id'];
-//   echo $user->getUserById($id); 
-//   break;
-// case 'POST': 
-//   $post= $_POST;
-//   if (isset($post['create'])){
-//   echo $user->createUser($post);
-//   } elseif (isset($post['update'])){
-//     $id =  $_GET['id'];
-//     echo $user->updateUser($id,$post);
-//   } else {
-//   echo $user->getUsers();
-//   }
-// break; 
-//   case 'DELETE': 
-//     $id =  $_GET['id'];
-//     echo $user->deleteUser($id);   
-// break;
+case 'GET': 
+  $id = $_GET['id'];
+  echo $team->getTeamById($id); 
+  break;
+case 'POST': 
+  $post= $_POST;
+  if (isset($post['create'])){
+  echo $team->createTeam($post);
+  } elseif (isset($post['update'])){
+    $id =  $_GET['id'];
+    echo $team->updateTeam($id,$post);
+  } else {
+  echo $team->getTeams();
+  }
+break; 
+  case 'DELETE': 
+    $id =  $_GET['id'];
+    echo $team->deleteTeam($id);   
+break;
 
-// default:
-
+default:
+}
 ?>
