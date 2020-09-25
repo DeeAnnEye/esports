@@ -11,7 +11,8 @@ class team{
       public $created;
       public $createdby;
       public $modified;
-      public $modifiedby;    
+      public $modifiedby; 
+      public $active;   
 
     // constructor with $db as database connection
     public function __construct($db){
@@ -42,7 +43,8 @@ class team{
            "created" => $row['created'],
            "createdby" => $row['createdby'],
            "modified" => $row['modified'],
-           "modifiedby" => $row['modifiedby']                    
+           "modifiedby" => $row['modifiedby'],
+           "active" => $row['active']                
        );
  
        array_push($teams, $team_item);
@@ -51,12 +53,34 @@ class team{
    return json_encode($teams);
     }
 
-    public function getTeamById(){
-        // todo
+    public function getTeamById($id){
+        
+              // select all query
+    $query = "SELECT * from teams where 1 and id=$id";
+              
+    // prepare query statement
+    $stmt = $this->conn->prepare($query);
+  
+    // execute query
+    $stmt->execute();
+
+    $team = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    return json_encode($team);
     }
 
-    public function deleteTeam(){
-        // todo
+    public function deleteTeam($id){
+
+         //  query to inactivate
+         $query = "update teams set active=0 where 1 and id = ?";
+              
+         // prepare query statement
+         $stmt = $this->conn->prepare($query);
+         
+         // bind id of record to delete
+         $stmt->bindParam(1, $id, PDO::PARAM_INT);
+        
+         return json_encode(["success" => $stmt->execute()]);
     }
 
     public function createTeam(){
