@@ -21,21 +21,30 @@ switch($_SERVER['REQUEST_METHOD'])
 {
 
 case 'GET': 
+  // get single user
   $id = $_GET['id'];
   echo $user->getUserById($id); 
   break;
+  
 case 'POST': 
   $post= $_POST;
+  // create user function
   if (isset($post['create'])){
   echo $user->createUser($post);
-  } elseif (isset($post['update'])){
+  } 
+  // update user function
+  elseif (isset($post['update'])){
     $id =  $_GET['id'];
     echo $user->updateUser($id,$post);
-  } else {
+  } 
+  // get all users
+  else {
   echo $user->getUsers();
   }
 break; 
+
   case 'DELETE': 
+    // delete user using id
     $id =  $_GET['id'];
     echo $user->deleteUser($id);   
 break;

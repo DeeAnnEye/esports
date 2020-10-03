@@ -83,13 +83,88 @@ class team{
          return json_encode(["success" => $stmt->execute()]);
     }
 
-    public function createTeam(){
-        // todo
+    public function createTeam($data){
+        try {
+                         
+            // query to insert record
+            $query = "INSERT INTO " . $this->table_name . 
+            " SET id=0,
+                  name=:name,
+                  created=:created,
+                  createdby=:createdby,
+                  modified=:modified,
+                  modifiedby=:modifiedby,
+                  active=:active";
+        
+                  // prepare query
+            $stmt = $this->conn->prepare($query);
+        
+                  // sanitize
+            $this->name=htmlspecialchars(strip_tags($data['name']));
+            $this->created=htmlspecialchars(strip_tags($data['created']));
+            $this->createdby=htmlspecialchars(strip_tags($data['createdby']));
+            $this->modified=htmlspecialchars(strip_tags($data['modified']));
+            $this->modifiedby=htmlspecialchars(strip_tags($data['modifiedby']));
+            $this->active=htmlspecialchars(strip_tags($data['active'])); 
+        
+            $stmt->bindParam(":name", $this->name);
+            $stmt->bindParam(":created", $this->created);
+            $stmt->bindParam(":createdby", $this->createdby);
+            $stmt->bindParam(":modified", $this->modified);
+            $stmt->bindParam(":modifiedby", $this->modifiedby);
+            $stmt->bindParam(":active", $this->active);
+            
+            
+              // execute query
+              return json_encode(["success" => $stmt->execute()]);
+            } catch (PDOException $e) {
+                throw $e;
+                
+            }
     }
 
-    public function updateTeam(){
-        // todo
+    public function updateTeam($id,$data){
+        try {
+                         
+            // query to insert record
+            $query =  "UPDATE  $this->table_name "."
+                  SET
+                  name=:name,
+                  created=:created,
+                  createdby=:createdby,
+                  modified=:modified,
+                  modifiedby=:modifiedby,
+                  active=:active
+                  WHERE id = :id";
+        
+                  // prepare query
+            $stmt = $this->conn->prepare($query);
+        
+                  // sanitize
+             $this->name=htmlspecialchars(strip_tags($data['name']));
+             $this->created=htmlspecialchars(strip_tags($data['created']));
+             $this->createdby=htmlspecialchars(strip_tags($data['createdby']));
+             $this->modified=htmlspecialchars(strip_tags($data['modified']));
+             $this->modifiedby=htmlspecialchars(strip_tags($data['modifiedby']));
+             $this->active=htmlspecialchars(strip_tags($data['active']));
+
+        
+             $stmt->bindParam(":name", $this->name);
+             $stmt->bindParam(":created", $this->created);
+             $stmt->bindParam(":createdby", $this->createdby);
+             $stmt->bindParam(":modified", $this->modified);
+             $stmt->bindParam(":modifiedby", $this->modifiedby);
+             $stmt->bindParam(":active", $this->active);
+             $stmt->bindParam(":id", $id);
+              // execute query
+             
+              return json_encode(["success" => $stmt->execute()]);
+            } catch (PDOException $e) {
+                throw $e;
+                
+            }
+                 
+        }    
     }
-}
 
 ?>

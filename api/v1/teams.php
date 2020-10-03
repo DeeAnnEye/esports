@@ -22,21 +22,30 @@ switch($_SERVER['REQUEST_METHOD'])
 {
 
 case 'GET': 
+  // get single team
   $id = $_GET['id'];
   echo $team->getTeamById($id); 
   break;
+
 case 'POST': 
   $post= $_POST;
+  // create team function
   if (isset($post['create'])){
   echo $team->createTeam($post);
-  } elseif (isset($post['update'])){
+  }
+  //  update team function
+   elseif (isset($post['update'])){
     $id =  $_GET['id'];
     echo $team->updateTeam($id,$post);
-  } else {
+  } 
+  // get all teams
+  else {
   echo $team->getTeams();
   }
 break; 
+
   case 'DELETE': 
+    // delete team using id
     $id =  $_GET['id'];
     echo $team->deleteTeam($id);   
 break;

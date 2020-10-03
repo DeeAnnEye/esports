@@ -23,21 +23,30 @@ switch($_SERVER['REQUEST_METHOD'])
 {
 
 case 'GET': 
+  // get single event
   $id = $_GET['id'];
   echo $event->getEventById($id); 
   break;
+
 case 'POST': 
   $post= $_POST;
+  // create event function
   if (isset($post['create'])){
   echo $event->createEvent($post);
-  } elseif (isset($post['update'])){
+  } 
+  // update event function
+  elseif (isset($post['update'])){
     $id =  $_GET['id'];
     echo $event->updateEvent($id,$post);
-  } else {
+  } 
+  // get all events
+  else {
   echo $event->getEvents();
   }
 break; 
+
   case 'DELETE': 
+    // delete event using id
     $id =  $_GET['id'];
     echo $event->deleteEvent($id);   
 break;
@@ -45,5 +54,4 @@ break;
 default:
 
 }
-
 ?>
