@@ -22,7 +22,7 @@ class team{
     public function getTeams(){
 
           // select all query
-    $query = "SELECT * from teams where 1 order by name";
+    $query = "SELECT * from teams where active=1 order by name";
 
     // prepare query statement
     $stmt = $this->conn->prepare($query);
@@ -94,7 +94,7 @@ class team{
                   createdby=:createdby,
                   modified=:modified,
                   modifiedby=:modifiedby,
-                  active=:active";
+                  active=1";
         
                   // prepare query
             $stmt = $this->conn->prepare($query);
@@ -105,14 +105,14 @@ class team{
             $this->createdby=htmlspecialchars(strip_tags($data['createdby']));
             $this->modified=htmlspecialchars(strip_tags($data['modified']));
             $this->modifiedby=htmlspecialchars(strip_tags($data['modifiedby']));
-            $this->active=htmlspecialchars(strip_tags($data['active'])); 
+            // $this->active=htmlspecialchars(strip_tags($data['active'])); 
         
             $stmt->bindParam(":name", $this->name);
             $stmt->bindParam(":created", $this->created);
             $stmt->bindParam(":createdby", $this->createdby);
             $stmt->bindParam(":modified", $this->modified);
             $stmt->bindParam(":modifiedby", $this->modifiedby);
-            $stmt->bindParam(":active", $this->active);
+            // $stmt->bindParam(":active", $this->active);
             
             
               // execute query

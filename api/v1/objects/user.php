@@ -31,7 +31,7 @@ class user{
     public function getUsers() {  
 
     // select all query
-    $query = "SELECT * from users where 1 order by first_name";
+    $query = "SELECT * from users where active=1 order by first_name";
               
     // prepare query statement
     $stmt = $this->conn->prepare($query);

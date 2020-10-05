@@ -28,7 +28,7 @@ class event{
     public function getEvents(){
 
          // select all query
-    $query = "SELECT * from events where 1 order by event_name";
+    $query = "SELECT * from events where active=1 order by event_name";
 
      // prepare query statement
      $stmt = $this->conn->prepare($query);
