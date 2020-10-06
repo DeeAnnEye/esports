@@ -18,6 +18,8 @@ class event{
       public $modified;
       public $modifiedby;
       public $last_date_of_registration;
+      public $active;
+      public $archive;
 
       
     // constructor with $db as database connection
@@ -55,7 +57,9 @@ class event{
             "createdby" => $row['createdby'],
             "modified" => $row['modified'],
             "modifiedby" => $row['modifiedby'],
-            "last_date_of_registration" => $row['last_date_of_registration']            
+            "last_date_of_registration" => $row['last_date_of_registration'],
+            "active" => $row['active'],
+            "archive" => $row['archive']            
         );
   
         array_push($events, $event_item);
@@ -110,7 +114,9 @@ class event{
           createdby=:createdby,
           modified=:modified,
           modifiedby=:modifiedby,
-          last_date_of_registration=:last_date_of_registration";
+          last_date_of_registration=:last_date_of_registration,
+          active=1,
+          archive=0";
 
           // prepare query
     $stmt = $this->conn->prepare($query);
@@ -127,6 +133,7 @@ class event{
     $this->modified=htmlspecialchars(strip_tags($data['modified']));
     $this->modifiedby=htmlspecialchars(strip_tags($data['modifiedby']));
     $this->last_date_of_registration=htmlspecialchars(strip_tags($data['last_date_of_registration']));
+    // $this->archive=htmlspecialchars(strip_tags($data['archive']));
           
     // print_r($data);  
 
@@ -167,7 +174,9 @@ class event{
                   createdby=:createdby,
                   modified=:modified,
                   modifiedby=:modifiedby,
-                  last_date_of_registration=:last_date_of_registration
+                  last_date_of_registration=:last_date_of_registration,
+                  active=:active,
+                  archive=:archive
                   WHERE event_id = :event_id";
         
                   // prepare query
@@ -199,9 +208,13 @@ class event{
             $stmt->bindParam(":modified", $this->modified);
             $stmt->bindParam(":modifiedby", $this->modifiedby);
             $stmt->bindParam(":last_date_of_registration", $this->last_date_of_registration);
+            $stmt->bindParam(":active", $this->active);
+            $stmt->bindParam(":archive", $this->archive);
             $stmt->bindParam(":event_id", $id);
-              // execute query
-             
+          
+
+              
+             // execute query
               return json_encode(["success" => $stmt->execute()]);
             } catch (PDOException $e) {
                 throw $e;

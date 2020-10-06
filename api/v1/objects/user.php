@@ -119,9 +119,9 @@ class user{
          games=:games,
          social_acc=:social_acc,
          role=:role,
-         mod_request=:mod_request,
-         active=:active,
-         blocked=:blocked,
+         mod_request=0,
+         active=1,
+         blocked=0,
          created=:created,
          modified=:modified";
 
@@ -156,9 +156,9 @@ class user{
     $stmt->bindParam(":games", $this->games);
     $stmt->bindParam(":social_acc", $this->social_acc);
     $stmt->bindParam(":role", $this->role);
-    $stmt->bindParam(":mod_request", $this->mod_request);
-    $stmt->bindParam(":active", $this->active);
-    $stmt->bindParam(":blocked", $this->blocked);
+    // $stmt->bindParam(":mod_request", $this->mod_request);
+    // $stmt->bindParam(":active", $this->active);
+    // $stmt->bindParam(":blocked", $this->blocked);
     $stmt->bindParam(":created", $this->created);
     $stmt->bindParam(":modified", $this->modified);
 
