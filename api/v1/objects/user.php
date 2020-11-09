@@ -156,14 +156,10 @@ class user{
     $stmt->bindParam(":games", $this->games);
     $stmt->bindParam(":social_acc", $this->social_acc);
     $stmt->bindParam(":role", $this->role);
-    // $stmt->bindParam(":mod_request", $this->mod_request);
-    // $stmt->bindParam(":active", $this->active);
-    // $stmt->bindParam(":blocked", $this->blocked);
     $stmt->bindParam(":created", $this->created);
     $stmt->bindParam(":modified", $this->modified);
 
       // execute query
-     
       return json_encode(["success" => $stmt->execute()]);
     } catch (PDOException $e) {
         throw $e;
@@ -241,6 +237,50 @@ class user{
     } catch (PDOException $e) {
         throw $e;
     }
+}
+
+// check if given email exist in the database
+function emailExists(){
+
+	// query to check if email exists
+	$query = "SELECT user_id, first_name, last_name, password
+			FROM " . $this->table_name . "
+			WHERE email = ?
+			LIMIT 0,1";
+
+	// prepare the query
+	$stmt = $this->conn->prepare( $query );
+
+	// sanitize
+	$this->email=htmlspecialchars(strip_tags($this->email));
+
+	// bind given email value
+	$stmt->bindParam(1, $this->email);
+
+	// execute the query
+	$stmt->execute();
+
+	// get number of rows
+	$num = $stmt->rowCount();
+
+	// if email exists, assign values to object properties for easy access and use for php sessions
+	if($num>0){
+
+		// get record details / values
+		$row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+		// assign values to object properties
+		$this->user_id = $row['user_id'];
+		$this->first_name = $row['first_name'];
+		$this->last_name = $row['last_name'];
+		$this->password = $row['password'];
+
+		// return true because email exists in the database
+		return true;
+	}
+
+	// return false if email does not exist in the database
+	return false;
 }
 
 }
