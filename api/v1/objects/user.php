@@ -13,7 +13,6 @@ class user{
     public $email;
     public $phone;
     public $password;
-    public $photo;
     public $games;
     public $social_acc;
     public $role;
@@ -54,7 +53,6 @@ class user{
             "email" => $row['email'],
             "phone" => $row['phone'],
             "password" => $row['password'],
-            "photo" => $row['photo'],
             "games" => $row['games'],
             "social_acc" => $row['social_acc'],
             "role" => $row['role'],
@@ -104,7 +102,6 @@ class user{
     public function createUser($data) {
         try {
             //code...
-        
      
     // query to insert record
     $query = "INSERT INTO " . $this->table_name . 
@@ -115,10 +112,9 @@ class user{
          email=:email,
          phone=:phone,
          password=:password,
-         photo=:photo,
          games=:games,
          social_acc=:social_acc,
-         role=:role,
+         role=4,
          mod_request=0,
          active=1,
          blocked=0,
@@ -135,7 +131,6 @@ class user{
     $this->email=htmlspecialchars(strip_tags($data['email']));
     $this->phone=htmlspecialchars(strip_tags($data['phone']));
     $this->password=htmlspecialchars(strip_tags($data['password']));
-    $this->photo=htmlspecialchars(strip_tags($data['photo']));
     $this->games=htmlspecialchars(strip_tags($data['games']));
     $this->social_acc=htmlspecialchars(strip_tags($data['social_acc']));
     $this->role=htmlspecialchars(strip_tags($data['role']));
@@ -152,10 +147,9 @@ class user{
     $stmt->bindParam(":email", $this->email);
     $stmt->bindParam(":phone", $this->phone);
     $stmt->bindParam(":password", $this->password);
-    $stmt->bindParam(":photo", $this->photo);
     $stmt->bindParam(":games", $this->games);
     $stmt->bindParam(":social_acc", $this->social_acc);
-    $stmt->bindParam(":role", $this->role);
+    // $stmt->bindParam(":role", $this->role);
     $stmt->bindParam(":created", $this->created);
     $stmt->bindParam(":modified", $this->modified);
 
@@ -179,7 +173,6 @@ class user{
             email=:email,
             phone=:phone,
             password=:password,
-            photo=:photo,
             games=:games,
             social_acc=:social_acc,
             role=:role,
@@ -203,7 +196,6 @@ class user{
     $this->email=htmlspecialchars(strip_tags($data['email']));
     $this->phone=htmlspecialchars(strip_tags($data['phone']));
     $this->password=htmlspecialchars(strip_tags($data['password']));
-    $this->photo=htmlspecialchars(strip_tags($data['photo']));
     $this->games=htmlspecialchars(strip_tags($data['games']));
     $this->social_acc=htmlspecialchars(strip_tags($data['social_acc']));
     $this->role=htmlspecialchars(strip_tags($data['role']));
@@ -220,7 +212,6 @@ class user{
     $stmt->bindParam(":email", $this->email);
     $stmt->bindParam(":phone", $this->phone);
     $stmt->bindParam(":password", $this->password);
-    $stmt->bindParam(":photo", $this->photo);
     $stmt->bindParam(":games", $this->games);
     $stmt->bindParam(":social_acc", $this->social_acc);
     $stmt->bindParam(":role", $this->role);

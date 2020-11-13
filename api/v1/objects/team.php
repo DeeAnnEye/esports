@@ -8,6 +8,7 @@ class team{
       // object properties
       public $id;
       public $name;
+      public $image;
       public $created;
       public $createdby;
       public $modified;
@@ -40,6 +41,7 @@ class team{
        $team_item=array(
            "id" => $row['id'],
            "name" => $row['name'],
+           "image" => $row['image'],
            "created" => $row['created'],
            "createdby" => $row['createdby'],
            "modified" => $row['modified'],
@@ -90,6 +92,7 @@ class team{
             $query = "INSERT INTO " . $this->table_name . 
             " SET id=0,
                   name=:name,
+                  image=:image,
                   created=:created,
                   createdby=:createdby,
                   modified=:modified,
@@ -101,20 +104,19 @@ class team{
         
                   // sanitize
             $this->name=htmlspecialchars(strip_tags($data['name']));
+            $this->image=htmlspecialchars(strip_tags($data['image']));
             $this->created=htmlspecialchars(strip_tags($data['created']));
             $this->createdby=htmlspecialchars(strip_tags($data['createdby']));
             $this->modified=htmlspecialchars(strip_tags($data['modified']));
             $this->modifiedby=htmlspecialchars(strip_tags($data['modifiedby']));
-            // $this->active=htmlspecialchars(strip_tags($data['active'])); 
         
             $stmt->bindParam(":name", $this->name);
+            $stmt->bindParam(":image", $this->image);
             $stmt->bindParam(":created", $this->created);
             $stmt->bindParam(":createdby", $this->createdby);
             $stmt->bindParam(":modified", $this->modified);
             $stmt->bindParam(":modifiedby", $this->modifiedby);
-            // $stmt->bindParam(":active", $this->active);
-            
-            
+                        
               // execute query
               return json_encode(["success" => $stmt->execute()]);
             } catch (PDOException $e) {
@@ -130,6 +132,7 @@ class team{
             $query =  "UPDATE  $this->table_name "."
                   SET
                   name=:name,
+                  image=:image,
                   created=:created,
                   createdby=:createdby,
                   modified=:modified,
@@ -142,6 +145,7 @@ class team{
         
                   // sanitize
              $this->name=htmlspecialchars(strip_tags($data['name']));
+             $this->image=htmlspecialchars(strip_tags($data['image']));
              $this->created=htmlspecialchars(strip_tags($data['created']));
              $this->createdby=htmlspecialchars(strip_tags($data['createdby']));
              $this->modified=htmlspecialchars(strip_tags($data['modified']));
@@ -150,14 +154,15 @@ class team{
 
         
              $stmt->bindParam(":name", $this->name);
+             $stmt->bindParam(":image", $this->image);
              $stmt->bindParam(":created", $this->created);
              $stmt->bindParam(":createdby", $this->createdby);
              $stmt->bindParam(":modified", $this->modified);
              $stmt->bindParam(":modifiedby", $this->modifiedby);
              $stmt->bindParam(":active", $this->active);
              $stmt->bindParam(":id", $id);
-              // execute query
-             
+              
+             // execute query
               return json_encode(["success" => $stmt->execute()]);
             } catch (PDOException $e) {
                 throw $e;
