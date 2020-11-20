@@ -13,12 +13,14 @@ class user{
     public $email;
     public $phone;
     public $password;
+    public $image;
     public $games;
     public $social_acc;
     public $role;
     public $mod_request;
     public $active;
     public $blocked;
+    public $flag;
     public $created;
     public $modified;
   
@@ -53,12 +55,14 @@ class user{
             "email" => $row['email'],
             "phone" => $row['phone'],
             "password" => $row['password'],
+            "image" => $row['image'],
             "games" => $row['games'],
             "social_acc" => $row['social_acc'],
             "role" => $row['role'],
             "mod_request" => $row['mod_request'],
             "active" => $row['active'],
             "blocked" => $row['blocked'],
+            "flag" => $row['flag'],
             "created" => $row['created'],
             "modified" => $row['modified'] 
         );
@@ -108,16 +112,18 @@ class user{
     " SET user_id=0, 
          first_name=:first_name,
          last_name=:last_name,
-         usertag=:usertag,
          email=:email,
          phone=:phone,
          password=:password,
+         usertag=:usertag,
+         image=:image,
          games=:games,
          social_acc=:social_acc,
          role=4,
          mod_request=0,
          active=1,
          blocked=0,
+         flag=0,
          created=:created,
          modified=:modified";
 
@@ -131,12 +137,14 @@ class user{
     $this->email=htmlspecialchars(strip_tags($data['email']));
     $this->phone=htmlspecialchars(strip_tags($data['phone']));
     $this->password=htmlspecialchars(strip_tags($data['password']));
+    $this->image=htmlspecialchars(strip_tags($data['image']));
     $this->games=htmlspecialchars(strip_tags($data['games']));
     $this->social_acc=htmlspecialchars(strip_tags($data['social_acc']));
     $this->role=htmlspecialchars(strip_tags($data['role']));
     $this->mod_request=htmlspecialchars(strip_tags($data['mod_request']));
     $this->active=htmlspecialchars(strip_tags($data['active']));
     $this->blocked=htmlspecialchars(strip_tags($data['blocked']));
+    $this->flag=htmlspecialchars(strip_tags($data['flag']));
     $this->created=htmlspecialchars(strip_tags($data['created']));
     $this->modified=htmlspecialchars(strip_tags($data['modified']));
 
@@ -147,9 +155,9 @@ class user{
     $stmt->bindParam(":email", $this->email);
     $stmt->bindParam(":phone", $this->phone);
     $stmt->bindParam(":password", $this->password);
+    $stmt->bindParam(":image", $this->image);
     $stmt->bindParam(":games", $this->games);
     $stmt->bindParam(":social_acc", $this->social_acc);
-    // $stmt->bindParam(":role", $this->role);
     $stmt->bindParam(":created", $this->created);
     $stmt->bindParam(":modified", $this->modified);
 
@@ -173,12 +181,14 @@ class user{
             email=:email,
             phone=:phone,
             password=:password,
+            image=:image,
             games=:games,
             social_acc=:social_acc,
             role=:role,
             mod_request=:mod_request,
             active=:active,
             blocked=:blocked,
+            flag=:flag,
             created=:created,
             modified=:modified,
             usertag=:usertag             
@@ -196,12 +206,14 @@ class user{
     $this->email=htmlspecialchars(strip_tags($data['email']));
     $this->phone=htmlspecialchars(strip_tags($data['phone']));
     $this->password=htmlspecialchars(strip_tags($data['password']));
+    $this->image=htmlspecialchars(strip_tags($data['image']));
     $this->games=htmlspecialchars(strip_tags($data['games']));
     $this->social_acc=htmlspecialchars(strip_tags($data['social_acc']));
     $this->role=htmlspecialchars(strip_tags($data['role']));
     $this->mod_request=htmlspecialchars(strip_tags($data['mod_request']));
     $this->active=htmlspecialchars(strip_tags($data['active']));
     $this->blocked=htmlspecialchars(strip_tags($data['blocked']));
+    $this->flag=htmlspecialchars(strip_tags($data['flag']));
     $this->created=htmlspecialchars(strip_tags($data['created']));
     $this->modified=htmlspecialchars(strip_tags($data['modified']));
 
@@ -212,12 +224,14 @@ class user{
     $stmt->bindParam(":email", $this->email);
     $stmt->bindParam(":phone", $this->phone);
     $stmt->bindParam(":password", $this->password);
+    $stmt->bindParam(":image", $this->image);
     $stmt->bindParam(":games", $this->games);
     $stmt->bindParam(":social_acc", $this->social_acc);
     $stmt->bindParam(":role", $this->role);
     $stmt->bindParam(":mod_request", $this->mod_request);
     $stmt->bindParam(":active", $this->active);
     $stmt->bindParam(":blocked", $this->blocked);
+    $stmt->bindParam(":flag", $this->flag);
     $stmt->bindParam(":created", $this->created);
     $stmt->bindParam(":modified", $this->modified);
     $stmt->bindParam(":user_id", $id);
