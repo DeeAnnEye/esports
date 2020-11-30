@@ -3,14 +3,15 @@
 
 include_once('../config/database.php');
 include_once('./objects/team.php');
+include_once('token_validate.php');
 
 $db = new Database();
 
 
 $conn = $db->getConnection();
 
-if($conn) {
-//    echo "Database Connected!";
+if ($conn) {
+  //    echo "Database Connected!";
 }
 
 $team = new Team($conn);
@@ -18,38 +19,56 @@ $team = new Team($conn);
 
 $req = $_SERVER['REQUEST_METHOD'];
 
-switch($_SERVER['REQUEST_METHOD'])
-{
+$token = validateToken();
 
-case 'GET': 
-  // get single team
-  $id = $_GET['id'];
-  echo $team->getTeamById($id); 
-  break;
+switch ($_SERVER['REQUEST_METHOD']) {
 
-case 'POST': 
-  $post= $_POST;
-  // create team function
-  if (isset($post['create'])){
-  echo $team->createTeam($post);
-  }
-  //  update team function
-   elseif (isset($post['update'])){
-    $id =  $_GET['id'];
-    echo $team->updateTeam($id,$post);
-  } 
-  // get all teams
-  else {
-  echo $team->getTeams();
-  }
-break; 
+  case 'GET':
+    // get single team
+    if ($token) {
+      $id = $_GET['id'];
+      echo $team->getTeamById($id);
+      break;
+    } else {
+      echo 'Access Denied!';
+    }
+    break;
 
-  case 'DELETE': 
+  case 'POST':
+    $post = $_POST;
+    // create team function
+    if (isset($post['create'])) {
+      echo $team->createTeam($post);
+    }
+    //  update team function
+    elseif (isset($post['update'])) {
+      if ($token) {
+        $id =  $_GET['id'];
+        $token_user = $token->data->user_id;
+        echo $team->updateTeam($id, $post, $token_user);
+      } else {
+        echo 'Access Denied!';
+      }
+    }
+    // get all teams
+    else {
+      if ($token) {
+        echo $team->getTeams();
+      } else {
+        echo 'Access Denied!';
+      }
+    }
+    break;
+
+  case 'DELETE':
     // delete team using id
-    $id =  $_GET['id'];
-    echo $team->deleteTeam($id);   
-break;
+    if ($token) {
+      $id =  $_GET['id'];
+      echo $team->deleteTeam($id);
+    } else {
+      echo 'Access Denied!';
+    }
+    break;
 
-default:
+  default:
 }
-?>
