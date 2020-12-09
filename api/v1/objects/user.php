@@ -134,7 +134,7 @@ class user
          image=:image,
          games=:games,
          social_acc=:social_acc,
-         role=4,
+         role=:role,
          mod_request=0,
          active=1,
          blocked=0,
@@ -173,6 +173,7 @@ class user
             $stmt->bindParam(":image", $this->image);
             $stmt->bindParam(":games", $this->games);
             $stmt->bindParam(":social_acc", $this->social_acc);
+            $stmt->bindParam(":role", $this->role);
             $stmt->bindParam(":created", $this->created);
             $stmt->bindParam(":modified", $this->modified);
 
@@ -264,7 +265,7 @@ class user
     {
 
         // query to check if email exists
-        $query = "SELECT user_id, first_name, last_name, password
+        $query = "SELECT user_id, first_name, last_name, password, role
 			FROM " . $this->table_name . "
 			WHERE email = ?
 			LIMIT 0,1";
@@ -295,6 +296,7 @@ class user
             $this->first_name = $row['first_name'];
             $this->last_name = $row['last_name'];
             $this->password = $row['password'];
+            $this->role = $row['role'];
 
             // return true because email exists in the database
             return true;
@@ -349,5 +351,30 @@ class user
         } catch (PDOException $e) {
             throw $e;
         }
+    }
+
+    // thid fn to be moved to the resource object
+    public function getPermissionsByRole($id)
+    {
+
+        // select all query
+        $query = "SELECT resource_id from permissions where 1 and role_id=$id";
+
+        echo $query;
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute();
+
+        $permissions = [];
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+            array_push($permissions, $row['resource_id']);
+        }
+
+
+        return $permissions;
     }
 }

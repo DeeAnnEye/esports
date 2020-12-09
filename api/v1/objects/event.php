@@ -226,7 +226,6 @@ class event
             $stmt->bindParam(":event_id", $id);
 
 
-
             // execute query
             return json_encode(["success" => $stmt->execute()]);
         } catch (PDOException $e) {
@@ -280,6 +279,46 @@ class event
             $stmt->bindParam(":player_id", $data['player_id']);
 
             // execute query
+            return json_encode(["success" => $stmt->execute()]);
+        } catch (PDOException $e) {
+            throw $e;
+        }
+    }
+
+    function removePlayerFromEvent($data)
+    {
+        try {
+            //code...
+            // query to inactivate
+            $query = "update event_register set removed=1 where 1 and player_id = ? and event_id = ?";
+
+            // prepare query statement
+            $stmt = $this->conn->prepare($query);
+
+            // bind id of record to delete
+            $stmt->bindParam(2, $data['player_id'], PDO::PARAM_INT);
+            $stmt->bindParam(1, $data['event_id'], PDO::PARAM_INT);
+
+            return json_encode(["success" => $stmt->execute()]);
+        } catch (PDOException $e) {
+            throw $e;
+        }
+    }
+
+    function removeTeamFromEvent($data)
+    {
+        try {
+            //code...
+            // query to inactivate
+            $query = "update event_register set removed=1 where 1 and team_id = ? and event_id = ?";
+
+            // prepare query statement
+            $stmt = $this->conn->prepare($query);
+
+            // bind id of record to delete
+            $stmt->bindParam(2, $data['team_id'], PDO::PARAM_INT);
+            $stmt->bindParam(1, $data['event_id'], PDO::PARAM_INT);
+
             return json_encode(["success" => $stmt->execute()]);
         } catch (PDOException $e) {
             throw $e;

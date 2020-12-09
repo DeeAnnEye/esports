@@ -34,7 +34,8 @@ use \Firebase\JWT\JWT;
 
 // check if email exists and if password is correct
 if ($email_exists && ($data->password == $user->password)) {
-
+    $role = $user->role;
+    // print_r($role);
     $token = array(
         "iat" => $issued_at,
         "exp" => $expiration_time,
@@ -55,7 +56,8 @@ if ($email_exists && ($data->password == $user->password)) {
     echo json_encode(
         array(
             "message" => "Successful login.",
-            "jwt" => $jwt
+            "jwt" => $jwt,
+            "permissions" => $user->getPermissionsByRole($role)
         )
     );
 }
