@@ -121,64 +121,75 @@ class user
     {
         try {
             //code...
+            $rolequery = "SELECT role_id from roles where 1 and name= 'player' ";
+
+            // prepare query statement
+            $stmt = $this->conn->prepare($rolequery);
+
+            // execute query
+            $stmt->execute();
+
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $user_role = $row['role_id'];
+
 
             // query to insert record
             $query = "INSERT INTO " . $this->table_name .
                 " SET user_id=0, 
-         first_name=:first_name,
-         last_name=:last_name,
+         first_name= null,
+         last_name=null,
          email=:email,
-         phone=:phone,
+         phone=null,
          password=:password,
          usertag=:usertag,
-         image=:image,
-         games=:games,
-         social_acc=:social_acc,
+         image=null,
+         games=null,
+         social_acc=null,
          role=:role,
          mod_request=0,
          active=1,
          blocked=0,
-         flag=0,
-         created=:created,
-         modified=:modified";
+         flag=0";
 
             // prepare query
             $stmt = $this->conn->prepare($query);
 
+
             // sanitize
-            $this->first_name = htmlspecialchars(strip_tags($data['first_name']));
-            $this->last_name = htmlspecialchars(strip_tags($data['last_name']));
             $this->usertag = htmlspecialchars(strip_tags($data['usertag']));
             $this->email = htmlspecialchars(strip_tags($data['email']));
-            $this->phone = htmlspecialchars(strip_tags($data['phone']));
             $this->password = htmlspecialchars(strip_tags($data['password']));
-            $this->image = htmlspecialchars(strip_tags($data['image']));
-            $this->games = htmlspecialchars(strip_tags($data['games']));
-            $this->social_acc = htmlspecialchars(strip_tags($data['social_acc']));
-            $this->role = htmlspecialchars(strip_tags($data['role']));
-            $this->mod_request = htmlspecialchars(strip_tags($data['mod_request']));
-            $this->active = htmlspecialchars(strip_tags($data['active']));
-            $this->blocked = htmlspecialchars(strip_tags($data['blocked']));
-            $this->flag = htmlspecialchars(strip_tags($data['flag']));
-            $this->created = htmlspecialchars(strip_tags($data['created']));
-            $this->modified = htmlspecialchars(strip_tags($data['modified']));
 
+            if (
+                !empty($this->usertag) &&
+                !empty($this->email) &&
+                !empty($this->password)
+            ) {
 
-            $stmt->bindParam(":first_name", $this->first_name);
-            $stmt->bindParam(":last_name", $this->last_name);
-            $stmt->bindParam(":usertag", $this->usertag);
-            $stmt->bindParam(":email", $this->email);
-            $stmt->bindParam(":phone", $this->phone);
-            $stmt->bindParam(":password", $this->password);
-            $stmt->bindParam(":image", $this->image);
-            $stmt->bindParam(":games", $this->games);
-            $stmt->bindParam(":social_acc", $this->social_acc);
-            $stmt->bindParam(":role", $this->role);
-            $stmt->bindParam(":created", $this->created);
-            $stmt->bindParam(":modified", $this->modified);
+                $stmt->bindParam(":usertag", $this->usertag);
+                $stmt->bindParam(":email", $this->email);
+                $stmt->bindParam(":password", $this->password);
+                $stmt->bindParam(":role", $user_role);
 
-            // execute query
-            return json_encode(["success" => $stmt->execute()]);
+                // execute query
+                if ($stmt->execute()) {
+
+                    // set response code
+                    http_response_code(200);
+
+                    echo json_encode(array("message" => "True"));
+                } else {
+
+                    // set response code
+                    http_response_code(400);
+                    echo json_encode(array("message" => "False"));
+                }
+            } else {
+                // set response code
+                http_response_code(400);
+                echo json_encode(array("message" => "Fields empty"));
+            }
         } catch (PDOException $e) {
             throw $e;
         }
@@ -205,8 +216,6 @@ class user
             active=:active,
             blocked=:blocked,
             flag=:flag,
-            created=:created,
-            modified=:modified,
             usertag=:usertag             
             WHERE user_id = :user_id";
 
@@ -230,8 +239,7 @@ class user
             $this->active = htmlspecialchars(strip_tags($data['active']));
             $this->blocked = htmlspecialchars(strip_tags($data['blocked']));
             $this->flag = htmlspecialchars(strip_tags($data['flag']));
-            $this->created = htmlspecialchars(strip_tags($data['created']));
-            $this->modified = htmlspecialchars(strip_tags($data['modified']));
+           
 
             // bind new values
             $stmt->bindParam(":first_name", $this->first_name);
@@ -248,8 +256,6 @@ class user
             $stmt->bindParam(":active", $this->active);
             $stmt->bindParam(":blocked", $this->blocked);
             $stmt->bindParam(":flag", $this->flag);
-            $stmt->bindParam(":created", $this->created);
-            $stmt->bindParam(":modified", $this->modified);
             $stmt->bindParam(":user_id", $id);
 
             // print_r($stmt->debugDumpParams());
@@ -353,28 +359,5 @@ class user
         }
     }
 
-    // thid fn to be moved to the resource object
-    public function getPermissionsByRole($id)
-    {
-
-        // select all query
-        $query = "SELECT resource_id from permissions where 1 and role_id=$id";
-
-        echo $query;
-        // prepare query statement
-        $stmt = $this->conn->prepare($query);
-
-        // execute query
-        $stmt->execute();
-
-        $permissions = [];
-
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-
-            array_push($permissions, $row['resource_id']);
-        }
-
-
-        return $permissions;
-    }
+    
 }

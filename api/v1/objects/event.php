@@ -14,7 +14,6 @@ class event
     public $event_type;
     public $game_id;
     public $max_participants;
-    public $permission;
     public $created;
     public $createdby;
     public $modified;
@@ -57,7 +56,6 @@ class event
                 "event_type" => $row['event_type'],
                 "game_id" => $row['game_id'],
                 "max_participants" => $row['max_participants'],
-                "permission" => $row['permission'],
                 "created" => $row['created'],
                 "createdby" => $row['createdby'],
                 "modified" => $row['modified'],
@@ -118,7 +116,6 @@ class event
           event_type=:event_type,
           game_id=:game_id,
           max_participants=:max_participants,
-          permission=:permission,
           created=:created,
           createdby=:createdby,
           modified=:modified,
@@ -137,7 +134,6 @@ class event
             $this->event_type = htmlspecialchars(strip_tags($data['event_type']));
             $this->game_id = htmlspecialchars(strip_tags($data['game_id']));
             $this->max_participants = htmlspecialchars(strip_tags($data['max_participants']));
-            $this->permission = htmlspecialchars(strip_tags($data['permission']));
             $this->created = htmlspecialchars(strip_tags($data['created']));
             $this->createdby = htmlspecialchars(strip_tags($data['createdby']));
             $this->modified = htmlspecialchars(strip_tags($data['modified']));
@@ -153,7 +149,6 @@ class event
             $stmt->bindParam(":event_type", $this->event_type);
             $stmt->bindParam(":game_id", $this->game_id);
             $stmt->bindParam(":max_participants", $this->max_participants);
-            $stmt->bindParam(":permission", $this->permission);
             $stmt->bindParam(":created", $this->created);
             $stmt->bindParam(":createdby", $this->createdby);
             $stmt->bindParam(":modified", $this->modified);
@@ -180,7 +175,6 @@ class event
                   event_type=:event_type,
                   game_id=:game_id,
                   max_participants=:max_participants,
-                  permission=:permission,
                   created=:created,
                   createdby=:createdby,
                   modified=:modified,
@@ -200,7 +194,6 @@ class event
             $this->event_type = htmlspecialchars(strip_tags($data['event_type']));
             $this->game_id = htmlspecialchars(strip_tags($data['game_id']));
             $this->max_participants = htmlspecialchars(strip_tags($data['max_participants']));
-            $this->permission = htmlspecialchars(strip_tags($data['permission']));
             $this->created = htmlspecialchars(strip_tags($data['created']));
             $this->createdby = htmlspecialchars(strip_tags($data['createdby']));
             $this->modified = htmlspecialchars(strip_tags($data['modified']));
@@ -215,7 +208,6 @@ class event
             $stmt->bindParam(":event_type", $this->event_type);
             $stmt->bindParam(":game_id", $this->game_id);
             $stmt->bindParam(":max_participants", $this->max_participants);
-            $stmt->bindParam(":permission", $this->permission);
             $stmt->bindParam(":created", $this->created);
             $stmt->bindParam(":createdby", $this->createdby);
             $stmt->bindParam(":modified", $this->modified);
@@ -266,9 +258,9 @@ class event
 
             // query to insert record
             $query = "INSERT INTO event_register SET
-            event_id=:id,
-            team_id=0,
-            player_id=:player_id
+            event_id=:event_id,
+            team_id=null,
+            player_id=:player_id,
             removed=0 ";
 
             // prepare query statement
@@ -325,3 +317,4 @@ class event
         }
     }
 }
+// test playerevent,teamevent,removefromevent

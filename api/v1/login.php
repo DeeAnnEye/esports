@@ -8,13 +8,15 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // files needed to connect to database
 include_once '../config/database.php';
 include_once './objects/user.php';
+include_once './objects/resource.php';
 
 // get database connection
 $database = new Database();
 $db = $database->getConnection();
 
-// instantiate user object
+// instantiate user and resource object
 $user = new User($db);
+$resource = new Resource($db);
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
@@ -55,9 +57,9 @@ if ($email_exists && ($data->password == $user->password)) {
     $jwt = JWT::encode($token, $key);
     echo json_encode(
         array(
-            "message" => "Successful login.",
+            "message" => "Login Successful",
             "jwt" => $jwt,
-            "permissions" => $user->getPermissionsByRole($role)
+            "permissions" => $resource->getPermissionsByRole($role)
         )
     );
 }

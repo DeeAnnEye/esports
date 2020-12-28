@@ -129,7 +129,7 @@ class result
             $this->published = htmlspecialchars(strip_tags($data['published']));
             $this->removed = htmlspecialchars(strip_tags($data['removed']));
 
-            $stmt->bindParam(":result_id", $this->result_id);
+            $stmt->bindParam(":result_id", $id);
             $stmt->bindParam(":event_id", $this->event_id);
             $stmt->bindParam(":overview", $this->overview);
             $stmt->bindParam(":published", $this->published);
@@ -207,4 +207,5 @@ class result
             throw $e;
         }
     }
+    // todo result placements bridge table
 }
