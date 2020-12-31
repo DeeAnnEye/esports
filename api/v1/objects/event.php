@@ -11,7 +11,7 @@ class event
     public $event_name;
     public $event_start;
     public $event_end;
-    public $event_type;
+    public $image;
     public $game_id;
     public $max_participants;
     public $created;
@@ -53,7 +53,7 @@ class event
                 "event_name" => $row['event_name'],
                 "event_start" => $row['event_start'],
                 "event_end" => $row['event_end'],
-                "event_type" => $row['event_type'],
+                "image" => $row['image'],
                 "game_id" => $row['game_id'],
                 "max_participants" => $row['max_participants'],
                 "created" => $row['created'],
@@ -113,7 +113,7 @@ class event
           event_name=:event_name,
           event_start=:event_start,
           event_end=:event_end,
-          event_type=:event_type,
+          image=:image,
           game_id=:game_id,
           max_participants=:max_participants,
           created=:created,
@@ -131,7 +131,7 @@ class event
             $this->event_name = htmlspecialchars(strip_tags($data['event_name']));
             $this->event_start = htmlspecialchars(strip_tags($data['event_start']));
             $this->event_end = htmlspecialchars(strip_tags($data['event_end']));
-            $this->event_type = htmlspecialchars(strip_tags($data['event_type']));
+            $this->image = htmlspecialchars(strip_tags($data['image']));
             $this->game_id = htmlspecialchars(strip_tags($data['game_id']));
             $this->max_participants = htmlspecialchars(strip_tags($data['max_participants']));
             $this->created = htmlspecialchars(strip_tags($data['created']));
@@ -146,7 +146,7 @@ class event
             $stmt->bindParam(":event_name", $this->event_name);
             $stmt->bindParam(":event_start", $this->event_start);
             $stmt->bindParam(":event_end", $this->event_end);
-            $stmt->bindParam(":event_type", $this->event_type);
+            $stmt->bindParam(":image", $this->image);
             $stmt->bindParam(":game_id", $this->game_id);
             $stmt->bindParam(":max_participants", $this->max_participants);
             $stmt->bindParam(":created", $this->created);
@@ -172,7 +172,7 @@ class event
                   event_name=:event_name,
                   event_start=:event_start,
                   event_end=:event_end,
-                  event_type=:event_type,
+                  image=:image,
                   game_id=:game_id,
                   max_participants=:max_participants,
                   created=:created,
@@ -191,7 +191,7 @@ class event
             $this->event_name = htmlspecialchars(strip_tags($data['event_name']));
             $this->event_start = htmlspecialchars(strip_tags($data['event_start']));
             $this->event_end = htmlspecialchars(strip_tags($data['event_end']));
-            $this->event_type = htmlspecialchars(strip_tags($data['event_type']));
+            $this->image = htmlspecialchars(strip_tags($data['image']));
             $this->game_id = htmlspecialchars(strip_tags($data['game_id']));
             $this->max_participants = htmlspecialchars(strip_tags($data['max_participants']));
             $this->created = htmlspecialchars(strip_tags($data['created']));
@@ -205,7 +205,7 @@ class event
             $stmt->bindParam(":event_name", $this->event_name);
             $stmt->bindParam(":event_start", $this->event_start);
             $stmt->bindParam(":event_end", $this->event_end);
-            $stmt->bindParam(":event_type", $this->event_type);
+            $stmt->bindParam(":image", $this->image);
             $stmt->bindParam(":game_id", $this->game_id);
             $stmt->bindParam(":max_participants", $this->max_participants);
             $stmt->bindParam(":created", $this->created);
