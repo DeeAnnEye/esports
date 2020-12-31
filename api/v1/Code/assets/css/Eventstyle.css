@@ -1,0 +1,99 @@
+html,body
+{
+    background-color: #0B0C10;
+    min-height: 100vh;
+    width: 100%;
+}
+
+* 
+{
+    box-sizing: border-box;
+    padding: 0%;
+    margin: 0%;
+}
+
+.linkgame
+{
+    text-decoration: none;
+    color: #202833;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.linkgame:hover
+{
+    text-decoration: none;
+}
+
+#game
+{
+    background-color: #C5C6C8;
+    box-shadow: -4px 3px 3px #0B0C10;
+}
+#event
+{
+    background-color: #46A29F;
+    box-shadow: -4px 3px 3px #0B0C10;
+}
+#team
+{
+    background-color: #C5C6C8;
+    box-shadow: 4px 3px 3px #0B0C10;
+}
+#career
+{
+    background-color: #C5C6C8;
+    box-shadow: 4px 3px 3px #0B0C10;
+}
+
+.Host
+{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    align-items: center;
+}
+.source
+{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+}
+#host
+{
+    width: 45rem;
+    margin-left: 5rem;
+    color: #00FE00;
+    position: absolute;
+    text-align: start;
+    font-size: 2.3em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.event
+{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    align-items: center;   
+    margin-bottom: 2rem;
+}
+.eventxt
+{
+    width: 45rem;
+    color: #C5C6C8;
+    position: absolute;
+    text-align: start;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-left: 4rem;
+}
+
+
+/* Event Register */
+
+#pfp
+{
+    width: 3rem;
+    height: 3rem;   
+}

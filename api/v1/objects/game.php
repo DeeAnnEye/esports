@@ -9,6 +9,7 @@ class game{
     public $id;
     public $name;
     public $image;
+    public $wallpaper;
     public $gametype;
     public $number_of_players;
 
@@ -29,7 +30,12 @@ class game{
         $stmt = $this->conn->prepare($query);
 
         // execute query
-        $stmt->execute();
+       if( $stmt->execute()){
+           http_response_code(200);
+       }
+       else{
+           http_response_code(400);
+       }
 
         $games = [];
 
@@ -42,13 +48,14 @@ class game{
                 "id" => $row['id'],
                 "name" => $row['name'],
                 "image" => $row['image'],
+                "wallpaper" => $row['wallpaper'],
                 "gametype" => $row['gametype'],
                 "number_of_players" => $row['number_of_players']
             );
 
             array_push($games, $game_item);
         }
-
+        
         return json_encode($games);
     }
 
@@ -79,6 +86,7 @@ class game{
                 " SET id=0,
                  name=:name,
                  image=:image,
+                 wallpaper=:wallpaper,
                  gametype=:gametype,
                  number_of_players=:number_of_players";
 
@@ -88,6 +96,7 @@ class game{
             // sanitize
             $this->name = htmlspecialchars(strip_tags($data['name']));
             $this->image = htmlspecialchars(strip_tags($data['image']));
+            $this->wallpaper = htmlspecialchars(strip_tags($data['wallpaper']));
             $this->gametype = htmlspecialchars(strip_tags($data['gametype']));
             $this->number_of_players = htmlspecialchars(strip_tags($data['number_of_players']));
             
@@ -96,6 +105,7 @@ class game{
 
             $stmt->bindParam(":name", $this->name);
             $stmt->bindParam(":image", $this->image);
+            $stmt->bindParam(":wallpaper", $this->wallpaper);
             $stmt->bindParam(":gametype", $this->gametype);
             $stmt->bindParam(":number_of_players", $this->number_of_players);
            
@@ -113,6 +123,7 @@ class game{
             $query =  "UPDATE  $this->table_name " . "
              SET  name=:name,
              image=:image,
+             wallpaper=:wallpaper,
              gametype=:gametype,
              number_of_players=:number_of_players
              WHERE id = :id";
@@ -122,6 +133,7 @@ class game{
 
             $this->name = htmlspecialchars(strip_tags($data['name']));
             $this->image = htmlspecialchars(strip_tags($data['image']));
+            $this->wallpaper = htmlspecialchars(strip_tags($data['wallpaper']));
             $this->gametype = htmlspecialchars(strip_tags($data['gametype']));
             $this->number_of_players = htmlspecialchars(strip_tags($data['number_of_players']));
 
@@ -131,6 +143,7 @@ class game{
             $stmt->bindParam(":id", $id);
             $stmt->bindParam(":name", $this->name);
             $stmt->bindParam(":image", $this->image);
+            $stmt->bindParam(":wallpaper", $this->wallpaper);
             $stmt->bindParam(":gametype", $this->gametype);
             $stmt->bindParam(":number_of_players", $this->number_of_players);
 

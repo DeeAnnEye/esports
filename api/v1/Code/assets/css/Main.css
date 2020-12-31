@@ -165,3 +165,73 @@ span
     justify-content: space-evenly;
     
 }
+.log
+{
+    width: 10rem !important;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 500;
+    display: inline-block;
+    margin-top: 1.5%;
+    padding: 10px 20px;
+    color: #FFFFFF;
+    letter-spacing: 15px;
+    text-decoration: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    transition: 0.2s;
+}
+.log:hover
+{
+    color: #0B0C10;
+    background-color: #66FCF1;
+    text-decoration: none;
+    box-shadow: 0 0 10px #66FCF1, 0 0 40px #66FCF1, 0 0 80pxpx #66FCF1;
+    transition-delay: .1s;
+}
+
+
+#loginModelLabel
+{
+    font-family: okami;
+    background: transparent;
+    text-align: center;
+    font-size: 8rem;
+    color: #66FCF1;
+}
+#loginMode
+{
+    font-family: okami;
+    background: transparent;
+    text-align: center;
+    font-size: 5rem;
+    color: #C5C6C8;
+    margin-top: -10%;
+    margin-bottom: 0%;
+}
+
+.buttonnew
+{
+    width: 10rem !important;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 500;
+    display: block;
+    margin-top: 1.5%;
+    padding: 10px 20px;
+    color: #FFFFFF;
+    letter-spacing: 5px;
+    text-decoration: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    transition: 0.2s;
+    text-transform: uppercase;
+}
+.buttonnew:hover
+{
+    color: #0B0C10;
+    background-color: #66FCF1;
+    text-decoration: none;
+    box-shadow: 0 0 10px #66FCF1, 0 0 40px #66FCF1, 0 0 80pxpx #66FCF1;
+    transition-delay: .1s;
+}

@@ -1,0 +1,129 @@
+html,body
+{
+    background-color: #0B0C10;
+    min-height: 100vh;
+    width: 100%;
+}
+
+* 
+{
+    box-sizing: border-box;
+    padding: 0%;
+    margin: 0%;
+}
+
+#hero
+{
+    background-image: url("../img/bg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color:#333;
+    width: 100% !important;
+}
+
+#hero-overlay
+{
+    position: absolute;
+    height: 100%;
+    width:100%;
+    background: linear-gradient(to top,#000,rgba(255,255,255,0.1));
+}
+
+#sidebar-left
+{
+    position: fixed;
+    z-index: 5000;
+    top:20vh;
+    left:0;
+    height: 60vh;
+    width:10vw
+}
+
+#sidebar-right
+{
+    position: fixed;    
+    z-index: 5000;
+    top:20vh;
+    right:0;
+    height: 60vh;
+    width:10vw
+}
+
+#main-image
+{
+    width: 60vw;
+    margin-left: 20vw;
+    height: 60vh;
+    position: relative;
+    bottom: 0;
+    z-index: 100;
+    margin-top: 3rem;
+    box-shadow: 5px 5px 4px #0B0C10;
+}
+
+.linkgame
+{
+    text-decoration: none;
+    color: #202833;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.linkgame:hover
+{
+    text-decoration: none;
+}
+
+#game
+{
+    background-color: #C5C6C8;
+    box-shadow: -4px 3px 3px #0B0C10;
+}
+#event
+{
+    background-color: #C5C6C8;
+    box-shadow: -4px 3px 3px #0B0C10;
+}
+#team
+{
+    background-color: #C5C6C8;
+    box-shadow: 4px 3px 3px #0B0C10;
+}
+#career
+{
+    background-color: #C5C6C8;
+    box-shadow: 4px 3px 3px #0B0C10;
+}
+
+
+#yt
+{
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    width: 500px;
+    height: 320px;
+}
+#livtxt
+{
+    color: #C5C6C8;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1rem;
+    text-align: center;
+    margin: 5rem;
+    width: 50%;
+}
+#txt
+{
+    width: 50%;
+    margin: 5rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    font-size: 1rem; 
+    color: #C5C6C8;
+}
+
+.box
+{
+    background-image: url(../img/algs.jpg);
+    background-repeat: no-repeat;
+    width: 50%;
+}
