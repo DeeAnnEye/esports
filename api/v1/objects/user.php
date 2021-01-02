@@ -359,5 +359,36 @@ class user
         }
     }
 
+    function playerExistsInTeam($id){
+
+        // select all query
+        $query = "SELECT team_id from team_player where 1 and player_id=$id";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+         // execute the query
+        $stmt->execute();
+
+        // get number of rows
+        $num = $stmt->rowCount();
+
+        if($num>0){
+
+            // fetch details
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $team = $row['team_id'];
+
+            return $team;
+
+        }
+        else{
+            return false;
+        }
+
+
+    }
+
     
 }

@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="./assets/css/Eventstyle.css" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+    <script src="main.js"></script>
     <title>Event</title>
   </head>
 
@@ -63,12 +63,7 @@
         style="transform: skewX(-45deg); margin-left: -1.5rem"
       >
         <div style="transform: skewX(45deg)" class="h-100 w-100">
-          <a
-            href="./TeamDefault.html"
-            class="linkgame"
-            class="h-100 w-100 text-uppercase"
-            >team</a
-          >
+          <a href="#" class="linkgame" class="h-100 w-100 text-uppercase">team</a>
         </div>
       </div>
       <div
@@ -93,54 +88,10 @@
         <div id="events-list"></div>
       </a>
 
-      <!-- <a href="#">
-        <div class="event">
-          <div style="width: 45rem; height: 5rem"></div>
-          <div
-            class="eventxt"
-            style="
-              background-image: url(./assets/img/evnt.jpg);
-              background-repeat: no-repeat;
-              background-size: cover;
-            "
-          >
-            <span style="display: inline; font-size: 1.8rem">Event Name</span>
-            <span style="display: inline; margin-left: 2rem; font-size: 1.8rem"
-              >Open/Closed</span
-            >
-            <span style="display: block; font-size: 1.5rem; margin-left: 3rem"
-              >Date</span
-            >
-          </div>
-        </div>
-      </a>
-
-      <a href="#">
-        <div class="event">
-          <div style="width: 45rem; height: 5rem"></div>
-          <div
-            class="eventxt"
-            style="
-              background-image: url(./assets/img/evnt.jpg);
-              background-repeat: no-repeat;
-              background-size: cover;
-            "
-          >
-            <span style="display: inline; font-size: 1.8rem">Event Name</span>
-            <span style="display: inline; margin-left: 2rem; font-size: 1.8rem"
-              >Open/Closed</span
-            >
-            <span style="display: block; font-size: 1.5rem; margin-left: 3rem"
-              >Date</span
-            >
-          </div>
-        </div>
-      </a> -->
-
       <!--Host button-->
-      <div class="Host">
+      <div id="host-btn" class="Host">
         <div style="width: 45rem; height: 5rem">
-          <a href="./EventRegister.html"
+          <a href="EventRegister.html"
             ><img class="source" src="./assets/img/event.jpg"
           /></a>
         </div>
@@ -250,7 +201,7 @@
         }
 
         var token = localStorage.getItem("token");
-        console.log(token);
+
         $.ajax({
           url: "../events.php",
           type: "POST",

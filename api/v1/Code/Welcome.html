@@ -255,8 +255,9 @@
               // console.log(result);
               // alert("Login Successful");
               localStorage.setItem("token", result.jwt);
+              localStorage.setItem("role", result.role);
+              localStorage.setItem("team", result.team);
 
-              // console.log(localStorage.getItem("token"));
               location.href = "Home.html";
               // window.location.href = "home.html";
             },
@@ -285,7 +286,7 @@
               contentType: false,
               processData: false,
               success: function () {
-                window.location.href = "welcome.html";
+                window.location.href = "Welcome.html";
                 alert("Sign Up Successful.Please login to continue");
               },
               error: function () {

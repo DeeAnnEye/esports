@@ -37,6 +37,7 @@ use \Firebase\JWT\JWT;
 // check if email exists and if password is correct
 if ($email_exists && ($data->password == $user->password)) {
     $role = $user->role;
+    $id = $user->user_id;
     // print_r($role);
     $token = array(
         "iat" => $issued_at,
@@ -59,6 +60,8 @@ if ($email_exists && ($data->password == $user->password)) {
         array(
             "message" => "Login Successful",
             "jwt" => $jwt,
+            "role" => $role,
+            "team" => $user->playerExistsInTeam($id),
             "permissions" => $resource->getPermissionsByRole($role)
         )
     );
