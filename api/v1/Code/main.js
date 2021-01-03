@@ -21,6 +21,32 @@ $(document).ready(function(){
         }
       
     })
+    if($('#team-page').length) {
+          
+          var token = localStorage.getItem("token");
+    
+          $.ajax({
+            url: "../teams.php?id=" + team,
+            type: "GET",
+            headers: {
+              "content-type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+            success: function (team) {
+                console.log(team)
+              
+              if (team) {
+                $('#pfp').find('img').attr('src', team.image)
+                $('#team-name').text(team.name)
+                $('#region').text(team.region)
+                $('#created').text(team.created)
+              }
+            },
+            error: function () {
+              alert("An error ocurred.Please try again");
+            },
+          });
+    }
 
 
 });

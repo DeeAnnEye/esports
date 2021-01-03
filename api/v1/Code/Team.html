@@ -13,10 +13,13 @@
 
     <link rel="stylesheet" href="./assets/css/Teamstyle.css" />
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="main.js"></script>
+
     <title>Team</title>
   </head>
 
-  <body>
+  <body id="team-page">
     <!--Navbar-->
     <div class="navbar justify-content-center">
       <div
@@ -95,12 +98,8 @@
       "
     >
       <div style="display: flex; flex-direction: row; margin-left: 10rem">
-        <!-- profile pic -->
         <div id="pfp">
-          <img
-            style="object-fit: cover; height: 100%"
-            src="./assets/img/OG.png"
-          />
+          <img style="object-fit: cover; height: 100%" src="" />
         </div>
         <div
           style="
@@ -109,9 +108,9 @@
             justify-content: flex-start;
           "
         >
-          <h3 class="txt">TEAM NAME</h3>
-          <h3 class="txt">REGION</h3>
-          <h3 class="txt">LANGUAGE</h3>
+          <h3 id="team-name" class="txt">TEAM NAME</h3>
+          <h3 id="region" class="txt">REGION</h3>
+         
         </div>
       </div>
       <div class="d-flex flex-row justify-content-start">
@@ -217,7 +216,7 @@
         "
       >
         <!-- Established Date -->
-        <h2 class="founded">12/34/5678</h2>
+        <h2 id="created" class="founded">12/34/5678</h2>
         <!-- Established by -->
         <h2 class="founded">Player Name</h2>
       </div>
