@@ -33,7 +33,7 @@ class event
     {
 
         // select all query
-        $query = "SELECT * from events where active=1 order by event_name";
+        $query = "SELECT e.*, cu.usertag as cutag, mu.usertag as mutag from events e left join users cu on cu.user_id=e.createdby left join users mu on mu.user_id=e.modifiedby  where e.active=1 order by e.event_name";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -58,8 +58,10 @@ class event
                 "max_participants" => $row['max_participants'],
                 "created" => $row['created'],
                 "createdby" => $row['createdby'],
+                'cutag' => $row['cutag'],
                 "modified" => $row['modified'],
                 "modifiedby" => $row['modifiedby'],
+                'mutag' => $row['mutag'],
                 "last_date_of_registration" => $row['last_date_of_registration'],
                 "active" => $row['active'],
                 "archive" => $row['archive']

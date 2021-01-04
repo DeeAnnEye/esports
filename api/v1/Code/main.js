@@ -40,6 +40,7 @@ $(document).ready(function(){
                 $('#team-name').text(team.name)
                 $('#region').text(team.region)
                 $('#created').text(team.created)
+                $('#createdby').text(team.cutag)
               }
             },
             error: function () {

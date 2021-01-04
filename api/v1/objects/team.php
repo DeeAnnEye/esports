@@ -64,7 +64,7 @@ class team
     {
 
         // select all query
-        $query = "SELECT * from teams where 1 and id=$id";
+        $query = "SELECT t.*, cu.usertag as cutag, mu.usertag as mutag from teams t left join users cu on cu.user_id=t.createdby left join users mu on mu.user_id=t.modifiedby and id=$id";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
