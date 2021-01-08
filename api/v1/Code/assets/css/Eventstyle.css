@@ -5,11 +5,36 @@ html,body
     width: 100%;
 }
 
+body::-webkit-scrollbar
+{
+    display: none;
+}
+
 * 
 {
     box-sizing: border-box;
     padding: 0%;
     margin: 0%;
+}
+.triangle-container 
+{
+    width: 172px;
+    height: 100px;
+    border-top: 1px solid #000;
+    overflow: hidden;
+}
+  
+.triangle-overlay 
+{
+    position: relative;
+    overflow: hidden;
+    transform: rotate(45deg) skew(10deg, 10deg);
+    border-bottom: 5px solid #c5c6c8;
+    border-right: 5px solid #c5c6c8;
+    width: 150px;
+    border-left: 5px solid #c5c6c8;
+    height: 150px;
+    margin: -100px 0 0 16px;
 }
 
 .linkgame
@@ -62,13 +87,13 @@ html,body
 }
 #host
 {
-    width: 45rem;
-    margin-left: 5rem;
+    display: inline; 
+    font-size: 1.8rem;
     color: #00FE00;
     position: absolute;
     text-align: start;
-    font-size: 2.3em;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-top: 1rem;
 }
 
 .event
@@ -94,6 +119,60 @@ html,body
 
 #pfp
 {
-    width: 3rem;
-    height: 3rem;   
+    width: 5rem;
+    height: 5rem;   
+}
+.inp
+{
+    width: 30rem;
+    padding-top: .3rem;
+    padding-bottom: .3rem;
+    margin-top: 1rem;
+}
+
+/* Matchup Else*/
+.teamimage
+{
+    width: 5rem;
+    height: 5rem;
+}
+.image
+{
+    width: 100%;
+    object-fit: cover;
+}
+.fontstyle
+{
+    color: #C5C6C8;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: normal;
+    margin-top: 1rem;
+    margin-left: .5rem;
+}
+
+/* Matchup BR */
+
+.display
+{
+    width: 100%;height: 80vh;
+    background-color: rgba(0,0,0,.3);
+    overflow-y: scroll;
+    margin-bottom: 2rem;
+}
+.display::-webkit-scrollbar
+{
+    display: none;
+}
+
+.row
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 2rem;
+}
+.box
+{
+    display: flex;
+    flex-direction: column;
 }

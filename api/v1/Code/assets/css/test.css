@@ -1,0 +1,29 @@
+.triangle {
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 63px 0 63px 80px;
+    border-color: transparent transparent transparent #007bff;
+    position:absolute;
+}
+.big-triangle {
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 80px 0 80px 100px;
+    border-color: transparent transparent transparent #fff;
+    position:absolute;
+    top:-17px;
+}
+.rectangle {
+    background-color:#007bff;
+    width:300px;
+    height:125px;
+    position:absolute;
+}
+.hidden-div {
+    width:300px;
+    height:110px;
+    position:absolute;
+    left:50px;
+}

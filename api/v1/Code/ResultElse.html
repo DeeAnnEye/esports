@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="./assets/css/Resultstyle.css">
+
+    <title>Result</title>
+</head>
+
+<body>
+    <div class="container">
+        <h3 id="head">EVENT NAME</h3>
+
+        <!-- winners -->
+        <div style="display: flex; flex-direction: row;justify-content: space-around;padding-top: 1.5rem;">
+            <!-- 2nd pos -->
+            <div style="display: flex;flex-direction: column;justify-content: center;">
+                <div style="width: 10rem;height: 10rem;border: 2px solid silver;">
+                    <img style="object-fit: cover;width: 100%;" src="./assets/img/OG.png" alt="">
+                </div>
+                <h1 class="txt" style="font-size: 1.5rem;text-align: center;">TEAM NAME</h1>
+            </div>
+            <!-- 1st pos -->
+            <div style="display: flex;flex-direction: column;justify-content: center;">
+                <div style="width: 12rem;height: 12rem;border: 2px solid gold;">
+                    <img style="object-fit: cover;width: 100%;" src="./assets/img/OG.png" alt="">
+                </div>
+                <h1 class="txt" style="font-size: 2rem;text-align: center;">TEAM NAME</h1>
+            </div>
+            <!-- 3rd pos -->
+            <div style="display: flex;flex-direction: column;justify-content: center;">
+                <div style="width: 10rem;height: 10rem;border: 2px solid brown;">
+                    <img style="object-fit: cover;width: 100%;" src="./assets/img/OG.png" alt="">
+                </div>
+                <h1 class="txt" style="font-size: 1.5rem;text-align: center;">TEAM NAME</h1>
+
+            </div>
+        </div>
+
+        <!-- team display -->
+        <div style="display: flex;flex-direction: row; margin-top: 1rem; justify-content: space-around;">
+            <div style="display: flex;flex-direction: row;">
+                <div style="width: 5rem;height: 5rem;border: 2px solid rgba(128, 128, 128, 0.137);">
+                    <img style="object-fit: cover;width: 100%;" src="./assets/img/OG.png">
+                </div>
+                <h2 id="team">TEAM NAME</h2>
+            </div>
+            <h3 style="color: #C5C6C8;padding-top: .5remrem;font-size: 3rem;">VS</h3>
+            <div style="display: flex;flex-direction: row;">
+                <div style="width: 5rem;height: 5rem;border: 2px solid rgba(128, 128, 128, 0.137);">
+                    <img style="object-fit: cover;width: 100%;" src="./assets/img/OG.png">
+                </div>
+                <h2 id="team">TEAM NAME</h2>
+            </div>
+
+        </div>
+
+        <!-- score display -->
+        <div class="display">
+            <div class="score">
+
+                <!-- team score -->
+                <table id="table">
+                    <tr>
+                        <th class="tbl">PLAYER</th>
+                        <th class="tbl">K</th>
+                        <th class="tbl">D</th>
+                        <th class="tbl">A</th>
+                    </tr>
+                    <tr>
+                        <td class="tbltx">PLAYER 1</td>
+                        <td class="tbltx">00</td>
+                        <td class="tbltx">00</td>
+                        <td class="tbltx">00</td>
+                    </tr>
+                    <tr>
+                        <td class="tbltx">PLAYER 2</td>
+                        <td class="tbltx">00</td>
+                        <td class="tbltx">00</td>
+                        <td class="tbltx">00</td>
+                    </tr>
+                    <tr>
+                        <td class="tbltx">PLAYER 3</td>
+                        <td class="tbltx">00</td>
+                        <td class="tbltx">00</td>
+                        <td class="tbltx">00</td>
+                    </tr>
+                </table>
+
+                <div style="padding-left: 4rem;padding-right: 4rem;"></div>
+
+                <!-- Opposing team score -->
+                <table id="table">
+                    <tr>
+                        <th class="tbl">PLAYER</th>
+                        <th class="tbl">K</th>
+                        <th class="tbl">D</th>
+                        <th class="tbl">A</th>
+                    </tr>
+                    <tr>
+                        <td class="tbltx">PLAYER 1</td>
+                        <td class="tbltx">00</td>
+                        <td class="tbltx">00</td>
+                        <td class="tbltx">00</td>
+                    </tr>
+                    <tr>
+                        <td class="tbltx">PLAYER 2</td>
+                        <td class="tbltx">00</td>
+                        <td class="tbltx">00</td>
+                        <td class="tbltx">00</td>
+                    </tr>
+                    <tr>
+                        <td class="tbltx">PLAYER 3</td>
+                        <td class="tbltx">00</td>
+                        <td class="tbltx">00</td>
+                        <td class="tbltx">00</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="btn btn-outline-light">BACK</div>
+    </div>
+</body>
+
+</html>
