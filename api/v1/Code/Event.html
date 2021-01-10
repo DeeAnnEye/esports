@@ -1,160 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+      crossorigin="anonymous"
+    />
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
-        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/css/Eventstyle.css" />
 
-    <link rel="stylesheet" href="./assets/css/Eventstyle.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="main.js"></script>
 
     <title>Event</title>
-</head>
+  </head>
 
-<body>
-
+  <body id="event-page">
     <!--Navbar-->
     <div class="navbar justify-content-center">
-        <div id="game" class=" py-2 px-5" style="transform: skewX(45deg);margin-right: 0.5rem;">
-            <div style="  transform: skewX(-45deg); " class="h-100 w-100">
-                <a href="./Games.html" class="linkgame" class="h-100 w-100 text-uppercase">GAMES</a>
-            </div>
+      <div
+        id="game"
+        class="py-2 px-5"
+        style="transform: skewX(45deg); margin-right: 0.5rem"
+      >
+        <div style="transform: skewX(-45deg)" class="h-100 w-100">
+          <a
+            href="./Games.html"
+            class="linkgame"
+            class="h-100 w-100 text-uppercase"
+            >GAMES</a
+          >
         </div>
-        <div id="event" class=" p-3 px-5" style="transform: skewX(45deg);margin-right: -1.5rem; ">
-            <div style="  transform: skewX(-45deg); " class="h-100 w-100">
-                <a href="./Event.html" class="linkgame" class="h-100 w-100 text-uppercase"
-                    style="color: #0B0C10;">event</a>
-            </div>
+      </div>
+      <div
+        id="event"
+        class="p-3 px-5"
+        style="transform: skewX(45deg); margin-right: -1.5rem"
+      >
+        <div style="transform: skewX(-45deg)" class="h-100 w-100">
+          <a
+            href="./Event.html"
+            class="linkgame"
+            class="h-100 w-100 text-uppercase"
+            style="color: #0b0c10"
+            >event</a
+          >
         </div>
-        <!-- <div
+      </div>
+      <!-- <div
             style="border-left: 5rem solid transparent;border-right: 5rem solid transparent;border-top: 5rem solid #fff; ">
         </div> -->
-        <!-- triangle -->
-        <div class="triangle-container">
-            <div class="triangle-overlay">
-                <div style="
-                       object-fit: contain;
-                      position: absolute;
-                        width: 120%;
-                     height: 150%;
-                    top: 0%;
-                    left: 10%;
-                    z-index: -1;
-                    background: url(./assets/img/logo.jpg);
-                    background-size: 100%;
-                    background-position: center;
-                    transform: skew(-10deg,-10deg) rotate(-45deg);
-                    transition: .3s;
-                    background-repeat: no-repeat;
-                ">
-                </div>
-            </div>
+      <!-- triangle -->
+      <div class="triangle-container">
+        <div class="triangle-overlay">
+          <div
+            style="
+              object-fit: contain;
+              position: absolute;
+              width: 120%;
+              height: 150%;
+              top: 0%;
+              left: 10%;
+              z-index: -1;
+              background: url(./assets/img/logo.jpg);
+              background-size: 100%;
+              background-position: center;
+              transform: skew(-10deg, -10deg) rotate(-45deg);
+              transition: 0.3s;
+              background-repeat: no-repeat;
+            "
+          ></div>
         </div>
-        <!-- triangle end -->
-        <div id="team" class=" p-3 px-5" style="transform: skewX(-45deg);margin-left: -1.5rem;">
-            <div style="  transform: skewX(45deg); " class="h-100 w-100">
-                <a href="./TeamDefault.html" class="linkgame" class="h-100 w-100 text-uppercase">team</a>
-            </div>
+      </div>
+      <!-- triangle end -->
+      <div
+        id="team"
+        class="p-3 px-5"
+        style="transform: skewX(-45deg); margin-left: -1.5rem"
+      >
+        <div style="transform: skewX(45deg)" class="h-100 w-100">
+          <a
+            href="./TeamDefault.html"
+            class="linkgame"
+            class="h-100 w-100 text-uppercase"
+            >team</a
+          >
         </div>
-        <div id="career" class=" py-2 px-5" style="transform: skewX(-45deg);margin-left: 0.5rem; ">
-            <div style="  transform: skewX(45deg); " class="h-100 w-100">
-                <a href="./Career.html" class="linkgame" class="h-100 w-100 text-uppercase">career</a>
-            </div>
+      </div>
+      <div
+        id="career"
+        class="py-2 px-5"
+        style="transform: skewX(-45deg); margin-left: 0.5rem"
+      >
+        <div style="transform: skewX(45deg)" class="h-100 w-100">
+          <a
+            href="./Career.html"
+            class="linkgame"
+            class="h-100 w-100 text-uppercase"
+            >career</a
+          >
         </div>
+      </div>
     </div>
 
     <div class="container">
+      <!--Event-->
+      <a href="#" id="event-banner">
+        <div id="events-list"></div>
+      </a>
 
-        <!--Event-->
-        <a href="./EventRegister.html">
-            <div class="event">
-                <div style="width: 45rem;
-            height: 5rem;">
+      <!--Host button-->
 
-                </div>
-                <div class="eventxt"
-                    style="background-image: url(./assets/img/evnt.jpg);background-repeat: no-repeat;background-size: cover;">
-                    <span style="display: inline; font-size: 1.8rem;">Event Name</span>
-                    <span style="display: inline; margin-left: 2rem; font-size: 1.8rem;">Open/Closed</span>
-                    <span style="display: block; font-size: 1.5rem; margin-left: 3rem;">Date</span>
-                </div>
-            </div>
-        </a>
-
-        <a href="./EventRegister.html">
-            <div class="event">
-                <div style="width: 45rem;
-            height: 5rem;">
-
-                </div>
-                <div class="eventxt"
-                    style="background-image: url(./assets/img/evnt.jpg);background-repeat: no-repeat;background-size: cover;">
-                    <span style="display: inline; font-size: 1.8rem;">Event Name</span>
-                    <span style="display: inline; margin-left: 2rem; font-size: 1.8rem;">Open/Closed</span>
-                    <span style="display: block; font-size: 1.5rem; margin-left: 3rem;">Date</span>
-                </div>
-            </div>
-        </a>
-
-        <a href="./EventRegister.html">
-            <div class="event">
-                <div style="width: 45rem;
-            height: 5rem;">
-
-                </div>
-                <div class="eventxt"
-                    style="background-image: url(./assets/img/evnt.jpg);background-repeat: no-repeat;background-size: cover;">
-                    <span style="display: inline; font-size: 1.8rem;">Event Name</span>
-                    <span style="display: inline; margin-left: 2rem; font-size: 1.8rem;">Open/Closed</span>
-                    <span style="display: block; font-size: 1.5rem; margin-left: 3rem;">Date</span>
-                </div>
-            </div>
-        </a>
-
-      
-
-        <!--Host button-->
-        <a href="./EventHost.html">
-            <div class="event">
-                <div style="width: 45rem;
-            height: 5rem;">
-
-                </div>
-                <div class="eventxt"
-                    style="background-image: url(./assets/img/event.jpg);background-repeat: no-repeat;background-size: cover;height: 5rem;">
-                    <span id="host">HOST A NEW EVENT</span>
-                </div>
-            </div>
-        </a>
-
-        <!-- manage events -->
-        <!-- only to be displayed to mods -->
-        <button class="btn btn-outline-info">Manage event</button>
-
-        <!--END-->
-        <div style="border-top: 2px solid #202833; margin-top: 3rem;"></div>
-        <div id="row" style="display: flex; flex-direction: row;justify-content: space-evenly;margin-bottom: 2rem;">
-            <div id="col" style="display: flex; flex-direction: column; align-items: center;">
-                <div style="text-transform: uppercase; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #202833;margin-top: .6rem;">contact:1234567890</div>
-                <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #202833;margin-top: .6rem">TWITTER</div>
-                <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #202833;margin-top: .6rem">DISCORD</div>
-            </div>
-            <div id="col" style="display: flex; flex-direction: column; align-items: center;">
-                <div style="text-transform: uppercase; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #202833;margin-top: .6rem">email:abcdef@something.com</div>
-                <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #202833;margin-top: .6rem">INSTAGRAM</div>
-                <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #202833;margin-top: .6rem">TWITCH</div>
-            </div>
+      <a href="EventHost.html">
+        <div id="host-btn" class="event">
+          <div style="width: 45rem; height: 5rem"></div>
+          <div
+            class="eventxt"
+            style="
+              background-image: url(./assets/img/event.jpg);
+              background-repeat: no-repeat;
+              background-size: cover;
+              height: 5rem;
+            "
+          >
+            <span id="host">HOST A NEW EVENT</span>
+          </div>
         </div>
+      </a>
+
+      <!-- manage events -->
+      <!-- only to be displayed to mods -->
+      <button id="manage-events" class="btn btn-outline-info">
+        Manage event
+      </button>
+
+      <!--END-->
+      <div style="border-top: 2px solid #202833; margin-top: 3rem"></div>
+      <div
+        id="row"
+        style="
+          display: flex;
+          flex-direction: row;
+          justify-content: space-evenly;
+          margin-bottom: 2rem;
+        "
+      >
+        <div
+          id="col"
+          style="display: flex; flex-direction: column; align-items: center"
+        >
+          <div
+            style="
+              text-transform: uppercase;
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              color: #202833;
+              margin-top: 0.6rem;
+            "
+          >
+            contact:1234567890
+          </div>
+          <div
+            style="
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              color: #202833;
+              margin-top: 0.6rem;
+            "
+          >
+            TWITTER
+          </div>
+          <div
+            style="
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              color: #202833;
+              margin-top: 0.6rem;
+            "
+          >
+            DISCORD
+          </div>
+        </div>
+        <div
+          id="col"
+          style="display: flex; flex-direction: column; align-items: center"
+        >
+          <div
+            style="
+              text-transform: uppercase;
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              color: #202833;
+              margin-top: 0.6rem;
+            "
+          >
+            email:abcdef@something.com
+          </div>
+          <div
+            style="
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              color: #202833;
+              margin-top: 0.6rem;
+            "
+          >
+            INSTAGRAM
+          </div>
+          <div
+            style="
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              color: #202833;
+              margin-top: 0.6rem;
+            "
+          >
+            TWITCH
+          </div>
+        </div>
+      </div>
     </div>
-
-</body>
-
+  </body>
 </html>
