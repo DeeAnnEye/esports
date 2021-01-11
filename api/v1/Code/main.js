@@ -18,6 +18,12 @@ $(document).ready(function(){
     if($('#team-page').length) {
           
           var token = localStorage.getItem("token");
+
+          if(role == 3) {
+            $('#edit-btn').show();
+        } else {
+            $('#edit-btn').hide();
+        }
     
           $.ajax({
             url: "../teams.php?id=" + team,
@@ -33,6 +39,7 @@ $(document).ready(function(){
                 $('#pfp').find('img').attr('src', team.image)
                 $('#team-name').text(team.name)
                 $('#region').text(team.region)
+                $('#text').text(team.description)
                 $('#created').text(team.created)
                 $('#createdby').text(team.cutag)
               }
@@ -134,8 +141,6 @@ $(document).ready(function(){
           >
         </div>
       </div> </a>`;
-    //  window.lastdate = e.last_date_of_registration;
-    //   window.today = new Date();
       return item;
     }
     $(document).on('click','.event-click', function(e){
@@ -184,32 +189,38 @@ $(document).ready(function(){
                 .join("");
             $("#events-list").empty().append(list);
           }
-        
-          // var lastdate = e.last_date_of_registration;
-          // var today = new Date();
         },
         error: function () {
           alert("An error ocurred.Please try again");
         },
       });   
-    } 
-      
-      
-      
-      // $("a").click(function(){
-      //     // if(lastdate<today){
-      //     //   location.href = "MatchBR.html"
-      //     // }else{
-      //     //   location.href = "EventRegister.html"
-      //     // }
-      //     alert($(this).index());
-      //   });
-      // $("#event-list").on('click', '#event-banner', function() {
-      //   alert($(this).index());
-      // });
-        //  $("#event-image").hover(Upload Event Image); 
-        
+    }
     
+    if($('#career-page').length){
+      var token = localStorage.getItem("token");
+      if (!token) {
+        location.href = "Welcome.html";
+      }
+       
+      $.ajax({
+        url: "../events.php",
+        type: "POST",
+        data:{ archive:'true'},
+        headers: {
+          "content-type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        success: function (archives) {
+          alert("Success");
+        },
+        error: function () {
+          alert("An error ocurred.Please try again");
+        },
+      });
+      return false;
+
+    }
+          
   });
 
 

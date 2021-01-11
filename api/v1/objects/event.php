@@ -318,5 +318,48 @@ class event
             throw $e;
         }
     }
+    public function getArchivedEvents()
+    {
+
+        // select all query
+        $query = "SELECT e.*, cu.usertag as cutag, mu.usertag as mutag from events e left join users cu on cu.user_id=e.createdby left join users mu on mu.user_id=e.modifiedby  where e.archive=1 order by e.event_name";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute();
+
+        $events = [];
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            // extract row
+            // this will make $row['name'] to
+            // just $name only
+
+            $event_item = array(
+                "event_id" => $row['event_id'],
+                "event_name" => $row['event_name'],
+                "event_start" => $row['event_start'],
+                "event_end" => $row['event_end'],
+                "image" => $row['image'],
+                "game_id" => $row['game_id'],
+                "max_participants" => $row['max_participants'],
+                "created" => $row['created'],
+                "createdby" => $row['createdby'],
+                'cutag' => $row['cutag'],
+                "modified" => $row['modified'],
+                "modifiedby" => $row['modifiedby'],
+                'mutag' => $row['mutag'],
+                "last_date_of_registration" => $row['last_date_of_registration'],
+                "active" => $row['active'],
+                "archive" => $row['archive']
+            );
+
+            array_push($events, $event_item);
+        }
+
+        return json_encode($events);
+    }
 }
 // test playerevent,teamevent,removefromevent

@@ -66,6 +66,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
         echo 'Access Denied!';
       }
     }
+    elseif (isset($post['archive'])) {
+
+      if ($token) {
+        echo $event->getArchivedEvents($post);
+      } else {
+        echo 'Access Denied!';
+      }
+    }
     // get all events
     else {
       if ($token) {
