@@ -59,6 +59,7 @@ if ($email_exists && ($data->password == $user->password)) {
     echo json_encode(
         array(
             "message" => "Login Successful",
+            "userid" => $id,
             "jwt" => $jwt,
             "role" => $role,
             "team" => $user->playerExistsInTeam($id),

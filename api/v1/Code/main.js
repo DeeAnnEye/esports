@@ -384,7 +384,39 @@ $(document).ready(function(){
 
     }
 
-    
+//     if($('#teamcreate-page').length){
+//       var token = localStorage.getItem("token");
+//       if (!token) {
+//         location.href = "Welcome.html";
+//       }
+//       console.log(token);
+
+//       $("#team-submit").click(function (e) {
+//         e.preventDefault();
+
+//         // alert("In ajax request");
+
+//           var formData = new FormData(team-form);
+//           formData.append("create", "true");
+         
+//           $.ajax({
+//             url: "../teams.php",
+//             type: "POST",
+//             data: formData,
+//             contentType: false,
+//             processData: false,
+//             success: function () {
+//               alert("Team Created");
+//             },
+//             error: function () {
+//               alert("Team Creation Failed");
+//             },
+//           });
+//           return false;
+       
+//       });
+
+// }
           
   });
 

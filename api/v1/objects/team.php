@@ -10,6 +10,8 @@ class team
     public $id;
     public $name;
     public $image;
+    public $region;
+    public $description;
     public $created;
     public $createdby;
     public $modified;
@@ -46,6 +48,8 @@ class team
                 "id" => $row['id'],
                 "name" => $row['name'],
                 "image" => $row['image'],
+                "region" => $row['region'],
+                "description" => $row['description'],
                 "created" => $row['created'],
                 "createdby" => $row['createdby'],
                 "modified" => $row['modified'],
@@ -101,9 +105,9 @@ class team
                 " SET id=0,
                   name=:name,
                   image=:image,
-                  created=:created,
+                  region=:region,
+                  description=:description,
                   createdby=:createdby,
-                  modified=:modified,
                   modifiedby=:modifiedby,
                   active=1,
                   flag=0";
@@ -114,17 +118,16 @@ class team
             // sanitize
             $this->name = htmlspecialchars(strip_tags($data['name']));
             $this->image = htmlspecialchars(strip_tags($data['image']));
-            $this->created = htmlspecialchars(strip_tags($data['created']));
+            $this->region = htmlspecialchars(strip_tags($data['region']));
+            $this->description = htmlspecialchars(strip_tags($data['description']));
             $this->createdby = htmlspecialchars(strip_tags($data['createdby']));
-            $this->modified = htmlspecialchars(strip_tags($data['modified']));
             $this->modifiedby = htmlspecialchars(strip_tags($data['modifiedby']));
-            $this->flag = htmlspecialchars(strip_tags($data['flag']));
 
             $stmt->bindParam(":name", $this->name);
             $stmt->bindParam(":image", $this->image);
-            $stmt->bindParam(":created", $this->created);
+            $stmt->bindParam(":region", $this->region);
+            $stmt->bindParam(":description", $this->description);
             $stmt->bindParam(":createdby", $this->createdby);
-            $stmt->bindParam(":modified", $this->modified);
             $stmt->bindParam(":modifiedby", $this->modifiedby);
 
             // execute query
@@ -143,6 +146,8 @@ class team
                   SET
                   name=:name,
                   image=:image,
+                  region=:region,
+                  description=:description,
                   created=:created,
                   createdby=:createdby,
                   modified=:modified,
@@ -157,6 +162,8 @@ class team
             // sanitize
             $this->name = htmlspecialchars(strip_tags($data['name']));
             $this->image = htmlspecialchars(strip_tags($data['image']));
+            $this->region = htmlspecialchars(strip_tags($data['region']));
+            $this->description = htmlspecialchars(strip_tags($data['description']));
             $this->created = htmlspecialchars(strip_tags($data['created']));
             $this->createdby = htmlspecialchars(strip_tags($data['createdby']));
             $this->modified = htmlspecialchars(strip_tags($data['modified']));
@@ -167,6 +174,8 @@ class team
 
             $stmt->bindParam(":name", $this->name);
             $stmt->bindParam(":image", $this->image);
+            $stmt->bindParam(":region", $this->region);
+            $stmt->bindParam(":description", $this->description);
             $stmt->bindParam(":created", $this->created);
             $stmt->bindParam(":createdby", $this->createdby);
             $stmt->bindParam(":modified", $this->modified);

@@ -38,8 +38,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
     $post = $_POST;
     // create team function
     if (isset($post['create'])) {
+      if ($token) {
       echo $team->createTeam($post);
+    }else{
+      echo 'Access Denied!';
     }
+  }
     //  update team function
     elseif (isset($post['update'])) {
       if ($token) {
