@@ -1,110 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+      crossorigin="anonymous"
+    />
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
-        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-
-    <link rel="stylesheet" href="./assets/css/Eventstyle.css">
-
+    <link rel="stylesheet" href="./assets/css/Eventstyle.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="main.js"></script>
     <title>Match Up</title>
-</head>
+  </head>
 
-<body>
-
-    <div style="width: 100%;height: 500px">
-        <img style="object-fit: cover;height: 100%;width: 100%;opacity: 60%;" src="./assets/img/01.jpg">
+  <body id="matchelse-page">
+    <div style="width: 100%; height: 500px">
+      <img
+        style="object-fit: cover; height: 100%; width: 100%; opacity: 60%"
+        src="./assets/img/01.jpg"
+      />
     </div>
 
     <div class="container">
-        <button class="btn btn-outline-light"
-            style="position: absolute;top: 1rem;background: rgba(0, 0, 0, .7);">BACK</button>
+      <button
+        class="btn btn-outline-light"
+        style="position: absolute; top: 1rem; background: rgba(0, 0, 0, 0.7)"
+      >
+        BACK
+      </button>
 
-        <h3
-            style="text-align: center;font-size: 5rem;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color: #66FCF1;">
-            EVENT NAME</h3>
+      <h3
+        id="event-name1"
+        style="
+          text-align: center;
+          font-size: 5rem;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          color: #66fcf1;
+        "
+      >
+        EVENT NAME
+      </h3>
 
-        <!-- Matchup -->
-        <div style="display: flex;flex-direction: row; justify-content: space-evenly;margin-top: 5rem;">
-            <div style="display: flex;flex-direction: row;">
-                <div class="teamimage">
-                    <img class="image" src="./assets/img/OG.png" alt="">
-                </div>
-                <h2 class="fontstyle">TEAM NAME</h2>
-            </div>
-            <h1
-                style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #C5C6C8;font-weight: bold;font-size: 2rem;padding: 1rem;">
-                VS</h1>
-            <div style="display: flex;flex-direction: row;">
-                <div class="teamimage">
-                    <img class="image" src="./assets/img/OG.png" alt="">
-                </div>
-                <h2 class="fontstyle">TEAM NAME</h2>
-            </div>
-
-            <div style="display: flex;flex-direction: column;padding: 1rem;">
-                <h1 style="font-size: 1rem;color: #C5C6C8;">DATE</h1>
-                <h1 style="font-size: 1rem;color: #C5C6C8;">TIME</h1>
-            </div>
+      <!-- Matchup -->
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          justify-content: space-evenly;
+          margin-top: 5rem;
+        "
+      >
+        <div style="display: flex; flex-direction: row">
+          <div class="teamimage">
+            <img class="image" src="./assets/img/OG.png" alt="" />
+          </div>
+          <h2 class="fontstyle">TEAM NAME</h2>
+        </div>
+        <h1
+          style="
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #c5c6c8;
+            font-weight: bold;
+            font-size: 2rem;
+            padding: 1rem;
+          "
+        >
+          VS
+        </h1>
+        <div style="display: flex; flex-direction: row">
+          <div class="teamimage">
+            <img class="image" src="./assets/img/OG.png" alt="" />
+          </div>
+          <h2 class="fontstyle">TEAM NAME</h2>
         </div>
 
-        <div style="display: flex;flex-direction: row; justify-content: space-evenly;margin-top: 5rem;">
-            <div style="display: flex;flex-direction: row;">
-                <div class="teamimage">
-                    <img class="image" src="./assets/img/OG.png" alt="">
-                </div>
-                <h2 class="fontstyle">TEAM NAME</h2>
-            </div>
-            <h1
-                style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #C5C6C8;font-weight: bold;font-size: 2rem;padding: 1rem;">
-                VS</h1>
-            <div style="display: flex;flex-direction: row;">
-                <div class="teamimage">
-                    <img class="image" src="./assets/img/OG.png" alt="">
-                </div>
-                <h2 class="fontstyle">TEAM NAME</h2>
-            </div>
+        <div style="display: flex; flex-direction: column; padding: 1rem">
+          <h1 style="font-size: 1rem; color: #c5c6c8">DATE</h1>
+          <h1 style="font-size: 1rem; color: #c5c6c8">TIME</h1>
+        </div>
+      </div>
 
-            <div style="display: flex;flex-direction: column;padding: 1rem;">
-                <h1 style="font-size: 1rem;color: #C5C6C8;">DATE</h1>
-                <h1 style="font-size: 1rem;color: #C5C6C8;">TIME</h1>
-            </div>
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          justify-content: space-evenly;
+          margin-top: 5rem;
+        "
+      >
+        <div style="display: flex; flex-direction: row">
+          <div class="teamimage">
+            <img class="image" src="./assets/img/OG.png" alt="" />
+          </div>
+          <h2 class="fontstyle">TEAM NAME</h2>
+        </div>
+        <h1
+          style="
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #c5c6c8;
+            font-weight: bold;
+            font-size: 2rem;
+            padding: 1rem;
+          "
+        >
+          VS
+        </h1>
+        <div style="display: flex; flex-direction: row">
+          <div class="teamimage">
+            <img class="image" src="./assets/img/OG.png" alt="" />
+          </div>
+          <h2 class="fontstyle">TEAM NAME</h2>
         </div>
 
-        <div style="display: flex;flex-direction: row; justify-content: space-evenly;margin-top: 5rem;">
-            <div style="display: flex;flex-direction: row;">
-                <div class="teamimage">
-                    <img class="image" src="./assets/img/OG.png" alt="">
-                </div>
-                <h2 class="fontstyle">TEAM NAME</h2>
-            </div>
-            <h1
-                style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #C5C6C8;font-weight: bold;font-size: 2rem;padding: 1rem;">
-                VS</h1>
-            <div style="display: flex;flex-direction: row;">
-                <div class="teamimage">
-                    <img class="image" src="./assets/img/OG.png" alt="">
-                </div>
-                <h2 class="fontstyle">TEAM NAME</h2>
-            </div>
+        <div style="display: flex; flex-direction: column; padding: 1rem">
+          <h1 style="font-size: 1rem; color: #c5c6c8">DATE</h1>
+          <h1 style="font-size: 1rem; color: #c5c6c8">TIME</h1>
+        </div>
+      </div>
 
-            <div style="display: flex;flex-direction: column;padding: 1rem;">
-                <h1 style="font-size: 1rem;color: #C5C6C8;">DATE</h1>
-                <h1 style="font-size: 1rem;color: #C5C6C8;">TIME</h1>
-            </div>
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          justify-content: space-evenly;
+          margin-top: 5rem;
+        "
+      >
+        <div style="display: flex; flex-direction: row">
+          <div class="teamimage">
+            <img class="image" src="./assets/img/OG.png" alt="" />
+          </div>
+          <h2 class="fontstyle">TEAM NAME</h2>
+        </div>
+        <h1
+          style="
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #c5c6c8;
+            font-weight: bold;
+            font-size: 2rem;
+            padding: 1rem;
+          "
+        >
+          VS
+        </h1>
+        <div style="display: flex; flex-direction: row">
+          <div class="teamimage">
+            <img class="image" src="./assets/img/OG.png" alt="" />
+          </div>
+          <h2 class="fontstyle">TEAM NAME</h2>
         </div>
 
-
-
-
-
+        <div style="display: flex; flex-direction: column; padding: 1rem">
+          <h1 style="font-size: 1rem; color: #c5c6c8">DATE</h1>
+          <h1 style="font-size: 1rem; color: #c5c6c8">TIME</h1>
+        </div>
+      </div>
     </div>
-
-
-
-</body>
-
+  </body>
 </html>

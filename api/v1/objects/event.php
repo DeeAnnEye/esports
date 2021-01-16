@@ -33,7 +33,7 @@ class event
     {
 
         // select all query
-        $query = "SELECT e.*, cu.usertag as cutag, mu.usertag as mutag from events e left join users cu on cu.user_id=e.createdby left join users mu on mu.user_id=e.modifiedby  where e.active=1 order by e.event_name";
+        $query = "SELECT e.*, cu.usertag as cutag, mu.usertag as mutag, g.gametype from events e left join games g on g.id= e.game_id left join users cu on cu.user_id=e.createdby left join users mu on mu.user_id=e.modifiedby  where e.active=1 order by e.event_name";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -55,6 +55,7 @@ class event
                 "event_end" => $row['event_end'],
                 "image" => $row['image'],
                 "game_id" => $row['game_id'],
+                "gametype" => $row['gametype'],
                 "max_participants" => $row['max_participants'],
                 "created" => $row['created'],
                 "createdby" => $row['createdby'],
@@ -77,7 +78,7 @@ class event
     {
 
         // select all query
-        $query = "SELECT * from events where 1 and event_id=$id";
+        $query = "SELECT e.*, cu.gametype as gametype from events e left join games cu on cu.id=e.game_id and event_id=$id";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -88,7 +89,35 @@ class event
         $event = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return json_encode($event);
+
     }
+
+    function teamInEvent($id){
+        
+        $teamquery = "SELECT er.team_id,t.name FROM event_register er LEFT JOIN teams t ON t.id = er.team_id where event_id=$id";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($teamquery);
+
+        // execute query
+        $stmt->execute();
+
+        $teams = [];
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+            $team_item = array(
+                "team_id" => $row['team_id'],
+                "team_name" => $row['name']                
+            );
+            array_push($teams, $team_item);
+        }
+       
+        return json_encode($teams);    
+
+
+    }
+
 
     public function deleteEvent($id)
     {
@@ -103,6 +132,55 @@ class event
         $stmt->bindParam(1, $id, PDO::PARAM_INT);
 
         return json_encode(["success" => $stmt->execute()]);
+    }
+
+    public function fileUpload(){
+        $target_dir = "./uploads/";
+        
+        $target_file = $target_dir . basename($_FILES["name"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        // Check if image file is a actual image or fake image
+        if(isset($_POST["submit"])) {
+            $check = getimagesize($_FILES["name"]["tmp_name"]);
+            if($check !== false) {
+                echo "File is an image - " . $check["mime"] . ".";
+                $uploadOk = 1;
+            } else {
+                echo "File is not an image.";
+                $uploadOk = 0;
+            }
+        }
+        // Check if file already exists
+        if (file_exists($target_file)) {
+            echo "Sorry, file already exists.";
+            $uploadOk = 0;
+        }
+        
+        // Check file size
+        if ($_FILES["name"]["size"] > 5000000) {
+            echo "Sorry, your file is too large.";
+            $uploadOk = 0;
+        }
+        
+        // Allow certain file formats
+        // if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+        // && $imageFileType != "gif" ) {
+        //     echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+        //     $uploadOk = 0;
+        // }
+        
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            echo "Sorry, your file was not uploaded.";
+        // if everything is ok, try to upload file
+        } else {
+            if (move_uploaded_file($_FILES["name"]["tmp_name"], $target_file)) {
+            echo "The file ". htmlspecialchars( basename( $_FILES["name"]["name"])). " has been uploaded.";
+            } else {
+            echo "Sorry, there was an error uploading your file.";
+            }
+        }
     }
 
     public function createEvent($data)

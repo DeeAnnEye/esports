@@ -30,6 +30,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
       // get single event
       $id = $_GET['id'];
       echo $event->getEventById($id);
+      echo $event->teamInEvent($id);
+      // echo json_encode($event->teamInEvent($id));
       break;
     } else {
       echo 'Access Denied!';
@@ -38,10 +40,23 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
   case 'POST':
     $post = $_POST;
+    // print_r($post);
+    // break;  
+    $files = $_FILES;
+
+    // print_r($files['name']);
+    // break;
+
     // create event function
     if (isset($post['create'])) {
+      if ($token) {
       echo $event->createEvent($post);
     }
+    else{
+      echo 'Access Denied!';
+    }
+    break;
+  }
     // update event function
     elseif (isset($post['update'])) {
       if ($token) {
@@ -66,14 +81,23 @@ switch ($_SERVER['REQUEST_METHOD']) {
         echo 'Access Denied!';
       }
     }
-    elseif (isset($post['archive'])) {
-
+    elseif (isset($post['getarchivedevents'])) {
+     
       if ($token) {
         echo $event->getArchivedEvents($post);
       } else {
         echo 'Access Denied!';
       }
     }
+    //   elseif(isset($files)) {
+    //     if ($token) {
+    //     echo $event->fileUpload();
+    //   }
+    //   else{
+    //     echo 'Access Denied!';
+    //   }
+    //   break;
+    // }
     // get all events
     else {
       if ($token) {

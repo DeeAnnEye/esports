@@ -4,6 +4,7 @@ $(document).ready(function(){
     var token = localStorage.getItem('token');
     var role = localStorage.getItem('role');
     var team = localStorage.getItem('team');
+    var evtId = null
     // console.log('Team',team);
     
     $('#team').click(function(){
@@ -46,6 +47,7 @@ $(document).ready(function(){
             },
             error: function () {
               alert("An error ocurred.Please try again");
+              // location.href = "Welcome.html";
             },
           });
     }
@@ -106,6 +108,7 @@ $(document).ready(function(){
           },
           error: function () {
             alert("An error ocurred.Please try again");
+            // location.href = "Welcome.html";
           },
         });
         return false;
@@ -124,7 +127,7 @@ $(document).ready(function(){
     }
    
       function eventItem(e, i) {
-        var item = ` <a class="event-click" data-id="${e.event_id}" data-lastdate="${e.last_date_of_registration}" href="#" id="event-banner-${i}"><div class="event">
+        var item = ` <a class="event-click" data-gametype="${e.gametype}" data-id="${e.event_id}" data-lastdate="${e.last_date_of_registration}" href="#" id="event-banner-${i}"><div class="event">
         <div style="width: 45rem; height: 5rem"></div>
         <div
           class="eventxt"
@@ -160,15 +163,17 @@ $(document).ready(function(){
     }
       var today = currentDate();
       var lastdate = $(this).attr('data-lastdate');
+      var eventId = $(this).attr('data-id'); 
+      var gametype =$(this).attr('data-gametype');
+      // alert(gametype)
           if(lastdate<today){
-            location.href = "MatchBR.html"
+            location.href = gametype==='BR' ? "MatchBR.html?id=" + eventId : "MatchElse.html?id=" + eventId;
           }else{
-            location.href = "EventRegister.html"
+            location.href = "EventRegister.html?id=" + eventId;
           }
-
+                  
   });
-
-      
+    
 
       var token = localStorage.getItem("token");
 
@@ -187,13 +192,65 @@ $(document).ready(function(){
                 return eventItem(e, i);
                })
                 .join("");
+                // console.log(events);
             $("#events-list").empty().append(list);
           }
         },
         error: function () {
           alert("An error ocurred.Please try again");
+          // location.href = "Welcome.html";
         },
-      });   
+      });  
+      
+    }
+       
+
+    if($('#eventhost-page').length){
+      var token = localStorage.getItem("token");
+      if (!token) {
+        location.href = "Welcome.html";
+      }
+      function doUpload(file) {
+        var that = this;
+        var formData = new FormData();
+    
+        // add assoc key values, this will be posts values
+        formData.append("name", file, file.name);
+        // formData.append("upload_file", true);
+    
+        $.ajax({
+            type: "POST",
+            url: "../events.php",
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+            xhr: function () {
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) {
+                    myXhr.upload.addEventListener('progress', function(){}, false);
+                }
+                return myXhr;
+            },
+            success: function (data) {
+                // your callback here
+            },
+            error: function (error) {
+                // handle error
+            },
+            async: true,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            timeout: 60000
+        });
+    };
+      $(document).on('click','#image-upload', function(e){
+        e.preventDefault();
+        var file = $('#image-file-1')[0].files[0];
+        console.log(file)
+        doUpload(file);
+      })
     }
     
     if($('#career-page').length){
@@ -201,25 +258,133 @@ $(document).ready(function(){
       if (!token) {
         location.href = "Welcome.html";
       }
+      function archiveItem(a, i) {
+        var item = `<div
+        style="
+          display: flex;
+          flex-direction: row;
+          border-top: 4px solid #202833;
+          border-bottom: 4px solid #202833;
+          justify-content: space-around;
+          margin-top: 1rem;
+        "
+      >
+        <h3 class="eventid">${a.event_name}</h3>
+        <h3 class="eventid">${a.event_start}</h3>
+      </div>
+    `;
+      return item;
+    }
+      var form = new FormData();
+      form.append("getarchivedevents", "true");
        
       $.ajax({
         url: "../events.php",
         type: "POST",
-        data:{ archive:'true'},
+        data:form,
+        "processData": false,
+        "mimeType": "multipart/form-data",
+        "contentType": false,
         headers: {
-          "content-type": "application/json",
           Authorization: "Bearer " + token,
         },
         success: function (archives) {
-          alert("Success");
+          if (archives && archives.length) {
+            var list = archives
+              .map((a, i) => {
+                return archiveItem(a, i);
+               })
+                .join("");
+                console.log(archives);
+            $("#archive-list").empty().append(list);
+          }
         },
         error: function () {
           alert("An error ocurred.Please try again");
+          // location.href = "Welcome.html";
         },
       });
       return false;
 
     }
+    if($('#home-page').length){
+      var token = localStorage.getItem("token");
+      if (!token) {
+        location.href = "Welcome.html";
+      }
+    }
+
+    if($('#matchbr-page').length){
+      const urlParams = new URLSearchParams(window.location.search);
+      const eventId = urlParams.get('id');
+      var token = localStorage.getItem("token");
+      if (!token) {
+        location.href = "Welcome.html";
+      }
+         
+      $.ajax({
+        url: "../events.php?id=" + eventId ,
+        type: "GET",
+        headers: {
+          "content-type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        success: function (brevent) {
+          console.log(brevent);
+          if (brevent) {
+            // $('#pfp').find('img').attr('src', team.image)
+            $('#event-name1').text(brevent.event_name)
+            // $('#region').text(team.region)
+            // $('#text').text(team.description)
+            // $('#created').text(team.created)
+            // $('#createdby').text(team.cutag)
+          }
+        },
+        error: function () {
+          alert("An error ocurred.Please try again");
+          // location.href = "Welcome.html";
+        },
+      });
+      
+
+    }
+
+    if($('#matchelse-page').length){
+      const urlParams = new URLSearchParams(window.location.search);
+      const eventId = urlParams.get('id');
+      var token = localStorage.getItem("token");
+      if (!token) {
+        location.href = "Welcome.html";
+      }
+              
+      $.ajax({
+        url: "../events.php?id=" + eventId ,
+        type: "GET",
+        headers: {
+          "content-type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        success: function (teamevent) {
+          console.log(teamevent);
+          if (teamevent) {
+            // $('#pfp').find('img').attr('src', team.image)
+            $('#event-name1').text(teamevent.event_name)
+            // $('#region').text(team.region)
+            // $('#text').text(team.description)
+            // $('#created').text(team.created)
+            // $('#createdby').text(team.cutag)
+          }
+        },
+        error: function () {
+          alert("An error ocurred.Please try again");
+          // location.href = "Welcome.html";
+        },
+      });
+      return false;
+
+    }
+
+    
           
   });
 
