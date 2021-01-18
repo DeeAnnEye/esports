@@ -312,7 +312,7 @@ class user
         return false;
     }
 
-    function joinTeam($data)
+   public function joinTeam($data)
     {
         try {
             //code...

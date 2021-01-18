@@ -130,12 +130,68 @@ class team
             $stmt->bindParam(":createdby", $this->createdby);
             $stmt->bindParam(":modifiedby", $this->modifiedby);
 
-            // execute query
-            return json_encode(["success" => $stmt->execute()]);
+            // // execute query
+            // return json_encode(["success" => $stmt->execute()]);
+            if($stmt->execute()){
+                $team_name = $this->name;
+                $player_id = $this->createdby;
+                
+                // echo $team_name;
+                       // select all query
+        $getidquery = "SELECT * from teams where 1 and name='$team_name' ";
+
+        // echo $query;
+        // prepare query statement
+        $stmt = $this->conn->prepare($getidquery);
+
+        // execute query
+        $stmt->execute();
+        
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $team_id = $row['id'];
+
+        echo $team_id;
+
+        $removed = 0;
+
+                echo $this->insertPlayer($team_id,$player_id,$removed);
+            }else{
+                http_response_code(400);
+                echo json_encode(array("message" => "False"));
+            }
         } catch (PDOException $e) {
             throw $e;
         }
     }
+    public function insertPlayer($team_id,$player_id,$removed)
+    {
+        try {
+            //code...
+
+            // query to insert record
+            $query = "INSERT INTO team_player SET
+          team_id=:team_id,
+          player_id=:player_id,
+          removed =:removed
+          ";
+
+            // prepare query statement
+            $stmt = $this->conn->prepare($query);
+
+            // bind parameters
+            $stmt->bindParam(":team_id", $team_id);
+            $stmt->bindParam(":player_id", $player_id);
+            $stmt->bindParam(":removed", $removed);
+
+
+            // execute query
+            return json_encode(["Player Insertion" => $stmt->execute()]);
+        } catch (PDOException $e) {
+            throw $e;
+        }
+    }
+
 
     public function updateTeam($id, $data)
     {

@@ -32,7 +32,7 @@
     </div>
 
     <div class="container">
-      <div style="position: absolute; width: 70vw; height: 100%; top: 0">
+      <div style="position: absolute; width: 70vw; height: 15%; top: 0">
         <h3 id="head">CREATE NEW TEAM</h3>
       </div>
       <form id="team_form">
@@ -97,22 +97,19 @@
           "
         >
           <button class="btn btn-outline-light">BACK</button>
-          <button
-            id="team-submit"
-            type="submit"
-            name="submit"
-            class="btn btn-outline-light"
-          >
+          <button id="team-submit" type="submit" class="btn btn-outline-light">
             CREATE
           </button>
         </div>
       </form>
     </div>
+
     <script>
       $(document).ready(function () {
         $("#team_form").submit(function (e) {
           e.preventDefault();
 
+          var token = localStorage.getItem("token");
           var userid = localStorage.getItem("userid");
           console.log(userid);
 
@@ -126,9 +123,14 @@
             url: "../teams.php",
             type: "POST",
             data: formData,
+            headers: {
+              Authorization: "Bearer " + token,
+            },
             contentType: false,
+            mimeType: "multipart/form-data",
             processData: false,
-            success: function () {
+            success: function (response) {
+              console.log(response);
               alert("Team Created");
             },
             error: function () {
