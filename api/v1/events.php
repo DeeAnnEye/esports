@@ -30,7 +30,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
       // get single event
       $id = $_GET['id'];
       echo $event->getEventById($id);
-      echo $event->teamInEvent($id);
+      // echo $event->teamInEvent($id);
       // echo json_encode($event->teamInEvent($id));
       break;
     } else {

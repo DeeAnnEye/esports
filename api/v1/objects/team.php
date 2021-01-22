@@ -68,8 +68,13 @@ class team
     {
 
         // select all query
-        $query = "SELECT t.*, cu.usertag as cutag, mu.usertag as mutag from teams t left join users cu on cu.user_id=t.createdby left join users mu on mu.user_id=t.modifiedby and id=$id";
-
+        $query = "SELECT
+        t.*, u.usertag AS cutag
+    FROM
+        teams t
+    LEFT JOIN users u ON u.user_id = t.createdby
+    WHERE
+        id = $id";
         // prepare query statement
         $stmt = $this->conn->prepare($query);
 
@@ -151,7 +156,7 @@ class team
 
         $team_id = $row['id'];
 
-        echo $team_id;
+        // echo $team_id;
 
         $removed = 0;
 
@@ -186,7 +191,14 @@ class team
 
 
             // execute query
-            return json_encode(["Player Insertion" => $stmt->execute()]);
+            // return json_encode(["Player Insertion" => $stmt->execute()]);
+            echo json_encode(
+                array(
+                    "Player Insertion" => $stmt->execute(),
+                    "team" => $team_id
+                )
+            );
+            // return $team_id;
         } catch (PDOException $e) {
             throw $e;
         }

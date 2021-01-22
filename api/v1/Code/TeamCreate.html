@@ -111,7 +111,7 @@
 
           var token = localStorage.getItem("token");
           var userid = localStorage.getItem("userid");
-          console.log(userid);
+          // console.log(userid);
 
           var formData = new FormData(team_form);
           formData.append("create", "true");
@@ -131,6 +131,9 @@
             processData: false,
             success: function (response) {
               console.log(response);
+              teamid = response.team;
+              console.log(teamid);
+
               alert("Team Created");
             },
             error: function () {

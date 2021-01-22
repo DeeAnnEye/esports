@@ -333,7 +333,7 @@ $(document).ready(function(){
           console.log(brevent);
           if (brevent) {
             // $('#pfp').find('img').attr('src', team.image)
-            $('#event-name1').text(brevent.event_name)
+            $('#event-name').text(brevent.event_name)
             // $('#region').text(team.region)
             // $('#text').text(team.description)
             // $('#created').text(team.created)
@@ -368,7 +368,7 @@ $(document).ready(function(){
           console.log(teamevent);
           if (teamevent) {
             // $('#pfp').find('img').attr('src', team.image)
-            $('#event-name1').text(teamevent.event_name)
+            $('#event-name').text(teamevent.event_name)
             // $('#region').text(team.region)
             // $('#text').text(team.description)
             // $('#created').text(team.created)
@@ -383,40 +383,6 @@ $(document).ready(function(){
       return false;
 
     }
-
-//     if($('#teamcreate-page').length){
-//       var token = localStorage.getItem("token");
-//       if (!token) {
-//         location.href = "Welcome.html";
-//       }
-//       console.log(token);
-
-//       $("#team-submit").click(function (e) {
-//         e.preventDefault();
-
-//         // alert("In ajax request");
-
-//           var formData = new FormData(team-form);
-//           formData.append("create", "true");
-         
-//           $.ajax({
-//             url: "../teams.php",
-//             type: "POST",
-//             data: formData,
-//             contentType: false,
-//             processData: false,
-//             success: function () {
-//               alert("Team Created");
-//             },
-//             error: function () {
-//               alert("Team Creation Failed");
-//             },
-//           });
-//           return false;
-       
-//       });
-
-// }
           
   });
 
