@@ -174,6 +174,10 @@ $(document).ready(function(){
                   
   });
     
+  $("#manage-btn").click(function(e){
+    e.preventDefault();
+    location.href = "ModManager.html";
+  })
 
       var token = localStorage.getItem("token");
 
@@ -206,16 +210,23 @@ $(document).ready(function(){
        
 
     if($('#eventhost-page').length){
+
+      var rId = 1234;
       var token = localStorage.getItem("token");
       if (!token) {
         location.href = "Welcome.html";
       }
       function doUpload(file) {
+
+        var userid = localStorage.getItem("userid");
         var that = this;
         var formData = new FormData();
     
         // add assoc key values, this will be posts values
         formData.append("name", file, file.name);
+        formData.append("rId",rId);
+        formData.append("userid",userid);
+
         // formData.append("upload_file", true);
     
         $.ajax({
@@ -244,13 +255,109 @@ $(document).ready(function(){
             processData: false,
             timeout: 60000
         });
+
     };
       $(document).on('click','#image-upload', function(e){
         e.preventDefault();
         var file = $('#image-file-1')[0].files[0];
         console.log(file)
         doUpload(file);
-      })
+      }).on('click','#create-event-btn',function(e){
+        e.preventDefault();
+        var token = localStorage.getItem("token");
+        var userid = localStorage.getItem("userid");
+
+        if($('#event-name').val()===''){
+          alert('Event name required.');
+          return;
+        }
+        if($('#event-start').val()===''){
+          alert('Event start date required.');
+          return;
+        }else{
+           const d = new Date($('#event-start').val());
+           console.log(d);
+           if(d.toString()==='Invalid Date'){
+            alert('Invalid event start date.');
+            return;
+          }              
+        }
+        
+        if($('#event-end').val()===''){
+          alert('Event end date required.');
+          return;
+        }else{
+          const d = new Date($('#event-end').val());
+          console.log(d);
+          if(d.toString()==='Invalid Date'){
+           alert('Invalid event end date.');
+           return;
+         }  
+        }   
+        if($('#last-date').val()===''){
+          alert('Last date required.');
+          return;
+        }else{
+          const d = new Date($('#last-date').val());
+          console.log(d);
+          if(d.toString()==='Invalid Date'){
+           alert('Invalid last date.');
+           return;
+         }  
+        } 
+        if($('#choose-region').val()===''){
+          alert('Event Region required.');
+          return;
+        }
+        if($('#choose-game').val()===''){
+          alert('Game required.');
+          return;
+        }
+        if($('#max-team').val()===''){
+          alert('Maximum Teams required.');
+          return;
+        }  
+        if(eventImage===''){
+          alert('Upload event image.');
+          return;
+        }
+
+         // console.log(userid);()
+        var eventImage  = $('#image-file-1').val();
+        var formData = new FormData();
+        formData.append("create", "true");
+        formData.append("event_name", $('#event-name').val());
+        formData.append("event_start", $('#event-start').val());
+        formData.append("event_end", $('#event-end').val());
+        formData.append("region",$('#choose-region').val());
+        formData.append("game",$('#choose-game').val());
+        formData.append("max_participants",$('#max-team').val());
+        formData.append("last_date_of_registration", $('#last-date').val());
+        formData.append("createdby", userid);
+        formData.append("modifiedby", userid);
+        formData.append("image",'./uploads/'+userid+ '/'+rId+'/'+eventImage);
+
+        $.ajax({
+          url: "../events.php",
+          type: "POST",
+          data: formData,
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+          contentType: false,
+          mimeType: "multipart/form-data",
+          processData: false,
+          success: function (response) {
+            console.log(response);
+            alert("Event Created");
+          },
+          error: function () {
+            alert("Event Creation Failed");
+          },
+        });
+        return false;
+      });
+        
     }
     
     if($('#career-page').length){
@@ -288,16 +395,17 @@ $(document).ready(function(){
         headers: {
           Authorization: "Bearer " + token,
         },
-        success: function (archives) {
+        success: function (data) {
+          const archives = JSON.parse(data);
           if (archives && archives.length) {
             var list = archives
               .map((a, i) => {
                 return archiveItem(a, i);
                })
                 .join("");
-                console.log(archives);
+                // console.log(archives);
             $("#archive-list").empty().append(list);
-          }
+              }
         },
         error: function () {
           alert("An error ocurred.Please try again");
@@ -322,6 +430,27 @@ $(document).ready(function(){
         location.href = "Welcome.html";
       }
          
+      function teamItem(t, i) {
+        var r = `  <div class="row">`;
+        var item = `<div class="box">
+        <div style="width: 6rem; height: 6rem; border: 2px solid grey">
+          <img
+            style="object-fit: cover; width: 100%"
+            src="${t.image}"
+            alt=""
+          />
+        </div>
+        <h1 class="txt" style="font-size: 1rem; text-align: center">
+          ${t.team_name}
+        </h1>
+      </div>`;
+        if ((i + 1) % 4 === 0 || i === 0) {
+          var closeDiv = i !== 0 ? "</div>" : "";
+          return closeDiv + r + item;
+        }
+
+        return item;
+      }
       $.ajax({
         url: "../events.php?id=" + eventId ,
         type: "GET",
@@ -329,15 +458,22 @@ $(document).ready(function(){
           "content-type": "application/json",
           Authorization: "Bearer " + token,
         },
-        success: function (brevent) {
-          console.log(brevent);
-          if (brevent) {
+        success: function (data) {
+          console.log(data);
+          if (data) {
+            const event = JSON.parse(data.event);
+            const team = JSON.parse(data.team);
             // $('#pfp').find('img').attr('src', team.image)
-            $('#event-name').text(brevent.event_name)
-            // $('#region').text(team.region)
-            // $('#text').text(team.description)
-            // $('#created').text(team.created)
-            // $('#createdby').text(team.cutag)
+            $('#event-name').text(event.event_name)
+            if (team && team.length) {
+              var list = team
+              .map((t, i) => {
+                return teamItem(t, i);
+               })
+                .join("");
+                // console.log(archives);
+            $("#team-list").empty().append(list);
+            }
           }
         },
         error: function () {
@@ -367,12 +503,7 @@ $(document).ready(function(){
         success: function (teamevent) {
           console.log(teamevent);
           if (teamevent) {
-            // $('#pfp').find('img').attr('src', team.image)
             $('#event-name').text(teamevent.event_name)
-            // $('#region').text(team.region)
-            // $('#text').text(team.description)
-            // $('#created').text(team.created)
-            // $('#createdby').text(team.cutag)
           }
         },
         error: function () {
@@ -383,7 +514,107 @@ $(document).ready(function(){
       return false;
 
     }
-          
+
+    if($('#user-page').length){
+      var token = localStorage.getItem("token");
+      if (!token) {
+        location.href = "Welcome.html";
+      }
+      $('#logout-btn').click(function(e){
+        e.preventDefault();
+        localStorage.removeItem("token");   
+        location.href = "Welcome.html";
+      })
+      var userid = localStorage.getItem("userid");
+      $.ajax({
+        url: "../users.php?id=" + userid ,
+        type: "GET",
+        headers: {
+          "content-type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        success: function (data) {
+          console.log(data);
+          if (data) {
+            $('#box').find('img').attr('src', data.image)
+            $('#username').text(data.usertag)
+            $('#region').text(data.region)
+            $('#discord').text(data.social_acc)
+            $('#language').text(data.language)
+            $('#teamname').text(data.teamname)
+            $('#email').text(data.email)
+            $('#phone').text(data.phone)
+          }
+        },
+        error: function () {
+          alert("An error ocurred.Please try again");
+          // location.href = "Welcome.html";
+        },
+      });
+      return false;
+
+    }
+
+    if($('#mod-page').length){
+      var token = localStorage.getItem("token");
+      if (!token) {
+        location.href = "Welcome.html";
+      }
+     
+      $("#back-btn").click(function(e){
+        location.href = "Event.html";
+      })
+      function modItem(m, i) {
+        var tbldata = `<div class="evnt" data-id="${m.event_id}"><td class="tbltxt">${m.event_name}</td>
+        <td class="tbltxt">${m.created}</td>
+        <td class="tbltxt">${m.modified}</td>
+        <td class="tbltxt">${m.event_start}</td>
+        <td><button id="edit-btn" class="btn btn-outline-info" style="padding: .4rem;margin-left: 1.5rem;">EDIT</button></td>
+        <td><button id="delete-btn" class="btn btn-outline-danger" style="padding: .4rem;margin-left: 1.5rem;">DELETE</button></td></div>`;
+  
+        $('#mod-table tbody').append('<tr>'+tbldata+'</tr>');
+      }
+     
+      $(document).on('click','#delete-btn', function(e){
+        e.preventDefault();
+        var evntId = $(this).attr('data-id'); 
+        console.log(evntId);
+      })
+
+      var userid = localStorage.getItem("userid");
+      var form = new FormData();
+      form.append("modevent", "true");
+      form.append("user", userid);
+       
+      $.ajax({
+        url: "../events.php",
+        type: "POST",
+        data:form,
+        "processData": false,
+        "mimeType": "multipart/form-data",
+        "contentType": false,
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+        success: function (data) {
+          const modevents = JSON.parse(data);
+          console.log(modevents);
+          if (modevents && modevents.length) {
+            var list = modevents
+              .map((m, i) => {
+                return modItem(m, i);
+               })
+                .join("");
+              }
+        },
+        error: function () {
+          alert("An error ocurred.Please try again");
+          // location.href = "Welcome.html";
+        },
+      });
+    
+      return false;
+    }
   });
 
 

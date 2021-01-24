@@ -44,6 +44,7 @@
       >
         <div style="display: flex; flex-direction: column; width: 50%">
           <input
+            id="event-name"
             style="margin-bottom: 1rem"
             type="text"
             placeholder="Event Name"
@@ -56,13 +57,24 @@
               margin-bottom: 1rem;
             "
           >
-            <input type="text" placeholder="Date" />
-            <input type="text" placeholder="Time" />
+            <input
+              id="event-start"
+              type="text"
+              style="width: 40%; margin-left: 3rem"
+              placeholder="Start Date(YYYY-MM-DD)"
+            />
+            <input
+              id="event-end"
+              style="width: 40%; margin-left: 3rem"
+              type="text"
+              placeholder="End Date(YYYY-MM-DD)"
+            />
           </div>
           <input
-            style="width: 40%; margin-left: 3rem"
+            id="last-date"
+            style="width: 60%; margin-left: 3rem"
             type="text"
-            placeholder="Last date of registration"
+            placeholder="Last date of registration(YYYY-MM-DD)"
           />
         </div>
         <div
@@ -74,25 +86,33 @@
             width: 30%;
           "
         >
-          <select class="mdb-select md-form" searchable="Search here..">
+          <select
+            id="choose-game"
+            class="mdb-select md-form"
+            searchable="Search here.."
+          >
             <option value="" disabled selected>Choose a Game</option>
-            <option value="1">Apex Legends</option>
-            <option value="2">COD Warzone</option>
-            <option value="3">CSGO</option>
-            <option value="4">Overwatch</option>
-            <option value="5">Valorant</option>
+            <option value="Apex Legends">Apex Legends</option>
+            <option value="COD Warzone">COD Warzone</option>
+            <option value="CSGO">CSGO</option>
+            <option value="Overwatch">Overwatch</option>
+            <option value="Valorant">Valorant</option>
           </select>
-          <select class="mdb-select md-form" searchable="Search here..">
+          <select
+            id="choose-region"
+            class="mdb-select md-form"
+            searchable="Search here.."
+          >
             <option value="" disabled selected>Choose a Region</option>
-            <option value="1">NA</option>
-            <option value="2">SA</option>
-            <option value="3">SEA</option>
-            <option value="4">ASIA</option>
-            <option value="5">RU</option>
-            <option value="6">EU</option>
-            <option value="7">JAPAN</option>
+            <option value="NA">NA</option>
+            <option value="SA">SA</option>
+            <option value="SEA">SEA</option>
+            <option value="ASIA">ASIA</option>
+            <option value="RU">RU</option>
+            <option value="EU">EU</option>
+            <option value="JAPAN">JAPAN</option>
           </select>
-          <input type="text" placeholder="Max team" />
+          <input id="max-team" type="text" placeholder="Max team" />
         </div>
       </div>
       <div
@@ -110,11 +130,7 @@
         <input id="t-c" type="file" /> -->
         <div class="input-group mb-3">
           <div class="custom-file">
-            <input
-              type="file"
-              class="custom-file-input"
-              id="image-file-1"
-            />
+            <input type="file" class="custom-file-input" id="image-file-1" />
             <label class="custom-file-label" for="inputGroupFile02"
               >Choose Event Image</label
             >
@@ -166,6 +182,7 @@
         "
       >
         <button
+          id="create-event-btn"
           class="btn btn-outline-light"
           style="padding-left: 2rem; padding-right: 2rem"
         >

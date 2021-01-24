@@ -20,11 +20,11 @@ class match
          $this->conn = $db;
      }
 
-     public function getMatches()
+     public function getFixtures()
      {
  
          // select all query
-         $query = "SELECT * from matches where 1 order by match_id";
+         $query = "SELECT * from fixtures where 1 order by match_id";
  
          // prepare query statement
          $stmt = $this->conn->prepare($query);
@@ -39,16 +39,18 @@ class match
              // this will make $row['name'] to
              // just $name only
  
-             $match_item = array(
+             $fixture_item = array(
                  "match_id" => $row['match_id'],
                  "event_id" => $row['event_id'],
-                 "match_date" => $row['match_date']
+                 "match_date" => $row['match_date'],
+                 "team_A" => $row['team_A'],
+                 "team_B" => $row['team_B']
              );
  
-             array_push($matches, $match_item);
+             array_push($fixture, $fixture_item);
          }
  
-         return json_encode($matches);
+         return json_encode($fixture);
      }
 
      public function getMatchById($id)

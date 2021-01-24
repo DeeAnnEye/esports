@@ -12,7 +12,9 @@ class event
     public $event_start;
     public $event_end;
     public $image;
-    public $game_id;
+    public $game;
+    public $region;
+    public $category;
     public $max_participants;
     public $created;
     public $createdby;
@@ -31,9 +33,9 @@ class event
 
     public function getEvents()
     {
-
+    
         // select all query
-        $query = "SELECT e.*, cu.usertag as cutag, mu.usertag as mutag, g.gametype from events e left join games g on g.id= e.game_id left join users cu on cu.user_id=e.createdby left join users mu on mu.user_id=e.modifiedby  where e.active=1 order by e.event_name";
+        $query = "SELECT e.*, cu.usertag as cutag, mu.usertag as mutag, g.gametype from events e left join games g on g.id= e.game left join users cu on cu.user_id=e.createdby left join users mu on mu.user_id=e.modifiedby  where e.active=1 order by e.event_name";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -54,7 +56,9 @@ class event
                 "event_start" => $row['event_start'],
                 "event_end" => $row['event_end'],
                 "image" => $row['image'],
-                "game_id" => $row['game_id'],
+                "game" => $row['game'],
+                "region" => $row['region'],
+                "category" => $row['category'],
                 "gametype" => $row['gametype'],
                 "max_participants" => $row['max_participants'],
                 "created" => $row['created'],
@@ -78,7 +82,7 @@ class event
     {
 
         // select all query
-        $query = "SELECT e.*, cu.gametype as gametype from events e left join games cu on cu.id=e.game_id and event_id=$id";
+        $query = "SELECT e.*, cu.gametype as gametype from events e left join games cu on cu.id=e.game and event_id=$id";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -92,9 +96,54 @@ class event
 
     }
 
+    function getEventsByUser($id)
+    {
+        // print_r($id);
+
+        // query
+        $query = "SELECT * FROM events WHERE 1 AND createdby=$id AND active=1";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute(); 
+
+        $events = [];
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            // extract row
+            // this will make $row['name'] to
+            // just $name only
+
+            $event_item = array(
+                "event_id" => $row['event_id'],
+                "event_name" => $row['event_name'],
+                "event_start" => $row['event_start'],
+                "event_end" => $row['event_end'],
+                "image" => $row['image'],
+                "game" => $row['game'],
+                "region" => $row['region'],
+                "category" => $row['category'],
+                "max_participants" => $row['max_participants'],
+                "created" => $row['created'],
+                "createdby" => $row['createdby'],
+                "modified" => $row['modified'],
+                "modifiedby" => $row['modifiedby'],
+                "last_date_of_registration" => $row['last_date_of_registration'],
+                "active" => $row['active'],
+                "archive" => $row['archive']
+            );
+
+            array_push($events, $event_item);
+        }
+
+        return json_encode($events);
+    }
+
     function teamInEvent($id){
         
-        $teamquery = "SELECT er.team_id,t.name FROM event_register er LEFT JOIN teams t ON t.id = er.team_id where event_id=$id";
+        $teamquery = "SELECT er.team_id,t.name,t.image FROM event_register er LEFT JOIN teams t ON t.id = er.team_id where event_id=$id";
 
         // prepare query statement
         $stmt = $this->conn->prepare($teamquery);
@@ -108,7 +157,8 @@ class event
 
             $team_item = array(
                 "team_id" => $row['team_id'],
-                "team_name" => $row['name']                
+                "team_name" => $row['name'],
+                "image" => $row['image']                
             );
             array_push($teams, $team_item);
         }
@@ -135,9 +185,20 @@ class event
     }
 
     public function fileUpload(){
+
         $target_dir = "./uploads/";
+
+        if(isset($_POST["rId"])) {
+
+        if (!file_exists($target_dir.$_POST["userid"].'/'.$_POST["rId"])) {
+            mkdir($target_dir.$_POST["userid"].'/'.$_POST["rId"], 0777, true);
+            $target_dir = $target_dir.$_POST["userid"].'/'.$_POST["rId"];
+        }
+
+        }        
         
-        $target_file = $target_dir . basename($_FILES["name"]["name"]);
+       
+        $target_file = $target_dir . $_POST['name'];
         $uploadOk = 1;
         $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
         // Check if image file is a actual image or fake image
@@ -194,7 +255,9 @@ class event
           event_start=:event_start,
           event_end=:event_end,
           image=:image,
-          game_id=:game_id,
+          region=:region,
+          category=:category,
+          game=:game,
           max_participants=:max_participants,
           created=:created,
           createdby=:createdby,
@@ -212,7 +275,9 @@ class event
             $this->event_start = htmlspecialchars(strip_tags($data['event_start']));
             $this->event_end = htmlspecialchars(strip_tags($data['event_end']));
             $this->image = htmlspecialchars(strip_tags($data['image']));
-            $this->game_id = htmlspecialchars(strip_tags($data['game_id']));
+            $this->game = htmlspecialchars(strip_tags($data['game']));
+            $this->region = htmlspecialchars(strip_tags($data['region']));
+            $this->category = htmlspecialchars(strip_tags($data['category']));
             $this->max_participants = htmlspecialchars(strip_tags($data['max_participants']));
             $this->created = htmlspecialchars(strip_tags($data['created']));
             $this->createdby = htmlspecialchars(strip_tags($data['createdby']));
@@ -227,7 +292,9 @@ class event
             $stmt->bindParam(":event_start", $this->event_start);
             $stmt->bindParam(":event_end", $this->event_end);
             $stmt->bindParam(":image", $this->image);
-            $stmt->bindParam(":game_id", $this->game_id);
+            $stmt->bindParam(":game", $this->game);
+            $stmt->bindParam(":region", $this->region);
+            $stmt->bindParam(":category", $this->category);
             $stmt->bindParam(":max_participants", $this->max_participants);
             $stmt->bindParam(":created", $this->created);
             $stmt->bindParam(":createdby", $this->createdby);
@@ -253,7 +320,9 @@ class event
                   event_start=:event_start,
                   event_end=:event_end,
                   image=:image,
-                  game_id=:game_id,
+                  game=:game,
+                  region=:region,
+                  category=:category,
                   max_participants=:max_participants,
                   created=:created,
                   createdby=:createdby,
@@ -272,7 +341,9 @@ class event
             $this->event_start = htmlspecialchars(strip_tags($data['event_start']));
             $this->event_end = htmlspecialchars(strip_tags($data['event_end']));
             $this->image = htmlspecialchars(strip_tags($data['image']));
-            $this->game_id = htmlspecialchars(strip_tags($data['game_id']));
+            $this->game = htmlspecialchars(strip_tags($data['game']));
+            $this->region = htmlspecialchars(strip_tags($data['region']));
+            $this->category = htmlspecialchars(strip_tags($data['category']));
             $this->max_participants = htmlspecialchars(strip_tags($data['max_participants']));
             $this->created = htmlspecialchars(strip_tags($data['created']));
             $this->createdby = htmlspecialchars(strip_tags($data['createdby']));
@@ -286,7 +357,9 @@ class event
             $stmt->bindParam(":event_start", $this->event_start);
             $stmt->bindParam(":event_end", $this->event_end);
             $stmt->bindParam(":image", $this->image);
-            $stmt->bindParam(":game_id", $this->game_id);
+            $stmt->bindParam(":game", $this->game);
+            $stmt->bindParam(":region", $this->region);
+            $stmt->bindParam(":category", $this->category);
             $stmt->bindParam(":max_participants", $this->max_participants);
             $stmt->bindParam(":created", $this->created);
             $stmt->bindParam(":createdby", $this->createdby);
@@ -421,7 +494,9 @@ class event
                 "event_start" => $row['event_start'],
                 "event_end" => $row['event_end'],
                 "image" => $row['image'],
-                "game_id" => $row['game_id'],
+                "game" => $row['game'],
+                "region" => $row['region'],
+                "category" => $row['category'],
                 "max_participants" => $row['max_participants'],
                 "created" => $row['created'],
                 "createdby" => $row['createdby'],

@@ -27,7 +27,7 @@
       "
     >
       <button class="btn btn-outline-light">BACK</button>
-      <button class="btn btn-outline-light">LOGOUT</button>
+      <button id="logout-btn" class="btn btn-outline-light">LOGOUT</button>
     </div>
 
     <div class="container">
@@ -44,18 +44,18 @@
           style="display: flex; flex-direction: column; justify-content: center"
         >
           <div id="box">
-            <img id="im" src="./assets/img/OG.png" alt="" />
+            <img id="im" src="" alt="" />
           </div>
         </div>
         <div style="display: flex; flex-direction: column">
-          <h3 class="txt">NAME</h3>
-          <h3 class="txt">DISCORD</h3>
-          <h3 class="txt">AFFILIATION</h3>
+          <h3 id="username" class="txt">NAME</h3>
+          <h3 id="discord" class="txt">DISCORD</h3>
+          <h3 id="teamname" class="txt">AFFILIATION</h3>
         </div>
         <div style="display: flex; flex-direction: column">
-          <h3 class="txt">REGION</h3>
-          <h3 class="txt">LANGUAGE</h3>
-          <h3 class="txt">RANK</h3>
+          <h3 id="region" class="txt">REGION</h3>
+          <h3 id="language" class="txt">LANGUAGE</h3>
+          <!-- <h3 class="txt">RANK</h3> -->
         </div>
       </div>
 
@@ -99,8 +99,8 @@
           padding-top: 2rem;
         "
       >
-        <h2 class="end">EMAIL</h2>
-        <h2 class="end">PHONE</h2>
+        <h2 id="email" class="end">EMAIL</h2>
+        <h2 id="phone" class="end">PHONE</h2>
       </div>
     </div>
   </body>

@@ -191,13 +191,21 @@ class team
 
 
             // execute query
-            // return json_encode(["Player Insertion" => $stmt->execute()]);
+            if($stmt->execute()){
+            
+            $updatequery = "UPDATE users SET role = '3' where user_id='$player_id'";
+
+            // prepare query statement
+            $uptstmt = $this->conn->prepare($updatequery);
+        
             echo json_encode(
                 array(
-                    "Player Insertion" => $stmt->execute(),
-                    "team" => $team_id
+                    "Player Insertion" => true,
+                    "team" => $team_id,
+                    "Role Update" =>  $uptstmt->execute()
                 )
             );
+        }
             // return $team_id;
         } catch (PDOException $e) {
             throw $e;

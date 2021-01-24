@@ -23,6 +23,8 @@ class user
     public $games;
     public $social_acc;
     public $role;
+    public $language;
+    public $region;
     public $mod_request;
     public $active;
     public $blocked;
@@ -69,6 +71,8 @@ class user
                 "games" => $row['games'],
                 "social_acc" => $row['social_acc'],
                 "role" => $row['role'],
+                "language" => $row['language'],
+                "region" => $row['region'],
                 "mod_request" => $row['mod_request'],
                 "active" => $row['active'],
                 "blocked" => $row['blocked'],
@@ -86,7 +90,16 @@ class user
     {
 
         // select all query
-        $query = "SELECT * from users where 1 and user_id=$id";
+        $query = "SELECT
+        u.*, 
+        tm.`name` as teamname
+    FROM
+        `users` u
+    LEFT JOIN team_player t ON u.user_id = t.player_id
+    LEFT JOIN teams tm ON t.team_id = tm.id
+    WHERE
+        1
+    and user_id=$id";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -97,7 +110,9 @@ class user
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         // todo fetch role,events,teams,teamreq
 
-        $user_teams = json_decode($this->team->getTeams());
+        return json_encode($user);
+
+        // $user_teams = json_decode($this->team->getTeams());
 
 
         return json_encode(["profile" => $user, "teams" => $user_teams]);
@@ -145,6 +160,8 @@ class user
          usertag=:usertag,
          image=null,
          games=null,
+         language=null,
+         region=null,
          social_acc=null,
          role=:role,
          mod_request=0,
@@ -212,6 +229,8 @@ class user
             games=:games,
             social_acc=:social_acc,
             role=:role,
+            language=:language,
+            region=:region,
             mod_request=:mod_request,
             active=:active,
             blocked=:blocked,
@@ -235,6 +254,8 @@ class user
             $this->games = htmlspecialchars(strip_tags($data['games']));
             $this->social_acc = htmlspecialchars(strip_tags($data['social_acc']));
             $this->role = htmlspecialchars(strip_tags($data['role']));
+            $this->language = htmlspecialchars(strip_tags($data['language']));
+            $this->region = htmlspecialchars(strip_tags($data['region']));
             $this->mod_request = htmlspecialchars(strip_tags($data['mod_request']));
             $this->active = htmlspecialchars(strip_tags($data['active']));
             $this->blocked = htmlspecialchars(strip_tags($data['blocked']));
@@ -252,6 +273,8 @@ class user
             $stmt->bindParam(":games", $this->games);
             $stmt->bindParam(":social_acc", $this->social_acc);
             $stmt->bindParam(":role", $this->role);
+            $stmt->bindParam(":language", $this->language);
+            $stmt->bindParam(":region", $this->region);
             $stmt->bindParam(":mod_request", $this->mod_request);
             $stmt->bindParam(":active", $this->active);
             $stmt->bindParam(":blocked", $this->blocked);

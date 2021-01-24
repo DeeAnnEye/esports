@@ -74,7 +74,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         // // get all events
         else {
             if ($token) {
-                echo $match->getMatches();
+                echo $match->getFixtures();
             } else {
                 echo 'Access Denied!';
             }
