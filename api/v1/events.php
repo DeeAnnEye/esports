@@ -29,8 +29,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
     if ($token) {
       // get single event
       $id = $_GET['id'];
-      // echo $event->getEventById($id);
-      // echo $event->teamInEvent($id);
+      
       $data  = new StdClass;
       $data->event = $event->getEventById($id);
       $data->team = $event->teamInEvent($id); 

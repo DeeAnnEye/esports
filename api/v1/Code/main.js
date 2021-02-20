@@ -25,6 +25,68 @@ $(document).ready(function(){
         } else {
             $('#edit-btn').hide();
         }
+       
+        function playerItem(p, i) {
+
+  //         var tblhead = `<!-- Players list -->
+  //         <table id="player-table">
+  //           <tbody>
+  //             <tr>
+  //               <th class="tblhead">PLAYER</th>
+  //               <th class="tblhead">JOINED</th>
+  //               <th class="tblhead">TYPE</th>
+  //               <th class="tblhead">MANAGE</th>
+  //             </tr>
+  //           </tbody>
+  //         </table>
+          
+  // `;
+  
+          var tbldata = `
+          <td class="tbltxt">${p.usertag}</td>
+          <td class="tbltxt">00/00/0000</td>
+          <td class="tbltxt">LEADER</td>
+          <td><button class="btn btn-outline-danger">REMOVE</button></td>
+          `;
+
+          // if(i==0){
+          //   return tblhead;
+          // }
+          $('#player-table tbody').append('<tr>'+tbldata+'</tr>');
+          // return tbldata;
+    
+         
+
+          // var addbtn = `<button class="btn btn-outline-success">ADD</button>`;
+        }
+        function careerItem(c, i) {
+
+          // var tblhead = ` <!-- Career list -->
+          // <table id="career-table">
+          //   <tbody>
+          //     <tr>
+          //       <th class="tblhead">EVENT NAME</th>
+          //       <th class="tblhead">DATE</th>
+          //     </tr>
+          //   </tbody>
+          // </table>`;
+  
+          var tbldata = ` <tr>
+          <td class="tbltxt">${c.event_name}</td>
+          <td class="tbltxt">${c.event_start}</td>
+          <td>
+            <button
+              class="btn btn-outline-info"
+              style="padding: 0.4rem; margin-left: 1.5rem"
+            >
+              VIEW
+            </button>
+          </td>
+        </tr>`;
+    
+          $('#career-table tbody').append('<tr>'+tbldata+'</tr>');
+        }
+       
     
           $.ajax({
             url: "../teams.php?id=" + team,
@@ -33,17 +95,68 @@ $(document).ready(function(){
               "content-type": "application/json",
               Authorization: "Bearer " + token,
             },
-            success: function (team) {
-                console.log(team)
+            success: function (data) {
+              console.log(data);
+                if (data) {
+                  const player = JSON.parse(data.player);
+                  const team = JSON.parse(data.team);
+                  const career = JSON.parse(data.career);
+
+                  var datetime = team.created; 
+                  var date=datetime.split(' ')[0];
+
+                  $('#team-name').text(team.name);
+                  $('#region').text(team.region);
+                  $('#description').text(team.description);
+                  $('#created').text(date);
+                  $('#createdby').text(team.cutag);
+                  $('#pfp').find('img').attr('src', team.image);
+
+                  if (player && player.length) {
+                    // const len = player.length;
+                    $("#career-table").hide();
+                    var list = player
+                      .map((p, i) => {
+                        return playerItem(p, i);
+                       })
+                        .join("");
+                        
+                      }
+
+                      $("#player-btn").click(function(e){
+
+                        $("#player-table td").remove();
+                        $("#career-table").hide();
+                        $("#player-table").show();
+
+                        if (player && player.length) {
+                          var list = player
+                            .map((p, i) => {
+                              return playerItem(p, i);
+                             })
+                              .join("");
+                            }
+                       
+                        })
+
+                        $("#career-btn").click(function(e){
+
+                          $("#career-table td").remove();
+                          $("#player-table").hide();
+                          $("#career-table").show();
+
+                          if (career && career.length) {
+                            var list = career
+                              .map((c, i) => {
+                                return careerItem(c, i);
+                               })
+                                .join("");
+                              }
+                        })
+
+                }
+                         
               
-              if (team) {
-                $('#pfp').find('img').attr('src', team.image)
-                $('#team-name').text(team.name)
-                $('#region').text(team.region)
-                $('#text').text(team.description)
-                $('#created').text(team.created)
-                $('#createdby').text(team.cutag)
-              }
             },
             error: function () {
               alert("An error ocurred.Please try again");
@@ -305,12 +418,16 @@ $(document).ready(function(){
            return;
          }  
         } 
-        if($('#choose-region').val()===''){
+        if($('#choose-region').val()===""){
           alert('Event Region required.');
           return;
         }
         if($('#choose-game').val()===''){
           alert('Game required.');
+          return;
+        }
+        if($('#choose-category').val()===''){
+          alert('Category required.');
           return;
         }
         if($('#max-team').val()===''){
@@ -331,6 +448,7 @@ $(document).ready(function(){
         formData.append("event_end", $('#event-end').val());
         formData.append("region",$('#choose-region').val());
         formData.append("game",$('#choose-game').val());
+        formData.append("category",$('#choose-category').val());
         formData.append("max_participants",$('#max-team').val());
         formData.append("last_date_of_registration", $('#last-date').val());
         formData.append("createdby", userid);
@@ -459,11 +577,10 @@ $(document).ready(function(){
           Authorization: "Bearer " + token,
         },
         success: function (data) {
-          console.log(data);
+          // console.log(data);
           if (data) {
             const event = JSON.parse(data.event);
             const team = JSON.parse(data.team);
-            // $('#pfp').find('img').attr('src', team.image)
             $('#event-name').text(event.event_name)
             if (team && team.length) {
               var list = team
@@ -565,12 +682,18 @@ $(document).ready(function(){
         location.href = "Event.html";
       })
       function modItem(m, i) {
-        var tbldata = `<div class="evnt" data-id="${m.event_id}"><td class="tbltxt">${m.event_name}</td>
-        <td class="tbltxt">${m.created}</td>
-        <td class="tbltxt">${m.modified}</td>
+
+        var createdDate = m.created; 
+        var modifiedDate = m.modified; 
+        var cDate=createdDate.split(' ')[0];
+        var mDate=modifiedDate.split(' ')[0];
+
+        var tbldata = `<td class="tbltxt" >${m.event_name}</td>
+        <td class="tbltxt">${cDate}</td>
+        <td class="tbltxt">${mDate}</td>
         <td class="tbltxt">${m.event_start}</td>
-        <td><button id="edit-btn" class="btn btn-outline-info" style="padding: .4rem;margin-left: 1.5rem;">EDIT</button></td>
-        <td><button id="delete-btn" class="btn btn-outline-danger" style="padding: .4rem;margin-left: 1.5rem;">DELETE</button></td></div>`;
+        <td><button data-id=${m.event_id} id="edit-btn" class="btn btn-outline-info" style="padding: .4rem;margin-left: 1.5rem;">EDIT</button></td>
+        <td><button data-id=${m.event_id} id="delete-btn" class="btn btn-outline-danger" style="padding: .4rem;margin-left: 1.5rem;">DELETE</button></td>`;
   
         $('#mod-table tbody').append('<tr>'+tbldata+'</tr>');
       }
@@ -578,7 +701,41 @@ $(document).ready(function(){
       $(document).on('click','#delete-btn', function(e){
         e.preventDefault();
         var evntId = $(this).attr('data-id'); 
-        console.log(evntId);
+        $.ajax({
+          url: "../events.php?id=" + evntId ,
+          type: "DELETE",
+          headers: {
+            "content-type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          success: function (response) {
+            // console.log(response);
+            location.reload();
+          },
+          error: function () {
+            alert("An error ocurred.Please try again");
+          },
+        });
+      })
+
+      $(document).on('click','#edit-btn', function(e){
+        e.preventDefault();
+        var evntId = $(this).attr('data-id'); 
+        $.ajax({
+          url: "../events.php?id=" + evntId ,
+          type: "POST",
+          headers: {
+            "content-type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          success: function (response) {
+            // console.log(response);
+            location.reload();
+          },
+          error: function () {
+            alert("An error ocurred.Please try again");
+          },
+        });
       })
 
       var userid = localStorage.getItem("userid");

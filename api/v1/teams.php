@@ -27,7 +27,13 @@ switch ($_SERVER['REQUEST_METHOD']) {
     // get single team
     if ($token) {
       $id = $_GET['id'];
-      echo $team->getTeamById($id);
+
+      $data  = new StdClass;
+      $data->team = $team->getTeamById($id);
+      $data->player = $team->playerInTeam($id); 
+      $data->career = $team->eventsPlayedByTeam($id);
+      echo json_encode($data);
+
       break;
     } else {
       echo 'Access Denied!';

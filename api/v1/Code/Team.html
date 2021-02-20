@@ -144,108 +144,38 @@
         class="d-flex flex-row justify-content-start"
         style="margin-top: 2rem; margin-bottom: 1rem"
       >
-        <button class="btn btn-outline-light px-3">PLAYER</button>
-        <button class="btn btn-outline-light px-3" style="margin-left: 1rem">
+        <button id="player-btn" class="btn btn-outline-light px-3">
+          PLAYER
+        </button>
+        <button
+          id="career-btn"
+          class="btn btn-outline-light px-3"
+          style="margin-left: 1rem"
+        >
           CAREER
         </button>
       </div>
-      <div class="display">
+      <div id="tbl-display" class="display">
         <!-- Players list -->
-        <!-- <table id="table">
-                <tr>
-                    <th class="tblhead">PLAYER</th>
-                    <th class="tblhead">JOINED</th>
-                    <th class="tblhead">TYPE</th>
-                    <th class="tblhead">MANAGE</th>
-                </tr>
-                <tr>
-                    <td class="tbltxt">PLAYER 1</td>
-                    <td class="tbltxt">00/00/0000</td>
-                    <td class="tbltxt">LEADER</td>
-                    <td><button class="btn btn-outline-danger">REMOVE</button></td>
-                </tr>
-                <tr>
-                    <td class="tbltxt">PLAYER 2</td>
-                    <td class="tbltxt">00/00/0000</td>
-                    <td class="tbltxt">CARRY</td>
-                    <td><button class="btn btn-outline-danger">REMOVE</button></td>
-                </tr>
-                <tr>
-                    <td class="tbltxt">PLAYER 3</td>
-                    <td class="tbltxt">00/00/0000</td>
-                    <td class="tbltxt">SUPPORT</td>
-                    <td><button class="btn btn-outline-danger">REMOVE</button></td>
-                </tr>
-                <tr>
-                    <td class="tbltxt">PLAYER 4</td>
-                    <td class="tbltxt">00/00/0000</td>
-                    <td class="tbltxt">SUPPORT</td>
-                    <td><button class="btn btn-outline-danger">REMOVE</button></td>
-                </tr>
-                <tr>
-                    <td class="tbltxt">PLAYER 5</td>
-                    <td class="tbltxt">00/00/0000</td>
-                    <td class="tbltxt">CARRY/SUPPORT</td>
-                    <td><button class="btn btn-outline-danger">REMOVE</button></td>
-                </tr>
-            </table>
-            <button class="btn btn-outline-success">ADD</button>
-             -->
+        <table id="player-table">
+          <tbody>
+            <tr>
+              <th class="tblhead">PLAYER</th>
+              <th class="tblhead">JOINED</th>
+              <th class="tblhead">TYPE</th>
+              <th class="tblhead">MANAGE</th>
+            </tr>
+          </tbody>
+        </table>
 
-        <!-- Career list -->
-        <table id="table">
-          <tr>
-            <th class="tblhead">EVENT NAME</th>
-            <th class="tblhead">DATE</th>
-          </tr>
-          <tr>
-            <td class="tbltxt">Event 1</td>
-            <td class="tbltxt">00/00/0000</td>
-            <td>
-              <button
-                class="btn btn-outline-info"
-                style="padding: 0.4rem; margin-left: 1.5rem"
-              >
-                VIEW
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td class="tbltxt">Event 2</td>
-            <td class="tbltxt">00/00/0000</td>
-            <td>
-              <button
-                class="btn btn-outline-info"
-                style="padding: 0.4rem; margin-left: 1.5rem"
-              >
-                VIEW
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td class="tbltxt">Event 3</td>
-            <td class="tbltxt">00/00/0000</td>
-            <td>
-              <button
-                class="btn btn-outline-info"
-                style="padding: 0.4rem; margin-left: 1.5rem"
-              >
-                VIEW
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td class="tbltxt">Event 4</td>
-            <td class="tbltxt">00/00/0000</td>
-            <td>
-              <button
-                class="btn btn-outline-info"
-                style="padding: 0.4rem; margin-left: 1.5rem"
-              >
-                VIEW
-              </button>
-            </td>
-          </tr>
+         <!-- Career list -->
+         <table id="career-table">
+          <tbody>
+            <tr>
+              <th class="tblhead">EVENT NAME</th>
+              <th class="tblhead">DATE</th>
+            </tr>
+          </tbody>
         </table>
       </div>
 

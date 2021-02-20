@@ -101,6 +101,71 @@ class team
         return json_encode(["success" => $stmt->execute()]);
     }
 
+    function eventsPlayedByTeam($id){
+        
+        $eventquery = "SELECT
+        e.*,ev.event_name,ev.event_start
+    FROM
+        `event_register` e
+    LEFT JOIN `events` ev ON e.event_id = ev.event_id
+    WHERE
+        team_id = $id;";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($eventquery);
+
+        // execute query
+        $stmt->execute();
+
+        $events = [];
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+            $event_item = array(
+                "event_id" => $row['event_id'],
+                "team_id" => $row['team_id'],
+                "player_id" => $row['player_id'],
+                "player_id" => $row['player_id'],
+                "removed" => $row['removed'],
+                "event_name" => $row['event_name'],
+                "event_start" => $row['event_start']                
+            );
+            array_push($events, $event_item);
+        }
+       
+        return json_encode($events);    
+
+
+    }
+
+    function playerInTeam($id){
+        
+        $query = "SELECT t.*,u.usertag FROM `team_player` t LEFT JOIN users u on t.player_id=u.user_id WHERE team_id = $id and removed ='0';";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute();
+
+        $players = [];
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+            $player_item = array(
+                "team_id" => $row['team_id'],
+                "player_id" => $row['player_id'],
+                "removed" => $row['removed'],
+                "usertag" => $row['usertag']               
+            );
+            array_push($players, $player_item);
+        }
+       
+        return json_encode($players);    
+
+
+    }
+
     public function createTeam($data)
     {
         try {

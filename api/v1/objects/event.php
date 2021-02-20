@@ -430,6 +430,30 @@ class event
         }
     }
 
+    function insertEventPlayers($data)
+    {
+        try {
+            //code...
+
+            // query to insert record
+            $query = "INSERT INTO event_players SET
+            event_id=:event_id,
+            player_id=:player_id";
+
+            // prepare query statement
+            $stmt = $this->conn->prepare($query);
+
+            // bind parameters
+            $stmt->bindParam(":event_id", $data['event_id']);
+            $stmt->bindParam(":player_id", $data['player_id']);
+
+            // execute query
+            return json_encode(["success" => $stmt->execute()]);
+        } catch (PDOException $e) {
+            throw $e;
+        }
+    }
+
     function removePlayerFromEvent($data)
     {
         try {

@@ -28,9 +28,12 @@
             flex-direction: column;
             justify-content: space-around;
             padding-left: 10%;">
-                <button class="btn btn-outline-light" style="width: 5rem;">BACK</button>
+               <a href="TeamDefault.html"><button class="btn btn-outline-light" style="width: 5rem;">BACK</button></a>
                 <div style="display: flex;flex-direction: row;justify-content: space-between;">
-                    <input class="input" style="width: 55%;" type="text" placeholder="Search">
+                    <input class="input" name="search" style="width: 45%;" type="text" placeholder="Search" autocomplete="off" required>
+                    <button id="submit" type="submit" class="btn btn-outline-light">
+                        Submit
+                      </button>
                     <input class="input" type="text" placeholder="Tag">
                 </div>
             </div>

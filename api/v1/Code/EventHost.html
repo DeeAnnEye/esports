@@ -26,19 +26,20 @@
     </div>
 
     <div class="container">
+      <a href="Event.html">
       <button
         class="btn btn-dark"
         style="position: absolute; top: 1rem; background: rgba(0, 0, 0, 0.7)"
       >
         BACK
       </button>
-
+    </a>
       <div
         style="
           display: flex;
           flex-direction: row;
           position: absolute;
-          top: 10rem;
+          top: 7rem;
           width: 70%;
         "
       >
@@ -60,7 +61,7 @@
             <input
               id="event-start"
               type="text"
-              style="width: 40%; margin-left: 3rem"
+              style="width: 40%"
               placeholder="Start Date(YYYY-MM-DD)"
             />
             <input
@@ -81,15 +82,17 @@
           style="
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: space-around;
             margin-left: 10rem;
             width: 30%;
           "
         >
           <select
+            style="margin-bottom: 1rem"
             id="choose-game"
             class="mdb-select md-form"
             searchable="Search here.."
+            required
           >
             <option value="" disabled selected>Choose a Game</option>
             <option value="Apex Legends">Apex Legends</option>
@@ -99,9 +102,11 @@
             <option value="Valorant">Valorant</option>
           </select>
           <select
+            style="margin-bottom: 1rem"
             id="choose-region"
             class="mdb-select md-form"
             searchable="Search here.."
+            required
           >
             <option value="" disabled selected>Choose a Region</option>
             <option value="NA">NA</option>
@@ -112,62 +117,80 @@
             <option value="EU">EU</option>
             <option value="JAPAN">JAPAN</option>
           </select>
+          <select
+            style="margin-bottom: 1rem"
+            id="choose-category"
+            class="mdb-select md-form"
+            searchable="Search here.."
+            required
+          >
+            <option value="" disabled selected>Choose Category</option>
+            <option value="5">5 Players</option>
+            <option value="4">4 Players</option>
+            <option value="3">3 Players</option>
+            <option value="2">2 Players</option>
+            <option value="1">SOLO</option>
+          </select>
           <input id="max-team" type="text" placeholder="Max team" />
         </div>
       </div>
       <div
         style="
           display: flex;
-          flex-direction: column;
+          flex-direction: row;
           justify-content: space-evenly;
-          margin-top: 4rem;
+          margin-top: 2rem;
           margin-bottom: 2rem;
-          width: 400px;
         "
       >
         <!-- <input id="event-image" type="file" />
         <input id="rules" type="file" />
         <input id="t-c" type="file" /> -->
-        <div class="input-group mb-3">
-          <div class="custom-file">
-            <input type="file" class="custom-file-input" id="image-file-1" />
-            <label class="custom-file-label" for="inputGroupFile02"
-              >Choose Event Image</label
-            >
-          </div>
-          <div class="input-group-append">
-            <span class="input-group-text" id="image-upload">Upload</span>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <div class="custom-file">
-            <input
-              type="file"
-              class="custom-file-input"
-              id="inputGroupFile02"
-            />
-            <label class="custom-file-label" for="inputGroupFile02"
-              >Upload Rules</label
-            >
-          </div>
-          <div class="input-group-append">
-            <span class="input-group-text" id="">Upload</span>
+        <div class="upld" style="margin-right: 1rem">
+          <div class="input-group mb-3">
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="image-file-1" />
+              <label class="custom-file-label" for="inputGroupFile02"
+                >Choose Event Image</label
+              >
+            </div>
+            <div class="input-group-append">
+              <span class="input-group-text" id="image-upload">Upload</span>
+            </div>
           </div>
         </div>
-
-        <div class="input-group mb-3">
-          <div class="custom-file">
-            <input
-              type="file"
-              class="custom-file-input"
-              id="inputGroupFile02"
-            />
-            <label class="custom-file-label" for="inputGroupFile02"
-              >Upload T&C</label
-            >
+        <div class="upld" style="margin-right: 1rem">
+          <div class="input-group mb-3">
+            <div class="custom-file">
+              <input
+                type="file"
+                class="custom-file-input"
+                id="inputGroupFile02"
+              />
+              <label class="custom-file-label" for="inputGroupFile02"
+                >Upload Rules</label
+              >
+            </div>
+            <div class="input-group-append">
+              <span class="input-group-text" id="">Upload</span>
+            </div>
           </div>
-          <div class="input-group-append">
-            <span class="input-group-text" id="">Upload</span>
+        </div>
+        <div class="upld" style="margin-right: 1rem">
+          <div class="input-group mb-3">
+            <div class="custom-file">
+              <input
+                type="file"
+                class="custom-file-input"
+                id="inputGroupFile02"
+              />
+              <label class="custom-file-label" for="inputGroupFile02"
+                >Upload T&C</label
+              >
+            </div>
+            <div class="input-group-append">
+              <span class="input-group-text" id="">Upload</span>
+            </div>
           </div>
         </div>
       </div>
@@ -190,8 +213,5 @@
         </button>
       </div>
     </div>
-    <script>
-      $(".dropdown-toggle").dropdown();
-    </script>
   </body>
 </html>
