@@ -156,6 +156,8 @@ class team
                 "team_id" => $row['team_id'],
                 "player_id" => $row['player_id'],
                 "removed" => $row['removed'],
+                "joined" => $row['joined'],
+                "type" => $row['type'],
                 "usertag" => $row['usertag']               
             );
             array_push($players, $player_item);

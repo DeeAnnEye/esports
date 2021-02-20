@@ -18,7 +18,10 @@ $(document).ready(function(){
     })
     if($('#team-page').length) {
           
-          var token = localStorage.getItem("token");
+          // var token = localStorage.getItem("token");
+          if (!token) {
+            location.href = "Welcome.html";
+          }
 
           if(role == 3) {
             $('#edit-btn').show();
@@ -28,48 +31,21 @@ $(document).ready(function(){
        
         function playerItem(p, i) {
 
-  //         var tblhead = `<!-- Players list -->
-  //         <table id="player-table">
-  //           <tbody>
-  //             <tr>
-  //               <th class="tblhead">PLAYER</th>
-  //               <th class="tblhead">JOINED</th>
-  //               <th class="tblhead">TYPE</th>
-  //               <th class="tblhead">MANAGE</th>
-  //             </tr>
-  //           </tbody>
-  //         </table>
-          
-  // `;
+        var joinedDate = p.joined; 
+        var jDate=joinedDate.split(' ')[0];
   
           var tbldata = `
           <td class="tbltxt">${p.usertag}</td>
-          <td class="tbltxt">00/00/0000</td>
-          <td class="tbltxt">LEADER</td>
+          <td class="tbltxt">${jDate}</td>
+          <td class="tbltxt">${p.type}</td>
           <td><button class="btn btn-outline-danger">REMOVE</button></td>
           `;
 
-          // if(i==0){
-          //   return tblhead;
-          // }
-          $('#player-table tbody').append('<tr>'+tbldata+'</tr>');
-          // return tbldata;
-    
          
-
-          // var addbtn = `<button class="btn btn-outline-success">ADD</button>`;
+          $('#player-table tbody').append('<tr>'+tbldata+'</tr>');
+         
         }
         function careerItem(c, i) {
-
-          // var tblhead = ` <!-- Career list -->
-          // <table id="career-table">
-          //   <tbody>
-          //     <tr>
-          //       <th class="tblhead">EVENT NAME</th>
-          //       <th class="tblhead">DATE</th>
-          //     </tr>
-          //   </tbody>
-          // </table>`;
   
           var tbldata = ` <tr>
           <td class="tbltxt">${c.event_name}</td>
@@ -128,6 +104,7 @@ $(document).ready(function(){
                         $("#player-table td").remove();
                         $("#career-table").hide();
                         $("#player-table").show();
+                        $("#add-btn").show();
 
                         if (player && player.length) {
                           var list = player
@@ -143,6 +120,7 @@ $(document).ready(function(){
 
                           $("#career-table td").remove();
                           $("#player-table").hide();
+                          $("#add-btn").hide();
                           $("#career-table").show();
 
                           if (career && career.length) {
@@ -240,7 +218,7 @@ $(document).ready(function(){
     }
    
       function eventItem(e, i) {
-        var item = ` <a class="event-click" data-gametype="${e.gametype}" data-id="${e.event_id}" data-lastdate="${e.last_date_of_registration}" href="#" id="event-banner-${i}"><div class="event">
+        var item = ` <a class="event-click" data-gametype="${e.gametype}" data-enddate="${e.event_end}" data-id="${e.event_id}" data-lastdate="${e.last_date_of_registration}" href="#" id="event-banner-${i}"><div class="event">
         <div style="width: 45rem; height: 5rem"></div>
         <div
           class="eventxt"
@@ -276,12 +254,16 @@ $(document).ready(function(){
     }
       var today = currentDate();
       var lastdate = $(this).attr('data-lastdate');
+      var enddate = $(this).attr('data-enddate');
       var eventId = $(this).attr('data-id'); 
       var gametype =$(this).attr('data-gametype');
       // alert(gametype)
-          if(lastdate<today){
+          if(lastdate<today && enddate>today){
             location.href = gametype==='BR' ? "MatchBR.html?id=" + eventId : "MatchElse.html?id=" + eventId;
-          }else{
+          }else if(enddate<today){
+            location.href = gametype==='BR' ? "ResultBR.html?id=" + eventId : "ResultElse.html?id=" + eventId;
+          }
+          else{
             location.href = "EventRegister.html?id=" + eventId;
           }
                   
@@ -771,6 +753,46 @@ $(document).ready(function(){
       });
     
       return false;
+    }
+
+    if($('#resultbr-page').length) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const eventId = urlParams.get('id');
+      var token = localStorage.getItem("token");
+      if (!token) {
+        location.href = "Welcome.html";
+      }
+      $.ajax({
+        url: "../results.php?id=" + eventId ,
+        type: "GET",
+        headers: {
+          "content-type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        success: function (data) {
+          // console.log(data);
+          if (data) {
+            const event = JSON.parse(data.event);
+            const team = JSON.parse(data.team);
+            $('#event-name').text(event.event_name)
+            if (team && team.length) {
+              var list = team
+              .map((t, i) => {
+                return teamItem(t, i);
+               })
+                .join("");
+                // console.log(archives);
+            $("#team-list").empty().append(list);
+            }
+          }
+        },
+        error: function () {
+          alert("An error ocurred.Please try again");
+          // location.href = "Welcome.html";
+        },
+      });
+      
+
     }
   });
 
