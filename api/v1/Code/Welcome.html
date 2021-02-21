@@ -253,7 +253,13 @@
               localStorage.setItem("team", result.team);
               localStorage.setItem("userid", result.userid);
 
-              location.href = "Home.html";
+              var role = localStorage.getItem("role");
+
+              if (role == 1) {
+                location.href = "Adminhome.html";
+              } else {
+                location.href = "Home.html";
+              }
               // window.location.href = "home.html";
             },
             error: function () {

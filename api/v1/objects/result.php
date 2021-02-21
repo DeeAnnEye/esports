@@ -58,7 +58,13 @@ class result
     public function getResultById($id)
     {
         // select all query
-        $query = "SELECT * from results where 1 and result_id=$id";
+        $query = "SELECT
+        p.*,r.*
+    FROM
+        `results` r 
+    LEFT JOIN placements p ON r_event_id=event_id
+    WHERE
+        event_id = $id;";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -168,6 +174,7 @@ class result
             $query = "INSERT INTO placements SET
                      placement_id=0,
                      team_id=null,
+                     event_id=:event_id,
                      player_id=:player_id,
                      `kill`=:`kill`,
                      death=:death,
@@ -178,6 +185,7 @@ class result
 
             // sanitize
             $this->player_id = htmlspecialchars(strip_tags($data['player_id']));
+            $this->event_id = htmlspecialchars(strip_tags($data['event_id']));
             $this->kill = htmlspecialchars(strip_tags($data['kill']));
             $this->death = htmlspecialchars(strip_tags($data['death']));
             $this->assist = htmlspecialchars(strip_tags($data['assist']));
@@ -185,6 +193,7 @@ class result
 
             // bind parameters
             $stmt->bindParam(":player_id", $this->player_id);
+            $stmt->bindParam(":event_id", $this->event_id);
             $stmt->bindParam(":kill", $this->kill);
             $stmt->bindParam(":death", $this->death);
             $stmt->bindParam(":assist", $this->assist);
@@ -205,6 +214,7 @@ class result
             $query = "INSERT INTO placements SET
                      placement_id=0,
                      team_id=:team_id,
+                     event_id=:event_id,
                      player_id=:player_id,
                      `kill`=:`kill`,
                      death=:death,
@@ -215,6 +225,7 @@ class result
 
             // sanitize
             $this->team_id = htmlspecialchars(strip_tags($data['team_id']));
+            $this->event_id = htmlspecialchars(strip_tags($data['event_id']));
             $this->player_id = htmlspecialchars(strip_tags($data['player_id']));
             $this->kill = htmlspecialchars(strip_tags($data['kill']));
             $this->death = htmlspecialchars(strip_tags($data['death']));
@@ -223,6 +234,7 @@ class result
             // bind parameters
             $stmt->bindParam(":team_id", $this->team_id);
             $stmt->bindParam(":player_id", $this->player_id);
+            $stmt->bindParam(":event_id", $this->event_id);
             $stmt->bindParam(":kill", $this->kill);
             $stmt->bindParam(":death", $this->death);
             $stmt->bindParam(":assist", $this->assist);

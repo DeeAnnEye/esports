@@ -209,11 +209,11 @@ $(document).ready(function(){
       if (!token) {
         location.href = "Welcome.html";
       }
-      if(role <= 2) {
+      if(role == 2) {
         $('#host-btn').show();
-        $('#manage-events').show();
+        $('#manage-btn').show();
     } else {
-      $('#manage-events').hide();
+      $('#manage-btn').hide();
         $('#host-btn').hide();
     }
    
@@ -770,21 +770,21 @@ $(document).ready(function(){
           Authorization: "Bearer " + token,
         },
         success: function (data) {
-          // console.log(data);
-          if (data) {
-            const event = JSON.parse(data.event);
-            const team = JSON.parse(data.team);
-            $('#event-name').text(event.event_name)
-            if (team && team.length) {
-              var list = team
-              .map((t, i) => {
-                return teamItem(t, i);
-               })
-                .join("");
-                // console.log(archives);
-            $("#team-list").empty().append(list);
-            }
-          }
+          console.log(data);
+          // if (data) {
+          //   const event = JSON.parse(data.event);
+          //   const team = JSON.parse(data.team);
+          //   $('#event-name').text(event.event_name)
+          //   if (team && team.length) {
+          //     var list = team
+          //     .map((t, i) => {
+          //       return teamItem(t, i);
+          //      })
+          //       .join("");
+          //       // console.log(archives);
+          //   $("#team-list").empty().append(list);
+          //   }
+          // }
         },
         error: function () {
           alert("An error ocurred.Please try again");
