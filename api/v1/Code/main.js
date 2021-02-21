@@ -72,7 +72,7 @@ $(document).ready(function(){
               Authorization: "Bearer " + token,
             },
             success: function (data) {
-              console.log(data);
+              // console.log(data);
                 if (data) {
                   const player = JSON.parse(data.player);
                   const team = JSON.parse(data.team);
@@ -793,6 +793,65 @@ $(document).ready(function(){
       });
       
 
+    }
+
+    if($('#auser-page').length) {
+
+      var token = localStorage.getItem("token");
+      if (!token) {
+        location.href = "Welcome.html";
+      }
+
+      function userItem(u, i) {
+
+        var createdDate = u.created; 
+        var cDate=createdDate.split(' ')[0];
+  
+          var tbldata = `
+          <td class="list">${u.usertag}</td>
+          <td class="list">${u.user_id}</td>
+          <td class="list">${cDate}</td>
+          <td class="list">${u.team}</td>
+          <td
+            class="btn btn-outline-danger"
+            style="display: block; margin: auto"
+          >
+            BAN
+          </td>       
+          `;
+
+         
+          $('#auser-table tbody').append('<tr>'+tbldata+'</tr>');
+         
+        }
+     
+
+      $.ajax({
+        url: "../users.php",
+        type: "POST",
+        headers: {
+          "content-type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        success: function (data) {
+          console.log(data);
+          if (data) {
+            // const user = JSON.parse(data);
+            if (data && data.length) {
+              var list = data
+                .map((u, i) => {
+                  return userItem(u, i);
+                 })
+                  .join("");
+                  
+                }
+          }
+        },
+        error: function () {
+          alert("An error ocurred.Please try again");
+          // location.href = "Welcome.html";
+        },
+      });
     }
   });
 
