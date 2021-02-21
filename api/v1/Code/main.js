@@ -819,7 +819,6 @@ $(document).ready(function(){
             BAN
           </td>       
           `;
-
          
           $('#auser-table tbody').append('<tr>'+tbldata+'</tr>');
          
@@ -853,6 +852,67 @@ $(document).ready(function(){
         },
       });
     }
+
+    if($('#ateam-page').length) {
+
+      var token = localStorage.getItem("token");
+      if (!token) {
+        location.href = "Welcome.html";
+      }
+
+      function teamItem(t, i) {
+
+        var createdDate =t.created; 
+        var cDate=createdDate.split(' ')[0];
+        var modifiedDate =t.modified; 
+        var mDate=modifiedDate.split(' ')[0];
+  
+          var tbldata = `
+          <tr>
+                <td class="list">${t.name}</td>
+                <td class="list">${cDate}</td>
+                <td class="list">${mDate}</td>
+                <td class="list">00</td>
+                <td class="list">00</td>
+                <td class="list">00</td>
+                <td class="list">${t.region}</td>
+                <td class="btn btn-outline-danger" style="display: block; margin: auto;">BAN</td>
+            </tr>      
+          `;
+         
+          $('#ateam-table tbody').append('<tr>'+tbldata+'</tr>');
+         
+        }
+     
+
+      $.ajax({
+        url: "../teams.php",
+        type: "POST",
+        headers: {
+          "content-type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        success: function (data) {
+          console.log(data);
+          if (data) {
+            // const user = JSON.parse(data);
+            if (data && data.length) {
+              var list = data
+                .map((t, i) => {
+                  return teamItem(t, i);
+                 })
+                  .join("");
+                  
+                }
+          }
+        },
+        error: function () {
+          alert("An error ocurred.Please try again");
+          // location.href = "Welcome.html";
+        },
+      });
+    }
+
   });
 
 
