@@ -214,12 +214,17 @@ class event
         }
         // Check if file already exists
         if (file_exists($target_file)) {
+            // echo $target_file;
+             // set response code
+             http_response_code(400);
             echo "Sorry, file already exists.";
             $uploadOk = 0;
         }
         
         // Check file size
         if ($_FILES["name"]["size"] > 5000000) {
+             // set response code
+             http_response_code(400);
             echo "Sorry, your file is too large.";
             $uploadOk = 0;
         }
@@ -233,12 +238,18 @@ class event
         
         // Check if $uploadOk is set to 0 by an error
         if ($uploadOk == 0) {
+             // set response code
+             http_response_code(400);
             echo "Sorry, your file was not uploaded.";
         // if everything is ok, try to upload file
         } else {
             if (move_uploaded_file($_FILES["name"]["tmp_name"], $target_file)) {
+                // set response code
+             http_response_code(200);
             echo "The file ". htmlspecialchars( basename( $_FILES["name"]["name"])). " has been uploaded.";
             } else {
+                 // set response code
+                 http_response_code(400);
             echo "Sorry, there was an error uploading your file.";
             }
         }
@@ -259,9 +270,7 @@ class event
           category=:category,
           game=:game,
           max_participants=:max_participants,
-          created=:created,
           createdby=:createdby,
-          modified=:modified,
           modifiedby=:modifiedby,
           last_date_of_registration=:last_date_of_registration,
           active=1,
@@ -279,9 +288,7 @@ class event
             $this->region = htmlspecialchars(strip_tags($data['region']));
             $this->category = htmlspecialchars(strip_tags($data['category']));
             $this->max_participants = htmlspecialchars(strip_tags($data['max_participants']));
-            $this->created = htmlspecialchars(strip_tags($data['created']));
             $this->createdby = htmlspecialchars(strip_tags($data['createdby']));
-            $this->modified = htmlspecialchars(strip_tags($data['modified']));
             $this->modifiedby = htmlspecialchars(strip_tags($data['modifiedby']));
             $this->last_date_of_registration = htmlspecialchars(strip_tags($data['last_date_of_registration']));
             // $this->archive=htmlspecialchars(strip_tags($data['archive']));
@@ -296,14 +303,23 @@ class event
             $stmt->bindParam(":region", $this->region);
             $stmt->bindParam(":category", $this->category);
             $stmt->bindParam(":max_participants", $this->max_participants);
-            $stmt->bindParam(":created", $this->created);
             $stmt->bindParam(":createdby", $this->createdby);
-            $stmt->bindParam(":modified", $this->modified);
             $stmt->bindParam(":modifiedby", $this->modifiedby);
             $stmt->bindParam(":last_date_of_registration", $this->last_date_of_registration);
 
-            // execute query
-            return json_encode(["success" => $stmt->execute()]);
+            if ($stmt->execute()) {
+
+                // set response code
+                http_response_code(200);
+
+                echo json_encode(array("message" => "True"));
+            } else {
+
+                // set response code
+                http_response_code(400);
+                echo json_encode(array("message" => "False"));
+            }
+        
         } catch (PDOException $e) {
             throw $e;
         }

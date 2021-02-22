@@ -209,7 +209,7 @@ $(document).ready(function(){
       if (!token) {
         location.href = "Welcome.html";
       }
-      if(role == 2) {
+      if(role <= 2) {
         $('#host-btn').show();
         $('#manage-btn').show();
     } else {
@@ -400,15 +400,18 @@ $(document).ready(function(){
            return;
          }  
         } 
-        if($('#choose-region').val()===""){
-          alert('Event Region required.');
-          return;
-        }
-        if($('#choose-game').val()===''){
+        var game  = $('#choose-game').val();
+        if(game===null){
           alert('Game required.');
           return;
         }
-        if($('#choose-category').val()===''){
+        var region  = $('#choose-region').val();
+        if(region===null){
+          alert('Event Region required.');
+          return;
+        }
+        var category = $('#choose-category').val();
+        if(category===null){
           alert('Category required.');
           return;
         }
@@ -416,13 +419,14 @@ $(document).ready(function(){
           alert('Maximum Teams required.');
           return;
         }  
+        var eventImage  = $('#image-file-1').val();
         if(eventImage===''){
           alert('Upload event image.');
           return;
         }
 
          // console.log(userid);()
-        var eventImage  = $('#image-file-1').val();
+        
         var formData = new FormData();
         formData.append("create", "true");
         formData.append("event_name", $('#event-name').val());
