@@ -595,6 +595,11 @@ $(document).ready(function(){
       if (!token) {
         location.href = "Welcome.html";
       }
+
+      $("#back-btn").click(function(e){
+        e.preventDefault();
+        history.back();
+      })
               
       $.ajax({
         url: "../events.php?id=" + eventId ,
@@ -628,6 +633,12 @@ $(document).ready(function(){
         localStorage.removeItem("token");   
         location.href = "Welcome.html";
       })
+
+      $("#back-btn").click(function(e){
+        e.preventDefault();
+        history.back();
+      })
+      
       var userid = localStorage.getItem("userid");
       $.ajax({
         url: "../users.php?id=" + userid ,
