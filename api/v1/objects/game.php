@@ -12,6 +12,7 @@ class game{
     public $wallpaper;
     public $gametype;
     public $number_of_players;
+    public $created;
 
     
     // constructor with $db as database connection
@@ -50,7 +51,8 @@ class game{
                 "image" => $row['image'],
                 "wallpaper" => $row['wallpaper'],
                 "gametype" => $row['gametype'],
-                "number_of_players" => $row['number_of_players']
+                "number_of_players" => $row['number_of_players'],
+                "created" => $row['created']
             );
 
             array_push($games, $game_item);

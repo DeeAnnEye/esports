@@ -913,6 +913,62 @@ $(document).ready(function(){
       });
     }
 
+    if($('#agame-page').length) {
+
+      var token = localStorage.getItem("token");
+      if (!token) {
+        location.href = "Welcome.html";
+      }
+
+      function gameItem(g, i) {
+
+        var createdDate =g.created; 
+        var cDate=createdDate.split(' ')[0];
+       
+          var tbldata = `
+          <tr>
+                <td class="list">${g.name}</td>
+                <td class="list">${cDate}</td>
+                <td class="list">${g.gametype}</td>
+                <td class="list">${g.number_of_players}</td>
+                <td class="btn btn-outline-success" style="display: block; margin: auto;">IMAGE</td>
+                <td class="btn btn-outline-warning" style="display: block; margin: auto;">EDIT</td>
+                <td class="btn btn-outline-danger" style="display: block; margin: auto;">DELETE</td>
+            </tr>     
+          `;
+         
+          $('#agame-table tbody').append('<tr>'+tbldata+'</tr>');
+         
+        }
+     
+
+      $.ajax({
+        url: "../games.php",
+        type: "POST",
+        headers: {
+          "content-type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        success: function (data) {
+          // console.log(data);
+          if (data) {
+            if (data && data.length) {
+              var list = data
+                .map((g, i) => {
+                  return gameItem(g, i);
+                 })
+                  .join("");
+                  
+                }
+          }
+        },
+        error: function () {
+          alert("An error ocurred.Please try again");
+          // location.href = "Welcome.html";
+        },
+      });
+    }
+
   });
 
 
