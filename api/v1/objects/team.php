@@ -245,16 +245,20 @@ class team
             $query = "INSERT INTO team_player SET
           team_id=:team_id,
           player_id=:player_id,
-          removed =:removed
+          removed =:removed,
+          `type`=:`type`
           ";
 
             // prepare query statement
             $stmt = $this->conn->prepare($query);
 
+            $type="LEADER";
+            
             // bind parameters
             $stmt->bindParam(":team_id", $team_id);
             $stmt->bindParam(":player_id", $player_id);
             $stmt->bindParam(":removed", $removed);
+            $stmt->bindParam(":type", $type);
 
 
             // execute query

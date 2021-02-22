@@ -23,6 +23,8 @@ $(document).ready(function(){
             location.href = "Welcome.html";
           }
 
+          $('#team-content').hide();
+
           if(role == 3) {
             $('#edit-btn').show();
         } else {
@@ -72,6 +74,9 @@ $(document).ready(function(){
               Authorization: "Bearer " + token,
             },
             success: function (data) {
+
+              $('#team-content').show();
+
               // console.log(data);
                 if (data) {
                   const player = JSON.parse(data.player);
@@ -209,14 +214,9 @@ $(document).ready(function(){
       if (!token) {
         location.href = "Welcome.html";
       }
-      if(role <= 2) {
-        $('#host-btn').show();
-        $('#manage-btn').show();
-    } else {
       $('#manage-btn').hide();
-        $('#host-btn').hide();
-    }
-   
+      $('#host-btn').hide();
+        
       function eventItem(e, i) {
         var item = ` <a class="event-click" data-gametype="${e.gametype}" data-enddate="${e.event_end}" data-id="${e.event_id}" data-lastdate="${e.last_date_of_registration}" href="#" id="event-banner-${i}"><div class="event">
         <div style="width: 45rem; height: 5rem"></div>
@@ -285,6 +285,15 @@ $(document).ready(function(){
           Authorization: "Bearer " + token,
         },
         success: function (events) {
+
+          if(role <= 2) {
+            $('#host-btn').show();
+            $('#manage-btn').show();
+        } else {
+          $('#manage-btn').hide();
+            $('#host-btn').hide();
+        }
+
           if (events && events.length) {
             var list = events
               .map((e, i) => {
@@ -296,7 +305,8 @@ $(document).ready(function(){
           }
         },
         error: function () {
-          alert("An error ocurred.Please try again");
+          $("#event-page").hide();
+          alert("An error ocurred.Please try again");         
           // location.href = "Welcome.html";
         },
       });  

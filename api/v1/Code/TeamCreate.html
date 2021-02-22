@@ -96,7 +96,7 @@
             margin-bottom: 2rem;
           "
         >
-          <button class="btn btn-outline-light">BACK</button>
+          <button id="back-btn" class="btn btn-outline-light">BACK</button>
           <button id="team-submit" type="submit" class="btn btn-outline-light">
             CREATE
           </button>
@@ -106,12 +106,29 @@
 
     <script>
       $(document).ready(function () {
-        $("#team_form").submit(function (e) {
+        $("#back-btn").click(function (e) {
+          e.preventDefault();
+          history.back();
+        });
+
+        $("#team-submit").click(function (e) {
           e.preventDefault();
 
           var token = localStorage.getItem("token");
           var userid = localStorage.getItem("userid");
-          // console.log(userid);
+
+          if ($("#team-name").val() === "") {
+            alert("Team name required.");
+            return;
+          }
+          if ($("#region").val() === "") {
+            alert("Region required.");
+            return;
+          }
+          if ($("#description").val() === "") {
+            alert("Description required.");
+            return;
+          }
 
           var formData = new FormData(team_form);
           formData.append("create", "true");
@@ -131,8 +148,8 @@
             processData: false,
             success: function (response) {
               console.log(response);
-              teamid = response.team;
-              console.log(teamid);
+              // teamid = response.team;
+              // console.log(teamid);
 
               alert("Team Created");
             },
