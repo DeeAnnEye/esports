@@ -969,6 +969,75 @@ $(document).ready(function(){
       });
     }
 
+    if($('#aevent-page').length) {
+
+      var token = localStorage.getItem("token");
+      if (!token) {
+        location.href = "Welcome.html";
+      }
+
+      function eventItem(e, i) {
+
+        var createdDate =e.created; 
+        var cDate=createdDate.split(' ')[0];
+        var modifiedDate =e.modified; 
+        var mDate=modifiedDate.split(' ')[0];
+       
+          var tbldata = `
+          <tr>
+          <td class="list">${e.event_name}</td>
+          <td class="list">${cDate}</td>
+          <td class="list">${mDate}</td>
+          <td class="list">${e.event_start}</td>
+          <td class="list">00</td>
+          <td class="list">${e.region}</td>
+          <td
+            class="btn btn-outline-warning"
+            style="display: block; margin: auto"
+          >
+            Archive
+          </td>
+          <td
+            class="btn btn-outline-danger"
+            style="display: block; margin: auto"
+          >
+            BAN
+          </td>
+        </tr> 
+          `;
+         
+          $('#aevent-table tbody').append('<tr>'+tbldata+'</tr>');
+         
+        }
+     
+
+      $.ajax({
+        url: "../events.php",
+        type: "POST",
+        headers: {
+          "content-type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        success: function (data) {
+          // console.log(data);
+          if (data) {
+            if (data && data.length) {
+              var list = data
+                .map((e, i) => {
+                  return eventItem(e, i);
+                 })
+                  .join("");
+                  
+                }
+          }
+        },
+        error: function () {
+          alert("An error ocurred.Please try again");
+          // location.href = "Welcome.html";
+        },
+      });
+    }
+
   });
 
 
