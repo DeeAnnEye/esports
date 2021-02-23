@@ -718,6 +718,7 @@ $(document).ready(function(){
           success: function (response) {
             // console.log(response);
             location.reload();
+            // $('#myTableRow').remove();
           },
           error: function () {
             alert("An error ocurred.Please try again");
@@ -838,6 +839,8 @@ $(document).ready(function(){
           <td class="list">${cDate}</td>
           <td class="list">${u.team}</td>
           <td
+            id="ban-btn"
+            data-id=${u.user_id}
             class="btn btn-outline-danger"
             style="display: block; margin: auto"
           >
@@ -848,6 +851,26 @@ $(document).ready(function(){
           $('#auser-table tbody').append('<tr>'+tbldata+'</tr>');
          
         }
+
+        $(document).on('click','#ban-btn', function(e){
+          e.preventDefault();
+          var userId = $(this).attr('data-id'); 
+          $.ajax({
+            url: "../users.php?id=" + userId ,
+            type: "DELETE",
+            headers: {
+              "content-type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+            success: function (response) {
+              // console.log(response);
+              location.reload();
+            },
+            error: function () {
+              alert("An error ocurred.Please try again");
+            },
+          });
+        })
      
 
       $.ajax({

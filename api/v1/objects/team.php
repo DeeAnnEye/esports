@@ -125,7 +125,6 @@ class team
                 "event_id" => $row['event_id'],
                 "team_id" => $row['team_id'],
                 "player_id" => $row['player_id'],
-                "player_id" => $row['player_id'],
                 "removed" => $row['removed'],
                 "event_name" => $row['event_name'],
                 "event_start" => $row['event_start']                
@@ -157,7 +156,7 @@ class team
                 "player_id" => $row['player_id'],
                 "removed" => $row['removed'],
                 "joined" => $row['joined'],
-                "type" => $row['type'],
+                "ptype" => $row['ptype'],
                 "usertag" => $row['usertag']               
             );
             array_push($players, $player_item);
@@ -246,21 +245,23 @@ class team
           team_id=:team_id,
           player_id=:player_id,
           removed =:removed,
-          `type`=:`type`
+          ptype=:ptype
           ";
 
             // prepare query statement
             $stmt = $this->conn->prepare($query);
 
-            $type="LEADER";
+            $ptype='LEADER';
             
             // bind parameters
             $stmt->bindParam(":team_id", $team_id);
             $stmt->bindParam(":player_id", $player_id);
             $stmt->bindParam(":removed", $removed);
-            $stmt->bindParam(":type", $type);
+            $stmt->bindParam(":ptype", $ptype);
+           
+            // echo $query;
 
-
+        //    print_r($stmt->debugDumpParams());
             // execute query
             if($stmt->execute()){
             
@@ -276,6 +277,10 @@ class team
                     "Role Update" =>  $uptstmt->execute()
                 )
             );
+        }else{
+            echo json_encode(
+                array(
+                    "Player Insertion" => false));
         }
             // return $team_id;
         } catch (PDOException $e) {

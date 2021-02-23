@@ -47,6 +47,7 @@ class user
         $query = "SELECT u.*,tm.`name` as teamname from users u
         LEFT JOIN team_player t ON u.user_id = t.player_id
         LEFT JOIN teams tm ON t.team_id = tm.id 
+        WHERE u.active = 1
         order by usertag";
 
         // prepare query statement

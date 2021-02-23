@@ -181,7 +181,15 @@ class event
         // bind id of record to delete
         $stmt->bindParam(1, $id, PDO::PARAM_INT);
 
-        return json_encode(["success" => $stmt->execute()]);
+        // return json_encode(["success" => $stmt->execute()]);
+        if($stmt->execute()){
+            // set response code
+            http_response_code(200);
+            return json_encode(["success" => "true"]);
+        }else{
+             // set response code
+             http_response_code(400);
+        }
     }
 
     public function fileUpload(){
