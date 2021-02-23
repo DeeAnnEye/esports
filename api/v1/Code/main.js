@@ -1028,13 +1028,15 @@ $(document).ready(function(){
         })
         $(document).on('click','#add-btn', function(e){
           e.preventDefault();
-          
+
+          var image="./assets/img/nullimage.jpg";
+
           var formData = new FormData();
           formData.append("create", "true");
           formData.append("name", $('#name').val());
           formData.append("gametype", $('#gametype').val());
           formData.append("number_of_players", $('#playerno').val());
-          formData.append("image", null);
+          formData.append("image", image);
           formData.append("wallpaper", null);
 
           $.ajax({
