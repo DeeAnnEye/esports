@@ -1008,7 +1008,56 @@ $(document).ready(function(){
           $('#agame-table tbody').append('<tr>'+tbldata+'</tr>');
          
         }
-     
+
+        $(document).on('click','#addnew-btn', function(e){
+          e.preventDefault();
+          var tbldata = `
+          <tr>
+                <td class="list"><input type="text" placeholder="Game name.." id="name"></td>
+                <td class="list"><div contenteditable="false">-</div></td>
+                <td class="list"><input type="text" placeholder="Game type.." id="gametype"></td>
+                <td class="list"><input type="text" placeholder="No of players.." id="playerno"></td>
+                <td class="btn btn-outline-success" style="display: block; margin: auto;">IMAGE</td>
+                <td id="add-btn" class="btn btn-outline-warning" style="display: block; margin: auto;">ADD</td>
+                <td class="btn btn-outline-danger" style="display: block; margin: auto;">DELETE</td>
+            </tr>     
+          `;
+           
+          $('#agame-table tbody').append('<tr>'+tbldata+'</tr>');
+
+        })
+        $(document).on('click','#add-btn', function(e){
+          e.preventDefault();
+          
+          var formData = new FormData();
+          formData.append("create", "true");
+          formData.append("name", $('#name').val());
+          formData.append("gametype", $('#gametype').val());
+          formData.append("number_of_players", $('#playerno').val());
+          formData.append("image", null);
+          formData.append("wallpaper", null);
+
+          $.ajax({
+            url: "../games.php",
+            type: "POST",
+            data: formData,
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+            contentType: false,
+            mimeType: "multipart/form-data",
+            processData: false,
+            success: function (response) {
+              // console.log(response);
+              alert("Game Added");
+              location.reload();
+            },
+            error: function () {
+              alert("Error");
+            },
+          });
+
+        })
 
       $.ajax({
         url: "../games.php",
