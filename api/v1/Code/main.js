@@ -845,7 +845,7 @@ $(document).ready(function(){
             style="display: block; margin: auto"
           >
             BAN
-          </td>       
+          </td>
           `;
          
           $('#auser-table tbody').append('<tr>'+tbldata+'</tr>');
@@ -924,14 +924,34 @@ $(document).ready(function(){
                 <td class="list">00</td>
                 <td class="list">00</td>
                 <td class="list">${t.region}</td>
-                <td class="btn btn-outline-danger" style="display: block; margin: auto;">BAN</td>
+                <td id="ban-btn"
+                data-id=${t.id}
+                class="btn btn-outline-danger" style="display: block; margin: auto;">BAN</td>
             </tr>      
           `;
          
           $('#ateam-table tbody').append('<tr>'+tbldata+'</tr>');
          
         }
-     
+        $(document).on('click','#ban-btn', function(e){
+          e.preventDefault();
+          var teamId = $(this).attr('data-id'); 
+          $.ajax({
+            url: "../teams.php?id=" + teamId ,
+            type: "DELETE",
+            headers: {
+              "content-type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+            success: function (response) {
+              // console.log(response);
+              location.reload();
+            },
+            error: function () {
+              alert("An error ocurred.Please try again");
+            },
+          });
+        })
 
       $.ajax({
         url: "../teams.php",
