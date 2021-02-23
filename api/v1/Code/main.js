@@ -1001,7 +1001,7 @@ $(document).ready(function(){
                 <td class="list">${g.number_of_players}</td>
                 <td class="btn btn-outline-success" style="display: block; margin: auto;">IMAGE</td>
                 <td class="btn btn-outline-warning" style="display: block; margin: auto;">EDIT</td>
-                <td class="btn btn-outline-danger" style="display: block; margin: auto;">DELETE</td>
+                <td id="delete-btn" class="btn btn-outline-danger" style="display: block; margin: auto;">DELETE</td>
             </tr>     
           `;
          
@@ -1019,7 +1019,7 @@ $(document).ready(function(){
                 <td class="list"><input type="text" placeholder="No of players.." id="playerno"></td>
                 <td class="btn btn-outline-success" style="display: block; margin: auto;">IMAGE</td>
                 <td id="add-btn" class="btn btn-outline-warning" style="display: block; margin: auto;">ADD</td>
-                <td class="btn btn-outline-danger" style="display: block; margin: auto;">DELETE</td>
+               
             </tr>     
           `;
            
@@ -1059,6 +1059,26 @@ $(document).ready(function(){
             },
           });
 
+        })
+
+        $(document).on('click','#delete-btn', function(e){
+          e.preventDefault();
+          var teamId = $(this).attr('data-id'); 
+          $.ajax({
+            url: "../teams.php?id=" + teamId ,
+            type: "DELETE",
+            headers: {
+              "content-type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+            success: function (response) {
+              // console.log(response);
+              location.reload();
+            },
+            error: function () {
+              alert("An error ocurred.Please try again");
+            },
+          });
         })
 
       $.ajax({
