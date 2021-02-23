@@ -194,19 +194,23 @@ class event
 
     public function fileUpload(){
 
-        $target_dir = "./uploads/";
+        $target_dir = "./assets/uploads/";
 
         if(isset($_POST["rId"])) {
 
         if (!file_exists($target_dir.$_POST["userid"].'/'.$_POST["rId"])) {
             mkdir($target_dir.$_POST["userid"].'/'.$_POST["rId"], 0777, true);
-            $target_dir = $target_dir.$_POST["userid"].'/'.$_POST["rId"];
+            
         }
 
+        $target_dir = $target_dir.$_POST["userid"].'/'.$_POST["rId"];
         }        
         
-       
-        $target_file = $target_dir . $_POST['name'];
+        // print_r($_FILES['name']);
+               
+        $target_file = $target_dir.'/'. $_FILES['name']['name'];
+        // echo $target_file;
+        // return false;
         $uploadOk = 1;
         $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
         // Check if image file is a actual image or fake image
@@ -251,6 +255,9 @@ class event
             echo "Sorry, your file was not uploaded.";
         // if everything is ok, try to upload file
         } else {
+            // echo $_FILES["name"]["tmp_name"];
+            // echo $target_file;
+
             if (move_uploaded_file($_FILES["name"]["tmp_name"], $target_file)) {
                 // set response code
              http_response_code(200);

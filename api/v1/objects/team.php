@@ -251,7 +251,7 @@ class team
             // prepare query statement
             $stmt = $this->conn->prepare($query);
 
-            $ptype='LEADER';
+            $ptype="LEADER";
             
             // bind parameters
             $stmt->bindParam(":team_id", $team_id);
@@ -263,7 +263,12 @@ class team
 
         //    print_r($stmt->debugDumpParams());
             // execute query
-            if($stmt->execute()){
+            $exe = $stmt->execute();
+
+        //     print_r($exe);
+        //    echo json_encode(array("exe"=>$exe));
+        //    return false;
+            if($exe){
             
             $updatequery = "UPDATE users SET role = '3' where user_id='$player_id'";
 

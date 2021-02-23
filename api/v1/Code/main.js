@@ -348,7 +348,7 @@ $(document).ready(function(){
                 return myXhr;
             },
             success: function (data) {
-                // your callback here
+                alert("Image Uploaded");
             },
             error: function (error) {
                 // handle error
@@ -449,7 +449,7 @@ $(document).ready(function(){
         formData.append("last_date_of_registration", $('#last-date').val());
         formData.append("createdby", userid);
         formData.append("modifiedby", userid);
-        formData.append("image",'./uploads/'+userid+ '/'+rId+'/'+eventImage);
+        formData.append("image",'../assets/uploads/'+userid+ '/'+rId+'/'+ eventImage.replace('C:\\fakepath\\',''));
 
         $.ajax({
           url: "../events.php",
