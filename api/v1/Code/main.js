@@ -39,7 +39,7 @@ $(document).ready(function(){
           var tbldata = `
           <td class="tbltxt">${p.usertag}</td>
           <td class="tbltxt">${jDate}</td>
-          <td class="tbltxt">${p.type}</td>
+          <td class="tbltxt">${p.ptype}</td>
           <td><button class="btn btn-outline-danger">REMOVE</button></td>
           `;
 
@@ -64,6 +64,25 @@ $(document).ready(function(){
     
           $('#career-table tbody').append('<tr>'+tbldata+'</tr>');
         }
+
+        $("#edit-btn").click(function(e){
+
+          $("#team-name").prop('contentEditable',true);
+          $("#region").prop('contentEditable',true);
+          $("#description").prop('contentEditable',true);
+
+          $("#edit-btn").hide();
+
+          var updt = `
+          <button class="btn btn-outline-light">UPDATE</button>
+       `;
+
+        $("#updt-btn").empty().append(updt);       
+
+        })
+        $("#edit-btn").click(function(e){
+          
+        })
        
     
           $.ajax({
