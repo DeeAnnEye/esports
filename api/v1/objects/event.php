@@ -82,7 +82,7 @@ class event
     {
 
         // select all query
-        $query = "SELECT e.*, cu.gametype as gametype from events e left join games cu on cu.id=e.game and event_id=$id";
+        $query = "SELECT e.*, cu.gametype as gametype from events e left join games cu on cu.id=e.game where event_id=$id";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);

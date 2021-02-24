@@ -390,7 +390,14 @@ class user
     function playerExistsInTeam($id){
 
         // select all query
-        $query = "SELECT team_id from team_player where 1 and player_id=$id";
+        $query = "SELECT
+                  tp.team_id as team_id,
+                  t.`name` as teamname
+                  FROM
+                  team_player tp
+                  LEFT JOIN teams t
+                  ON t.id = tp.team_id
+                  where player_id=$id";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -406,7 +413,7 @@ class user
             // fetch details
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $team = $row['team_id'];
+            $team = $row['team_id'];            
 
             return $team;
 
@@ -417,6 +424,83 @@ class user
 
 
     }
+
+    function playerTeamName($id){
+
+        // select all query
+        $query = "SELECT
+                  tp.team_id as team_id,
+                  t.`name` as teamname
+                  FROM
+                  team_player tp
+                  LEFT JOIN teams t
+                  ON t.id = tp.team_id
+                  where player_id=$id";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+         // execute the query
+        $stmt->execute();
+
+        // get number of rows
+        $num = $stmt->rowCount();
+
+        if($num>0){
+
+            // fetch details
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $team = $row['teamname'];            
+
+            return $team;
+
+        }
+        else{
+            return false;
+        }
+
+
+    }
+
+    function playerTeamImage($id){
+
+        // select all query
+        $query = "SELECT
+                  tp.team_id as team_id,
+                  t.`image` as `image`
+                  FROM
+                  team_player tp
+                  LEFT JOIN teams t
+                  ON t.id = tp.team_id
+                  where player_id=$id";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+         // execute the query
+        $stmt->execute();
+
+        // get number of rows
+        $num = $stmt->rowCount();
+
+        if($num>0){
+
+            // fetch details
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $team = $row['image'];            
+
+            return $team;
+
+        }
+        else{
+            return false;
+        }
+
+
+    }
+
 
     
 }

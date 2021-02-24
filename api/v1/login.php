@@ -63,6 +63,8 @@ if ($email_exists && ($data->password == $user->password)) {
             "jwt" => $jwt,
             "role" => $role,
             "team" => $user->playerExistsInTeam($id),
+            "teamname" => $user->playerTeamName($id),
+            "teamimage" => $user->playerTeamImage($id),
             "permissions" => $resource->getPermissionsByRole($role)
         )
     );

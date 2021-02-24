@@ -4,6 +4,7 @@ $(document).ready(function(){
     var token = localStorage.getItem('token');
     var role = localStorage.getItem('role');
     var team = localStorage.getItem('team');
+    var teamname = localStorage.getItem("teamname");
     var evtId = null
     // console.log('Team',team);
     
@@ -81,7 +82,7 @@ $(document).ready(function(){
 
         })
         $("#edit-btn").click(function(e){
-          
+
         })
        
     
@@ -104,6 +105,8 @@ $(document).ready(function(){
 
                   var datetime = team.created; 
                   var date=datetime.split(' ')[0];
+
+                  localStorage.setItem("teamname", team.name);
 
                   $('#team-name').text(team.name);
                   $('#region').text(team.region);
@@ -592,7 +595,7 @@ $(document).ready(function(){
           Authorization: "Bearer " + token,
         },
         success: function (data) {
-          // console.log(data);
+          console.log(data);
           if (data) {
             const event = JSON.parse(data.event);
             const team = JSON.parse(data.team);
@@ -1194,6 +1197,110 @@ $(document).ready(function(){
           // location.href = "Welcome.html";
         },
       });
+    }
+    
+    if($('#eventreg-page').length){
+
+      var token = localStorage.getItem("token");
+      if (!token) {
+        location.href = "Welcome.html";
+      }
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const eventId = urlParams.get('id');
+
+      $("#back-btn").click(function(e){
+        e.preventDefault();
+        history.back();
+      })
+
+      
+
+      $.ajax({
+        url: "../events.php?id=" + eventId ,
+        type: "GET",
+        headers: {
+          "content-type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        success: function (data) {
+          // console.log(data);
+          var teamname = localStorage.getItem("teamname");
+          var teamimage = localStorage.getItem("teamimage");
+          //  console.log(teamimage);
+          if (data) {
+            const event = JSON.parse(data.event);
+            const team = JSON.parse(data.team);
+            $('#wallpaper').find('img').attr('src', event.image);
+            $('#event-name').text(event.event_name)
+            $('#event-start').text(event.event_start)
+            $('#region').text(event.region)
+            $('#teamname').text(teamname)
+            $('#pfp').find('img').attr('src', teamimage);
+
+
+            var playernum = event.category;
+            if(playernum == 1){
+            $("#teamreg").hide();
+            }else{
+              $("#teamreg").show();
+            }
+
+            if(playernum != 1){
+            for(var i=1;i<=playernum;i++){
+              // console.log("Hello");
+            var playerInput = `<input id="pl-${i}" class="inp pl-sm-4" type="text" placeholder="Player" />`;
+            $("#player-input").append(playerInput);  
+            }
+          }
+
+          $("#register-btn").click(function(e){
+            e.preventDefault();
+    
+    
+            if(playernum == 1){
+    
+            var userid = localStorage.getItem("userid");
+    
+            var formData = new FormData();
+            formData.append("playerevent", "true");
+            formData.append("player_id", userid);
+            formData.append("event_id", eventId);
+    
+            $.ajax({
+              url: "../events.php",
+              type: "POST",
+              data: formData,
+              headers: {
+                Authorization: "Bearer " + token,
+              },
+              contentType: false,
+              mimeType: "multipart/form-data",
+              processData: false,
+              success: function (response) {
+                // console.log(response);
+                alert("Registered Successfully");
+              },
+              error: function () {
+                alert("Error");
+              },
+            });
+            return false;
+    
+            }
+    
+            // console.log(formData);
+    
+          })
+            
+          }
+        },
+        error: function () {
+          alert("An error ocurred.Please try again");
+          // location.href = "Welcome.html";
+        },
+      });
+
     }
 
   });

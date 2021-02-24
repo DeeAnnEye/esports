@@ -251,16 +251,18 @@
               localStorage.setItem("token", result.jwt);
               localStorage.setItem("role", result.role);
               localStorage.setItem("team", result.team);
+              localStorage.setItem("teamname", result.teamname);
+              localStorage.setItem("teamimage", result.teamimage);
               localStorage.setItem("userid", result.userid);
 
               var role = localStorage.getItem("role");
+              
 
               if (role == 1) {
                 location.href = "Adminhome.html";
               } else {
                 location.href = "Home.html";
               }
-              // window.location.href = "home.html";
             },
             error: function () {
               alert("Login Failed");
