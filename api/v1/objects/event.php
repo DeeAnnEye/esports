@@ -481,6 +481,7 @@ class event
             // query to insert record
             $query = "INSERT INTO event_players SET
             event_id=:event_id,
+            team_id=:team_id,
             player_id=:player_id";
 
             // prepare query statement
@@ -488,6 +489,7 @@ class event
 
             // bind parameters
             $stmt->bindParam(":event_id", $data['event_id']);
+            $stmt->bindParam(":team_id", $data['team_id']);
             $stmt->bindParam(":player_id", $data['player_id']);
 
             // execute query

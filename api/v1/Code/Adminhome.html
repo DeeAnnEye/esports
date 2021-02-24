@@ -18,7 +18,7 @@
     <title>Admin</title>
   </head>
 
-  <body>
+  <body id="ahome-page">
     <!--Navbar-->
     <div
       class="navbar py-5"
@@ -159,7 +159,7 @@
         style="
           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
           font-size: 2rem;
-          margin-top: 5rem;
+          margin-top: 3rem;
           margin-left: 4rem;
           color: aqua;
           margin-bottom: 2rem;
@@ -168,29 +168,22 @@
         Moderator Request
       </h3>
 
-      <table class="table table-bordered" id="mod">
-        <tr>
-          <th class="head">USER</th>
-          <th class="head">ID</th>
-          <th class="head">DATE</th>
-        </tr>
-        <tr>
-          <td class="list">Player Name</td>
-          <td class="list">Player ID</td>
-          <td class="list">12/34/5678</td>
-        </tr>
-        <tr>
-          <td class="list">Player Name</td>
-          <td class="list">Player ID</td>
-          <td class="list">12/34/5678</td>
-        </tr>
+      <table class="table table-bordered" id="mod-table">
+        <tbody>
+          <tr>
+            <th class="head">USER</th>
+            <th class="head">ID</th>
+            <th class="head">SOCIAL ACC</th>
+          </tr>
+        </tbody>
       </table>
       <a href="Home.html">
         <button
           class="btn btn-dark"
           style="
-            position: absolute;
+            position: relative;
             bottom: 1rem;
+            margin-top: 2rem;
             background: rgba(0, 0, 0, 0.7);
           "
         >

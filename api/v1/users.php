@@ -58,6 +58,22 @@ switch ($_SERVER['REQUEST_METHOD']) {
         echo 'Access Denied!';
       }
     }
+    elseif (isset($post['modrequest'])) {
+
+      if ($token) {
+        echo $user->moderatorRequest($post);
+      } else {
+        echo 'Access Denied!';
+      }
+    }
+    elseif (isset($post['reqplayers'])) {
+
+      if ($token) {
+        echo $user->getUserRequests();
+      } else {
+        echo 'Access Denied!';
+      }
+    }
     // get all users
     else {
       if ($token) {

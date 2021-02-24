@@ -26,7 +26,7 @@ $(document).ready(function(){
 
           $('#team-content').hide();
 
-          if(role == 3) {
+          if(role <= 3) {
             $('#edit-btn').show();
         } else {
             $('#edit-btn').hide();
@@ -333,8 +333,7 @@ $(document).ready(function(){
         },
       });  
       
-    }
-       
+    }       
 
     if($('#eventhost-page').length){
 
@@ -370,7 +369,7 @@ $(document).ready(function(){
                 return myXhr;
             },
             success: function (data) {
-                alert("Image Uploaded");
+                // alert("Image Uploaded");
             },
             error: function (error) {
                 // handle error
@@ -387,7 +386,7 @@ $(document).ready(function(){
       $(document).on('click','#image-upload', function(e){
         e.preventDefault();
         var file = $('#image-file-1')[0].files[0];
-        console.log(file)
+        // console.log(file)
         doUpload(file);
       }).on('click','#create-event-btn',function(e){
         e.preventDefault();
@@ -1288,6 +1287,59 @@ $(document).ready(function(){
             return false;
     
             }    
+            else{
+
+              var team = localStorage.getItem('team');
+
+              var formData = new FormData();
+              formData.append("teamevent", "true");
+              formData.append("team_id", team);
+              formData.append("event_id", eventId);
+      
+              $.ajax({
+                url: "../events.php",
+                type: "POST",
+                data: formData,
+                headers: {
+                  Authorization: "Bearer " + token,
+                },
+                contentType: false,
+                mimeType: "multipart/form-data",
+                processData: false,
+                success: function (response) {
+
+                  for(var i=1;i<=playernum;i++){
+
+                    // var playerId = $("pl-"+i}).val();
+                    console.log(playerId);
+                  
+                  $.ajax({
+                    url: "../events.php",
+                    type: "POST",
+                    data: formData,
+                    headers: {
+                      Authorization: "Bearer " + token,
+                    },
+                    contentType: false,
+                    mimeType: "multipart/form-data",
+                    processData: false,
+                    success: function (response) {
+                      
+                    },
+                    error: function () {
+                      alert("Sorry,couldn't register");
+                    },
+                  });
+                }
+
+                },
+                error: function () {
+                  alert("Sorry,couldn't register");
+                },
+              });
+              return false;
+      
+            }
           })
             
           }
@@ -1297,6 +1349,57 @@ $(document).ready(function(){
           // location.href = "Welcome.html";
         },
       });
+
+    }
+
+    if($('#ahome-page').length) {
+
+      var token = localStorage.getItem("token");
+      if (!token) {
+        location.href = "Welcome.html";
+      }
+
+      function userItem(m, i) {
+  
+          var tbldata = `          
+          <td class="list">${m.usertag}</td>
+          <td class="list">${m.user_id}</td>
+          <td class="list">${m.social_acc}</td>
+          `;
+         
+          $('#mod-table tbody').append('<tr>'+tbldata+'</tr>');
+         
+        }
+
+        var form = new FormData();
+        form.append("reqplayers", "true");
+
+        $.ajax({
+          url: "../users.php",
+          type: "POST",
+          data:form,
+          "processData": false,
+          "mimeType": "multipart/form-data",
+          "contentType": false,
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+          success: function (data) {
+            const modplayers = JSON.parse(data);
+            console.log(modplayers);
+            if (modplayers && modplayers.length) {
+              var list = modplayers
+                .map((m, i) => {
+                  return userItem(m, i);
+                 })
+                  .join("");
+                }
+          },
+          error: function () {
+            alert("An error ocurred.Please try again");
+            // location.href = "Welcome.html";
+          },
+        });
 
     }
 

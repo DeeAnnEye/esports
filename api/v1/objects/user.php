@@ -48,7 +48,7 @@ class user
         LEFT JOIN team_player t ON u.user_id = t.player_id
         LEFT JOIN teams tm ON t.team_id = tm.id 
         WHERE u.active = 1
-        order by usertag";
+        order by user_id";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -464,7 +464,7 @@ class user
     }
 
     function playerTeamImage($id){
-
+        
         // select all query
         $query = "SELECT
                   tp.team_id as team_id,
@@ -501,6 +501,69 @@ class user
 
     }
 
+    function moderatorRequest($id){
 
+        // query for request
+        $query = "update users set mod_request=0 where 1 and user_id= ?";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // bind id of record to delete
+        $stmt->bindParam(1, $id, PDO::PARAM_INT);
+
+         // execute query
+         if ($stmt->execute()) {
+
+            // set response code
+            http_response_code(200);
+
+            echo json_encode(array("request" => "True"));
+        } else {
+
+            // set response code
+            http_response_code(400);
+            echo json_encode(array("request" => "False"));
+        }
+
+
+
+    }
+
+    public function getUserRequests()
+    {
+
+        // select all query
+        $query = "SELECT * from users where 1 and mod_request=1";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        if( $stmt->execute()){
+            http_response_code(200);
+        }
+        else{
+            http_response_code(400);
+        }
+ 
+         $users = [];
+ 
+         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+             // extract row
+             // this will make $row['name'] to
+             // just $name only
+ 
+             $user_item = array(
+                 "user_id" => $row['user_id'],
+                 "usertag" => $row['usertag'],
+                 "social_acc" => $row['social_acc']
+             );
+ 
+             array_push($users, $user_item);
+         }
+         
+         return json_encode($users);
+    }
     
 }
