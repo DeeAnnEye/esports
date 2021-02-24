@@ -1403,6 +1403,122 @@ $(document).ready(function(){
 
     }
 
+    if($('#arole-page').length) {
+
+      var token = localStorage.getItem("token");
+      if (!token) {
+        location.href = "Welcome.html";
+      }
+
+      function roleItem(r, i) {
+
+        var createdDate = r.created; 
+        var cDate=createdDate.split(' ')[0];
+
+        var role = r.role;
+
+        if(role == 1){
+  
+        var tbldata = `          
+          <td class="list">${r.usertag}</td>
+          <td class="list">${cDate}</td>
+          <td class="list">Y</td>
+          <td class="list">-</td>
+          <td class="list">-</td>
+          <td
+            class="btn btn-outline-warning"
+            style="display: block; margin: auto"
+          >
+            UPDATE
+          </td>
+        `;
+       
+        $('#role-table tbody').append('<tr>'+tbldata+'</tr>');
+        }
+        else if(role == 2){
+  
+          var tbldata = `          
+            <td class="list">${r.usertag}</td>
+            <td class="list">${cDate}</td>
+            <td class="list">-</td>
+            <td class="list">Y</td>
+            <td class="list">-</td>
+            <td
+              class="btn btn-outline-warning"
+              style="display: block; margin: auto"
+            >
+              UPDATE
+            </td>
+          `;
+         
+          $('#role-table tbody').append('<tr>'+tbldata+'</tr>');
+          }
+          else if(role == 3){
+  
+            var tbldata = `          
+              <td class="list">${r.usertag}</td>
+              <td class="list">${cDate}</td>
+              <td class="list">-</td>
+              <td class="list">-</td>
+              <td class="list">Y</td>
+              <td
+                class="btn btn-outline-warning"
+                style="display: block; margin: auto"
+              >
+                UPDATE
+              </td>
+            `;
+           
+            $('#role-table tbody').append('<tr>'+tbldata+'</tr>');
+            }
+            else{
+              var tbldata = `          
+              <td class="list">${r.usertag}</td>
+              <td class="list">${cDate}</td>
+              <td class="list">-</td>
+              <td class="list">-</td>
+              <td class="list">-</td>
+              <td
+                class="btn btn-outline-warning"
+                style="display: block; margin: auto"
+              >
+                UPDATE
+              </td>
+            `;
+           
+            $('#role-table tbody').append('<tr>'+tbldata+'</tr>');
+            }
+       
+      }
+
+      $.ajax({
+        url: "../users.php",
+        type: "POST",
+        headers: {
+          "content-type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        success: function (data) {
+          console.log(data);
+          if (data) {
+            // const user = JSON.parse(data);
+            if (data && data.length) {
+              var list = data
+                .map((r, i) => {
+                  return roleItem(r, i);
+                 })
+                  .join("");
+                  
+                }
+          }
+        },
+        error: function () {
+          alert("An error ocurred.Please try again");
+          // location.href = "Welcome.html";
+        },
+      });
+    }
+
   });
 
 
