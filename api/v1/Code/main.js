@@ -1282,15 +1282,12 @@ $(document).ready(function(){
                 alert("Registered Successfully");
               },
               error: function () {
-                alert("Error");
+                alert("Sorry,couldn't register");
               },
             });
             return false;
     
-            }
-    
-            // console.log(formData);
-    
+            }    
           })
             
           }

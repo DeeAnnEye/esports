@@ -455,7 +455,19 @@ class event
             $stmt->bindParam(":player_id", $data['player_id']);
 
             // execute query
-            return json_encode(["success" => $stmt->execute()]);
+            if ($stmt->execute()) {
+
+                // set response code
+                http_response_code(200);
+
+                echo json_encode(array("message" => "True"));
+            } else {
+
+                // set response code
+                http_response_code(400);
+                echo json_encode(array("message" => "False"));
+            }
+        
         } catch (PDOException $e) {
             throw $e;
         }
