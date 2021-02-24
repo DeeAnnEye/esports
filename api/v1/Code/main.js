@@ -656,6 +656,7 @@ $(document).ready(function(){
 
     if($('#user-page').length){
       var token = localStorage.getItem("token");
+      var userid = localStorage.getItem("userid");
       if (!token) {
         location.href = "Welcome.html";
       }
@@ -669,8 +670,47 @@ $(document).ready(function(){
         e.preventDefault();
         history.back();
       })
+
+      var role = localStorage.getItem('role');
+      if(role>2){
+        $("#mod-btn").show();
+      }else{
+        $("#mod-btn").hide();
+      }
+
+      $("#mod-btn").click(function(e){
+        e.preventDefault();
+
+        var form = new FormData();
+        form.append("modrequest", "true");
+        // console.log(userid);
+
+        $.ajax({
+          url: "../users.php?id=" + userid ,
+          type: "POST",
+          data:form,
+          "processData": false,
+          "mimeType": "multipart/form-data",
+          "contentType": false,
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+          success: function (response) {
+            console.log(response);
+            alert("Moderator request sent.");
+            var btn = document.getElementById("mod-btn");
+            btn.value = 'mod-request'; 
+            btn.innerHTML = 'Moderator Request Sent';
+            $("#mod-btn").prop('disabled',true);
+          },
+          error: function () {
+            alert("An error ocurred.Please try again");
+            // location.href = "Welcome.html";
+          },
+        });        
+      })
       
-      var userid = localStorage.getItem("userid");
+      
       $.ajax({
         url: "../users.php?id=" + userid ,
         type: "GET",
@@ -679,7 +719,7 @@ $(document).ready(function(){
           Authorization: "Bearer " + token,
         },
         success: function (data) {
-          console.log(data);
+          // console.log(data);
           if (data) {
             $('#box').find('img').attr('src', data.image)
             $('#username').text(data.usertag)
@@ -689,6 +729,13 @@ $(document).ready(function(){
             $('#teamname').text(data.teamname)
             $('#email').text(data.email)
             $('#phone').text(data.phone)
+
+            var req = data.mod_request;
+            if(req != 1){
+              $("#mod-btn").show();
+            }else{
+              $("#mod-btn").hide();
+            }
           }
         },
         error: function () {
@@ -1365,6 +1412,12 @@ $(document).ready(function(){
           <td class="list">${m.usertag}</td>
           <td class="list">${m.user_id}</td>
           <td class="list">${m.social_acc}</td>
+          <td
+            class="btn btn-outline-warning"
+            style="display: block; margin: auto"
+          >
+            UPDATE
+          </td>
           `;
          
           $('#mod-table tbody').append('<tr>'+tbldata+'</tr>');

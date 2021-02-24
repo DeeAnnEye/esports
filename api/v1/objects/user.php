@@ -463,6 +463,38 @@ class user
 
     }
 
+    function userStatus($id){
+
+        // select all query
+        $query = "SELECT active FROM `users` where user_id =$id";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+         // execute the query
+        $stmt->execute();
+
+        // get number of rows
+        $num = $stmt->rowCount();
+
+        if($num>0){
+
+            // fetch details
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $status = $row['active'];            
+
+            return $status;
+
+        }
+        else{
+            return false;
+        }
+
+
+    }
+
+
     function playerTeamImage($id){
         
         // select all query
@@ -504,29 +536,12 @@ class user
     function moderatorRequest($id){
 
         // query for request
-        $query = "update users set mod_request=0 where 1 and user_id= ?";
-
+        $query = "update users set mod_request=1 where 1 and user_id=$id";
+ 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
 
-        // bind id of record to delete
-        $stmt->bindParam(1, $id, PDO::PARAM_INT);
-
-         // execute query
-         if ($stmt->execute()) {
-
-            // set response code
-            http_response_code(200);
-
-            echo json_encode(array("request" => "True"));
-        } else {
-
-            // set response code
-            http_response_code(400);
-            echo json_encode(array("request" => "False"));
-        }
-
-
+        return json_encode(["success" => $stmt->execute()]);
 
     }
 

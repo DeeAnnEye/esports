@@ -61,7 +61,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
     elseif (isset($post['modrequest'])) {
 
       if ($token) {
-        echo $user->moderatorRequest($post);
+        $id =  $_GET['id'];
+        echo $user->moderatorRequest($id);
       } else {
         echo 'Access Denied!';
       }

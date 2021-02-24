@@ -254,14 +254,19 @@
               localStorage.setItem("teamname", result.teamname);
               localStorage.setItem("teamimage", result.teamimage);
               localStorage.setItem("userid", result.userid);
+              localStorage.setItem("status", result.status);
 
               var role = localStorage.getItem("role");
-              
+              var status = localStorage.getItem("status");
 
-              if (role == 1) {
-                location.href = "Adminhome.html";
+              if (status == 1) {
+                if (role == 1) {
+                  location.href = "Adminhome.html";
+                } else {
+                  location.href = "Home.html";
+                }
               } else {
-                location.href = "Home.html";
+                alert("You've been banned!");
               }
             },
             error: function () {

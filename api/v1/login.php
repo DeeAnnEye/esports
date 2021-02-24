@@ -62,6 +62,7 @@ if ($email_exists && ($data->password == $user->password)) {
             "userid" => $id,
             "jwt" => $jwt,
             "role" => $role,
+            "status" =>$user->userStatus($id),
             "team" => $user->playerExistsInTeam($id),
             "teamname" => $user->playerTeamName($id),
             "teamimage" => $user->playerTeamImage($id),
