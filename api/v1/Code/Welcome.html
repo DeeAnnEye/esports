@@ -246,8 +246,7 @@
             contentType: "application/json",
             data: form_data,
             success: function (result) {
-              // console.log(result);
-              // alert("Login Successful");
+              
               localStorage.setItem("token", result.jwt);
               localStorage.setItem("role", result.role);
               localStorage.setItem("team", result.team);

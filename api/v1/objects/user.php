@@ -545,6 +545,18 @@ class user
 
     }
 
+    function updateModRole($id){
+
+        // query for request
+        $query = "update users set role=2,mod_request=0 where 1 and user_id=$id";
+ 
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        return json_encode(["success" => $stmt->execute()]);
+
+    }
+
     public function getUserRequests()
     {
 

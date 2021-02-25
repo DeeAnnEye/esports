@@ -1413,16 +1413,43 @@ $(document).ready(function(){
           <td class="list">${m.user_id}</td>
           <td class="list">${m.social_acc}</td>
           <td
+            id="updt-btn"
             class="btn btn-outline-warning"
             style="display: block; margin: auto"
+            data-id=${m.user_id}
           >
-            UPDATE
+            Update Role
           </td>
           `;
          
           $('#mod-table tbody').append('<tr>'+tbldata+'</tr>');
          
         }
+
+        $(document).on('click','#updt-btn', function(e){
+          e.preventDefault();
+          var form = new FormData();
+        form.append("updatemodrole", "true");
+          var userId = $(this).attr('data-id'); 
+          $.ajax({
+            url: "../users.php?id=" + userId ,
+            type: "POST",
+            data:form,
+            "processData": false,
+            "mimeType": "multipart/form-data",
+            "contentType": false,
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+            success: function (response) {
+              console.log(response);
+              location.reload();
+            },
+            error: function () {
+              alert("An error ocurred.Please try again");
+            },
+          });
+        })
 
         var form = new FormData();
         form.append("reqplayers", "true");

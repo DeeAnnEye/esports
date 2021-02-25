@@ -67,6 +67,16 @@ switch ($_SERVER['REQUEST_METHOD']) {
         echo 'Access Denied!';
       }
     }
+    elseif (isset($post['updatemodrole'])) {
+
+      if ($token) {
+        $id =  $_GET['id'];
+        echo $user->updateModRole($id);
+      } else {
+        echo 'Access Denied!';
+      }
+    }
+
     elseif (isset($post['reqplayers'])) {
 
       if ($token) {
