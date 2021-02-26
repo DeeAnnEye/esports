@@ -1190,6 +1190,36 @@ $(document).ready(function(){
         var cDate=createdDate.split(' ')[0];
         var modifiedDate =e.modified; 
         var mDate=modifiedDate.split(' ')[0];
+
+        if(e.archive == 1){
+          var tbldata = `
+          <tr>
+          <td class="list">${e.event_name}</td>
+          <td class="list">${cDate}</td>
+          <td class="list">${mDate}</td>
+          <td class="list">${e.event_start}</td>
+          <td class="list">00</td>
+          <td class="list">${e.region}</td>
+          <td
+            id="archive-btn"
+            data-id="${e.event_id}"
+            class="btn btn-warning disabled"
+            style="display: block; margin: auto;"
+           
+          >
+            Archived
+          </td>
+          <td
+            class="btn btn-outline-danger"
+            style="display: block; margin: auto"
+          >
+            BAN
+          </td>
+        </tr> 
+          `;
+         
+          $('#aevent-table tbody').append('<tr>'+tbldata+'</tr>');
+        }else{
        
           var tbldata = `
           <tr>
@@ -1200,6 +1230,8 @@ $(document).ready(function(){
           <td class="list">00</td>
           <td class="list">${e.region}</td>
           <td
+            id="archive-btn"
+            data-id="${e.event_id}"
             class="btn btn-outline-warning"
             style="display: block; margin: auto"
           >
@@ -1215,10 +1247,42 @@ $(document).ready(function(){
           `;
          
           $('#aevent-table tbody').append('<tr>'+tbldata+'</tr>');
+        }
          
         }
-     
 
+        // request to archive event
+        $(document).on('click','#archive-btn', function(e){
+          e.preventDefault();
+          
+           // form input for request
+        var form = new FormData();
+        var eventId = $(this).attr('data-id'); 
+        form.append("archiveevent", "true");
+       
+        // request to archive event
+        $.ajax({
+          url: "../events.php?id=" + eventId ,
+          type: "POST",
+          data:form,
+          "processData": false,
+          "mimeType": "multipart/form-data",
+          "contentType": false,
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+          success: function (response) {
+            console.log(response);
+            alert("Event archived");
+            location.reload();
+          },
+          error: function () {
+            alert("An error ocurred.Please try again");
+          },
+        });
+        })
+
+    //  request to fetch events
       $.ajax({
         url: "../events.php",
         type: "POST",
@@ -1227,7 +1291,7 @@ $(document).ready(function(){
           Authorization: "Bearer " + token,
         },
         success: function (data) {
-          // console.log(data);
+          console.log(data);
           if (data) {
             if (data && data.length) {
               var list = data

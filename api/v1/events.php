@@ -84,6 +84,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
         echo 'Access Denied!';
       }
     }
+    elseif (isset($post['archiveevent'])) {
+
+      if ($token) {
+        $id =  $_GET['id'];
+        echo $event->archiveEvent($id);
+      } else {
+        echo 'Access Denied!';
+      }
+    }
     elseif (isset($post['playerevent'])) {
 
       if ($token) {
