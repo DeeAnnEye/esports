@@ -545,6 +545,24 @@ class user
 
     }
 
+    function updateRole($id,$data){
+
+        // query for request
+        $query = "update users set
+         role = :role
+         where user_id=$id;";
+ 
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        $this->role = htmlspecialchars(strip_tags($data['role']));
+
+        $stmt->bindParam(":role", $this->role);
+
+        return json_encode(["success" => $stmt->execute()]);
+
+    }
+
     function updateModRole($id){
 
         // query for request

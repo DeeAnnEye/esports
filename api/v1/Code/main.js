@@ -1292,6 +1292,8 @@ $(document).ready(function(){
               $("#teamreg").show();
             }
 
+            // $("#player-input").hide();
+
             if(playernum != 1){
             for(var i=1;i<=playernum;i++){
               // console.log("Hello");
@@ -1502,12 +1504,14 @@ $(document).ready(function(){
         var tbldata = `          
           <td class="list">${r.usertag}</td>
           <td class="list">${cDate}</td>
-          <td class="list">Y</td>
-          <td class="list">-</td>
-          <td class="list">-</td>
+          <td class="list" contentEditable>Y</td>
+          <td class="list" contentEditable>-</td>
+          <td class="list" contentEditable>-</td>
           <td
+          id="update-btn"
             class="btn btn-outline-warning"
             style="display: block; margin: auto"
+            data-id=${r.user_id}
           >
             UPDATE
           </td>
@@ -1520,12 +1524,14 @@ $(document).ready(function(){
           var tbldata = `          
             <td class="list">${r.usertag}</td>
             <td class="list">${cDate}</td>
-            <td class="list">-</td>
-            <td class="list">Y</td>
-            <td class="list">-</td>
+            <td class="list" contentEditable>-</td>
+            <td class="list" contentEditable>Y</td>
+            <td class="list" contentEditable>-</td>
             <td
+              id="update-btn"
               class="btn btn-outline-warning"
               style="display: block; margin: auto"
+              data-id=${r.user_id}
             >
               UPDATE
             </td>
@@ -1538,12 +1544,14 @@ $(document).ready(function(){
             var tbldata = `          
               <td class="list">${r.usertag}</td>
               <td class="list">${cDate}</td>
-              <td class="list">-</td>
-              <td class="list">-</td>
-              <td class="list">Y</td>
+              <td class="list" contentEditable>-</td>
+              <td class="list" contentEditable>-</td>
+              <td class="list" contentEditable>Y</td>
               <td
+              id="update-btn"
                 class="btn btn-outline-warning"
                 style="display: block; margin: auto"
+                data-id=${r.user_id}
               >
                 UPDATE
               </td>
@@ -1555,12 +1563,14 @@ $(document).ready(function(){
               var tbldata = `          
               <td class="list">${r.usertag}</td>
               <td class="list">${cDate}</td>
-              <td class="list">-</td>
-              <td class="list">-</td>
-              <td class="list">-</td>
+              <td class="list" contentEditable>-</td>
+              <td class="list" contentEditable>-</td>
+              <td class="list" contentEditable>-</td>
               <td
+              id="update-btn"
                 class="btn btn-outline-warning"
                 style="display: block; margin: auto"
+                data-id=${r.user_id}
               >
                 UPDATE
               </td>
@@ -1570,7 +1580,60 @@ $(document).ready(function(){
             }
        
       }
+     
+      $("#role-table").on('click','#update-btn', function(e){
+        e.preventDefault();
 
+        // getting value of each cell
+         var currentRow=$(this).closest("tr");          
+         var col1=currentRow.find("td:eq(2)").text(); 
+         var col2=currentRow.find("td:eq(3)").text();
+         var col3=currentRow.find("td:eq(4)").text();
+
+         if(col1 == "Y"){
+           var role = 1;
+         }else if(col2 == "Y"){
+          var role = 2;
+         }else if(col3 == "Y"){
+          var role = 3;
+         }
+         else{
+           var role = 4;
+         }
+        
+
+               
+        // form input for request
+        var form = new FormData();
+        var userId = $(this).attr('data-id'); 
+        form.append("updaterole", "true");
+        form.append("role", role);       
+
+
+        // request for updating user role
+        $.ajax({
+          url: "../users.php?id=" + userId ,
+          type: "POST",
+          data:form,
+          "processData": false,
+          "mimeType": "multipart/form-data",
+          "contentType": false,
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+          success: function (response) {
+            // console.log(response);
+            location.reload();
+          },
+          error: function () {
+            alert("An error ocurred.Please try again");
+          },
+        });
+        // request end
+
+      })
+
+      // request to fetch users
       $.ajax({
         url: "../users.php",
         type: "POST",
@@ -1579,7 +1642,7 @@ $(document).ready(function(){
           Authorization: "Bearer " + token,
         },
         success: function (data) {
-          console.log(data);
+          // console.log(data);
           if (data) {
             // const user = JSON.parse(data);
             if (data && data.length) {
@@ -1594,9 +1657,10 @@ $(document).ready(function(){
         },
         error: function () {
           alert("An error ocurred.Please try again");
-          // location.href = "Welcome.html";
         },
       });
+      // request end
+
     }
 
   });
