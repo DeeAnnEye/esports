@@ -1307,6 +1307,7 @@ $(document).ready(function(){
           </td>
           <td
             id="ban-btn"
+            data-id="${e.event_id}"
             class="btn btn-outline-danger"
             style="display: block; margin: auto"
           >
@@ -1354,12 +1355,9 @@ $(document).ready(function(){
          // request to archive event
          $(document).on('click','#ban-btn', function(e){
           e.preventDefault();
-          
-           // form input for request
-        // var form = new FormData();
+
         var eventId = $(this).attr('data-id'); 
-        // form.append("archiveevent", "true");
-       
+        
         // request to archive event
         $.ajax({
           url: "../events.php?id=" + eventId ,
@@ -1650,7 +1648,6 @@ $(document).ready(function(){
 
     }
 
-    // todo: change contenteditable
     if($('#arole-page').length) {
 
       var token = localStorage.getItem("token");
