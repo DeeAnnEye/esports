@@ -1670,14 +1670,16 @@ $(document).ready(function(){
         var tbldata = `          
           <td class="list">${r.usertag}</td>
           <td class="list">${cDate}</td>
-          <td class="list" contentEditable>Y</td>
-          <td class="list" contentEditable>-</td>
-          <td class="list" contentEditable>-</td>
+          <td class="list">Y</td>
+          <td class="list">-</td>
+          <td class="list">-</td>
+          <td id="edit-btn" data-id="${r.user_id}" class="btn btn-outline-warning" style="display: block; margin: auto;">EDIT</td>
           <td
           id="update-btn"
-            class="btn btn-outline-warning"
+            class="btn btn-outline-primary"
             style="display: block; margin: auto"
             data-id=${r.user_id}
+            hidden
           >
             UPDATE
           </td>
@@ -1690,14 +1692,16 @@ $(document).ready(function(){
           var tbldata = `          
             <td class="list">${r.usertag}</td>
             <td class="list">${cDate}</td>
-            <td class="list" contentEditable>-</td>
-            <td class="list" contentEditable>Y</td>
-            <td class="list" contentEditable>-</td>
+            <td class="list">-</td>
+            <td class="list">Y</td>
+            <td class="list">-</td>
+            <td id="edit-btn" data-id="${r.user_id}" class="btn btn-outline-warning" style="display: block; margin: auto;">EDIT</td>
             <td
               id="update-btn"
-              class="btn btn-outline-warning"
+              class="btn btn-outline-primary"
               style="display: block; margin: auto"
               data-id=${r.user_id}
+              hidden
             >
               UPDATE
             </td>
@@ -1710,14 +1714,16 @@ $(document).ready(function(){
             var tbldata = `          
               <td class="list">${r.usertag}</td>
               <td class="list">${cDate}</td>
-              <td class="list" contentEditable>-</td>
-              <td class="list" contentEditable>-</td>
-              <td class="list" contentEditable>Y</td>
+              <td class="list">-</td>
+              <td class="list">-</td>
+              <td class="list">Y</td>
+              <td id="edit-btn" data-id="${r.user_id}" class="btn btn-outline-warning" style="display: block; margin: auto;">EDIT</td>
               <td
               id="update-btn"
-                class="btn btn-outline-warning"
+                class="btn btn-outline-primary"
                 style="display: block; margin: auto"
                 data-id=${r.user_id}
+                hidden
               >
                 UPDATE
               </td>
@@ -1729,14 +1735,16 @@ $(document).ready(function(){
               var tbldata = `          
               <td class="list">${r.usertag}</td>
               <td class="list">${cDate}</td>
-              <td class="list" contentEditable>-</td>
-              <td class="list" contentEditable>-</td>
-              <td class="list" contentEditable>-</td>
+              <td class="list">-</td>
+              <td class="list">-</td>
+              <td class="list">-</td>
+              <td id="edit-btn" data-id="${r.user_id}" class="btn btn-outline-warning" style="display: block; margin: auto;">EDIT</td>
               <td
                 id="update-btn"
-                class="btn btn-outline-warning"
+                class="btn btn-outline-primary"
                 style="display: block; margin: auto"
                 data-id=${r.user_id}
+                hidden
               >
                 UPDATE
               </td>
@@ -1746,15 +1754,32 @@ $(document).ready(function(){
             }
        
       }
+
+      $(document).on('click','#edit-btn', function(e){
+        e.preventDefault();
+
+        $(this).hide();
+                  
+        var currentTD = $(this).closest("tr");
+          currentTD.find("td:eq(2)").prop('contenteditable', true)
+          currentTD.find("td:eq(3)").prop('contenteditable', true)
+          currentTD.find("td:eq(4)").prop('contenteditable', true)   
+
+          currentTD.find("#update-btn").prop('hidden', false)
+
      
       $("#role-table").on('click','#update-btn', function(e){
         e.preventDefault();
 
-        // getting value of each cell
-         var currentRow=$(this).closest("tr");          
-         var col1=currentRow.find("td:eq(2)").text(); 
-         var col2=currentRow.find("td:eq(3)").text();
-         var col3=currentRow.find("td:eq(4)").text();
+        // getting value of each cell     
+         var col1=currentTD.find("td:eq(2)").text(); 
+         var col2=currentTD.find("td:eq(3)").text();
+         var col3=currentTD.find("td:eq(4)").text();
+
+         if((col1 == 'Y' && col2 == '-' && col3 == '-')||
+            (col1 == '-' && col2 == 'Y' && col3 == '-')||
+            (col1 == '-' && col2 == '-' && col3 == 'Y')||
+            (col1 == '-' && col2 == '-' && col3 == '-')){
 
          if(col1 == "Y"){
            var role = 1;
@@ -1766,17 +1791,14 @@ $(document).ready(function(){
          else{
            var role = 4;
          }
-        
 
-               
-        // form input for request
+           // form input for request
         var form = new FormData();
         var userId = $(this).attr('data-id'); 
         form.append("updaterole", "true");
-        form.append("role", role);       
+        form.append("role", role);
 
-
-        // request for updating user role
+          // request for updating user role
         $.ajax({
           url: "../users.php?id=" + userId ,
           type: "POST",
@@ -1788,7 +1810,7 @@ $(document).ready(function(){
             Authorization: "Bearer " + token,
           },
           success: function (response) {
-            // console.log(response);
+            alert("Role updated");
             location.reload();
           },
           error: function () {
@@ -1797,7 +1819,12 @@ $(document).ready(function(){
         });
         // request end
 
+        }
+        else{
+          alert("Couldn't update role! Multiple roles assigned.");
+        }      
       })
+    })
 
       // request to fetch users
       $.ajax({
