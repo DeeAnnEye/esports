@@ -12,6 +12,7 @@ class game{
     public $wallpaper;
     public $gametype;
     public $number_of_players;
+    public $removed;
     public $created;
 
     
@@ -25,7 +26,7 @@ class game{
     {
 
         // select all query
-        $query = "SELECT * from games where 1 order by name";
+        $query = "SELECT * from games where removed=0 order by name";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -52,7 +53,8 @@ class game{
                 "wallpaper" => $row['wallpaper'],
                 "gametype" => $row['gametype'],
                 "number_of_players" => $row['number_of_players'],
-                "created" => $row['created']
+                "created" => $row['created'],
+                "removed" => $row['removed']
             );
 
             array_push($games, $game_item);
@@ -78,6 +80,21 @@ class game{
         return json_encode($game);
     }
 
+    public function deleteGame($id)
+    {
+
+        //  query to inactivate
+        $query = "update games set removed=1 where 1 and id = ?";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // bind id of record to delete
+        $stmt->bindParam(1, $id, PDO::PARAM_INT);
+
+        return json_encode(["success" => $stmt->execute()]);
+    }
+
     public function createGame($data)
     {
 
@@ -90,7 +107,8 @@ class game{
                  image=:image,
                  wallpaper=:wallpaper,
                  gametype=:gametype,
-                 number_of_players=:number_of_players";
+                 number_of_players=:number_of_players,
+                 removed=0";
 
             // prepare query
             $stmt = $this->conn->prepare($query);
@@ -127,7 +145,8 @@ class game{
              image=:image,
              wallpaper=:wallpaper,
              gametype=:gametype,
-             number_of_players=:number_of_players
+             number_of_players=:number_of_players,
+             removed=:removed
              WHERE id = :id";
 
             // prepare query
@@ -137,6 +156,7 @@ class game{
             $this->image = htmlspecialchars(strip_tags($data['image']));
             $this->wallpaper = htmlspecialchars(strip_tags($data['wallpaper']));
             $this->gametype = htmlspecialchars(strip_tags($data['gametype']));
+            $this->removed = htmlspecialchars(strip_tags($data['removed']));
             $this->number_of_players = htmlspecialchars(strip_tags($data['number_of_players']));
 
             //  print_r($data);  
@@ -147,6 +167,7 @@ class game{
             $stmt->bindParam(":image", $this->image);
             $stmt->bindParam(":wallpaper", $this->wallpaper);
             $stmt->bindParam(":gametype", $this->gametype);
+            $stmt->bindParam(":removed", $this->removed);
             $stmt->bindParam(":number_of_players", $this->number_of_players);
 
             // execute query

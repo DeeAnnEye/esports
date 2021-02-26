@@ -1069,7 +1069,7 @@ $(document).ready(function(){
                 <td class="list">${g.number_of_players}</td>
                 <td class="btn btn-outline-success" style="display: block; margin: auto;">IMAGE</td>
                 <td class="btn btn-outline-warning" style="display: block; margin: auto;">EDIT</td>
-                <td id="delete-btn" class="btn btn-outline-danger" style="display: block; margin: auto;">DELETE</td>
+                <td id="delete-btn" data-id="${g.id}" class="btn btn-outline-danger" style="display: block; margin: auto;">DELETE</td>
             </tr>     
           `;
          
@@ -1131,16 +1131,17 @@ $(document).ready(function(){
 
         $(document).on('click','#delete-btn', function(e){
           e.preventDefault();
-          var teamId = $(this).attr('data-id'); 
+          var gameId = $(this).attr('data-id'); 
           $.ajax({
-            url: "../teams.php?id=" + teamId ,
+            url: "../games.php?id=" + gameId ,
             type: "DELETE",
             headers: {
               "content-type": "application/json",
               Authorization: "Bearer " + token,
             },
             success: function (response) {
-              // console.log(response);
+              alert("Game deleted");
+              console.log(response);
               location.reload();
             },
             error: function () {

@@ -73,6 +73,16 @@ switch ($_SERVER['REQUEST_METHOD']) {
       }
   
       break;
+
+      case 'DELETE':
+        // delete game using id
+        if ($token) {
+          $id =  $_GET['id'];
+          echo $game->deleteGame($id);
+        } else {
+          echo 'Access Denied!';
+        }
+        break;
   
     default:
   }
