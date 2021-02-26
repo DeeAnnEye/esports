@@ -1056,6 +1056,7 @@ $(document).ready(function(){
         location.href = "Welcome.html";
       }
 
+      // function for displaying games
       function gameItem(g, i) {
 
         var createdDate =g.created; 
@@ -1068,7 +1069,8 @@ $(document).ready(function(){
                 <td class="list">${g.gametype}</td>
                 <td class="list">${g.number_of_players}</td>
                 <td class="btn btn-outline-success" style="display: block; margin: auto;">IMAGE</td>
-                <td class="btn btn-outline-warning" style="display: block; margin: auto;">EDIT</td>
+                <td id="edit-btn" data-id="${g.id}" class="btn btn-outline-warning" style="display: block; margin: auto;">EDIT</td>
+                <td id="update-btn" data-id="${g.id}" class="btn btn-outline-primary" style="display: block; margin: auto;" hidden>UPDATE</td>
                 <td id="delete-btn" data-id="${g.id}" class="btn btn-outline-danger" style="display: block; margin: auto;">DELETE</td>
             </tr>     
           `;
@@ -1077,6 +1079,7 @@ $(document).ready(function(){
          
         }
 
+        // event to input details on click to add game
         $(document).on('click','#addnew-btn', function(e){
           e.preventDefault();
           var tbldata = `
@@ -1094,11 +1097,69 @@ $(document).ready(function(){
           $('#agame-table tbody').append('<tr>'+tbldata+'</tr>');
 
         })
+
+        $(document).on('click','#edit-btn', function(e){
+          e.preventDefault();
+
+          $(this).hide();
+                    
+          var currentTD = $(this).closest("tr");
+            currentTD.find("td:eq(0)").prop('contenteditable', true)
+            currentTD.find("td:eq(2)").prop('contenteditable', true)
+            currentTD.find("td:eq(3)").prop('contenteditable', true)   
+
+            currentTD.find("#update-btn").prop('hidden', false)
+
+            // request to update on click
+        $(document).on('click','#update-btn', function(e){
+          e.preventDefault();
+
+          var col1=currentTD.find("td:eq(0)").text(); 
+          var col2=currentTD.find("td:eq(2)").text();
+          var col3=currentTD.find("td:eq(3)").text();
+
+
+          var gameId = $(this).attr('data-id'); 
+          var removed=0;
+
+            // formdata input
+            var formData = new FormData();
+            formData.append("update", "true");
+            formData.append("name", col1);
+            formData.append("gametype", col2);
+            formData.append("number_of_players", col3);
+            formData.append("removed",removed);
+
+          $.ajax({
+            url: "../games.php?id="+gameId,
+            type: "POST",
+            data: formData,
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+            contentType: false,
+            mimeType: "multipart/form-data",
+            processData: false,
+            success: function (response) {
+              console.log(response);
+              alert("Game Updated");
+              location.reload();
+            },
+            error: function () {
+              alert("Error");
+            },
+          });
+        })
+                   
+    })
+  
+        // add new game on click
         $(document).on('click','#add-btn', function(e){
           e.preventDefault();
 
           var image="./assets/img/nullimage.jpg";
 
+          // formdata input
           var formData = new FormData();
           formData.append("create", "true");
           formData.append("name", $('#name').val());
@@ -1107,6 +1168,7 @@ $(document).ready(function(){
           formData.append("image", image);
           formData.append("wallpaper", null);
 
+          // request to create game
           $.ajax({
             url: "../games.php",
             type: "POST",
@@ -1129,6 +1191,7 @@ $(document).ready(function(){
 
         })
 
+        // request to delete on click
         $(document).on('click','#delete-btn', function(e){
           e.preventDefault();
           var gameId = $(this).attr('data-id'); 
@@ -1150,6 +1213,9 @@ $(document).ready(function(){
           });
         })
 
+        
+
+        // request to fetch games
       $.ajax({
         url: "../games.php",
         type: "POST",
@@ -1169,6 +1235,7 @@ $(document).ready(function(){
                   
                 }
           }
+         
         },
         error: function () {
           alert("An error ocurred.Please try again");
@@ -1210,6 +1277,7 @@ $(document).ready(function(){
             Archived
           </td>
           <td
+          id="ban-btn"
             class="btn btn-outline-danger"
             style="display: block; margin: auto"
           >
@@ -1238,6 +1306,7 @@ $(document).ready(function(){
             Archive
           </td>
           <td
+            id="ban-btn"
             class="btn btn-outline-danger"
             style="display: block; margin: auto"
           >
@@ -1274,6 +1343,33 @@ $(document).ready(function(){
           success: function (response) {
             console.log(response);
             alert("Event archived");
+            location.reload();
+          },
+          error: function () {
+            alert("An error ocurred.Please try again");
+          },
+        });
+        })
+
+         // request to archive event
+         $(document).on('click','#ban-btn', function(e){
+          e.preventDefault();
+          
+           // form input for request
+        // var form = new FormData();
+        var eventId = $(this).attr('data-id'); 
+        // form.append("archiveevent", "true");
+       
+        // request to archive event
+        $.ajax({
+          url: "../events.php?id=" + eventId ,
+          type: "DELETE",
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+          success: function (response) {
+            console.log(response);
+            alert("Event Banned");
             location.reload();
           },
           error: function () {
@@ -1424,8 +1520,12 @@ $(document).ready(function(){
 
                   for(var i=1;i<=playernum;i++){
 
+                    // var inputs = $('input'); // get all input elements on the page
+                    // var playerId = inputs[i].val(); // find the index of spesific one
+                    // console.log(playerId);
+
                     // var playerId = $("pl-"+i}).val();
-                    console.log(playerId);
+                    // console.log(playerId);
                   
                   $.ajax({
                     url: "../events.php",
@@ -1550,6 +1650,7 @@ $(document).ready(function(){
 
     }
 
+    // todo: change contenteditable
     if($('#arole-page').length) {
 
       var token = localStorage.getItem("token");
@@ -1632,7 +1733,7 @@ $(document).ready(function(){
               <td class="list" contentEditable>-</td>
               <td class="list" contentEditable>-</td>
               <td
-              id="update-btn"
+                id="update-btn"
                 class="btn btn-outline-warning"
                 style="display: block; margin: auto"
                 data-id=${r.user_id}

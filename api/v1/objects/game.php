@@ -136,14 +136,12 @@ class game{
         }
     }
 
-    public function updateGame($id, $data, $token_user)
+    public function updateGame($id, $data)
     {
         try {
             // query to insert record
             $query =  "UPDATE  $this->table_name " . "
              SET  name=:name,
-             image=:image,
-             wallpaper=:wallpaper,
              gametype=:gametype,
              number_of_players=:number_of_players,
              removed=:removed
@@ -153,8 +151,8 @@ class game{
             $stmt = $this->conn->prepare($query);
 
             $this->name = htmlspecialchars(strip_tags($data['name']));
-            $this->image = htmlspecialchars(strip_tags($data['image']));
-            $this->wallpaper = htmlspecialchars(strip_tags($data['wallpaper']));
+            // $this->image = htmlspecialchars(strip_tags($data['image']));
+            // $this->wallpaper = htmlspecialchars(strip_tags($data['wallpaper']));
             $this->gametype = htmlspecialchars(strip_tags($data['gametype']));
             $this->removed = htmlspecialchars(strip_tags($data['removed']));
             $this->number_of_players = htmlspecialchars(strip_tags($data['number_of_players']));
@@ -164,8 +162,8 @@ class game{
 
             $stmt->bindParam(":id", $id);
             $stmt->bindParam(":name", $this->name);
-            $stmt->bindParam(":image", $this->image);
-            $stmt->bindParam(":wallpaper", $this->wallpaper);
+            // $stmt->bindParam(":image", $this->image);
+            // $stmt->bindParam(":wallpaper", $this->wallpaper);
             $stmt->bindParam(":gametype", $this->gametype);
             $stmt->bindParam(":removed", $this->removed);
             $stmt->bindParam(":number_of_players", $this->number_of_players);

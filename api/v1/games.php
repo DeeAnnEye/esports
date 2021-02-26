@@ -35,7 +35,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
   
     case 'POST':
       $post = $_POST;
-      // create resource function
+      // create game function
       if (isset($post['create'])) {
         if($token){
         echo $game->createGame($post);
@@ -47,8 +47,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
       elseif (isset($post['update'])) {
         if($token){
             $id =  $_GET['id'];
-            $token_user = $token->user_id;
-        echo $game->updateGame( $id, $post, $token_user);
+            // $token_user = $token->user_id;
+        echo $game->updateGame( $id, $post);
         }
         else{
           echo 'Access Denied!';
