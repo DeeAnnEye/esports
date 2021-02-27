@@ -673,12 +673,12 @@ $(document).ready(function(){
 
       var role = localStorage.getItem('role');
       if(role>2){
-        $("#mod-btn").show();
+        $("#req-btn").show();
       }else{
-        $("#mod-btn").hide();
+        $("#req-btn").hide();
       }
 
-      $("#mod-btn").click(function(e){
+      $("#req-btn").click(function(e){
         e.preventDefault();
 
         var form = new FormData();
@@ -698,10 +698,10 @@ $(document).ready(function(){
           success: function (response) {
             console.log(response);
             alert("Moderator request sent.");
-            var btn = document.getElementById("mod-btn");
+            var btn = document.getElementById("req-btn");
             btn.value = 'mod-request'; 
             btn.innerHTML = 'Moderator Request Sent';
-            $("#mod-btn").prop('disabled',true);
+            $("#req-btn").prop('disabled',true);
           },
           error: function () {
             alert("An error ocurred.Please try again");
@@ -1585,12 +1585,21 @@ $(document).ready(function(){
           >
             Update Role
           </td>
+          <td
+            id="cancel-btn"
+            class="btn btn-outline-danger"
+            style="display: block; margin: auto"
+            data-id=${m.user_id}
+          >
+            Cancel Request
+          </td>
           `;
          
           $('#mod-table tbody').append('<tr>'+tbldata+'</tr>');
          
         }
 
+        // request to assign mod role
         $(document).on('click','#updt-btn', function(e){
           e.preventDefault();
           var form = new FormData();
@@ -1615,6 +1624,33 @@ $(document).ready(function(){
             },
           });
         })
+
+        // request to cancel mod request
+        $(document).on('click','#cancel-btn', function(e){
+          e.preventDefault();
+          var form = new FormData();
+        form.append("cancelrequest", "true");
+          var userId = $(this).attr('data-id'); 
+          $.ajax({
+            url: "../users.php?id=" + userId ,
+            type: "POST",
+            data:form,
+            "processData": false,
+            "mimeType": "multipart/form-data",
+            "contentType": false,
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+            success: function (response) {
+              console.log(response);
+              location.reload();
+            },
+            error: function () {
+              alert("An error ocurred.Please try again");
+            },
+          });
+        })
+
 
         var form = new FormData();
         form.append("reqplayers", "true");

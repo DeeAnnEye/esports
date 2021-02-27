@@ -85,6 +85,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
         echo 'Access Denied!';
       }
     }
+    elseif (isset($post['cancelrequest'])) {
+
+      if ($token) {
+        $id =  $_GET['id'];
+        echo $user->cancelModRequest($id);
+      } else {
+        echo 'Access Denied!';
+      }
+    }
 
     elseif (isset($post['reqplayers'])) {
 
