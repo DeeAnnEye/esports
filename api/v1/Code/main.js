@@ -671,6 +671,63 @@ $(document).ready(function(){
         history.back();
       })
 
+      $("#edit-btn").click(function(e){
+        e.preventDefault();
+
+        $(this).hide();
+
+        $("#username").prop('contentEditable',true);
+        $("#region").prop('contentEditable',true);
+        $("#language").prop('contentEditable',true);
+        $("#discord").prop('contentEditable',true);
+        $("#email").prop('contentEditable',true);
+        $("#phone").prop('contentEditable',true);
+
+        $("#update-btn").prop('hidden',false);
+        
+      })
+      $("#update-btn").click(function(e){
+        e.preventDefault();
+        
+        var username = $("#username").text();
+        var region = $("#region").text();
+        var language = $("#language").text();
+        var discord = $("#discord").text();
+        var email = $("#email").text();
+        var phone = $("#phone").text();
+       
+        var form = new FormData();
+        form.append("update", "true");
+        form.append("usertag", username);
+        form.append("region", region);
+        form.append("language", language);
+        form.append("social_acc", discord);
+        form.append("email", email);
+        form.append("phone", phone);
+
+        $.ajax({
+          url: "../users.php?id=" + userid ,
+          type: "POST",
+          data:form,
+          "processData": false,
+          "mimeType": "multipart/form-data",
+          "contentType": false,
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+          success: function (response) {
+            // console.log(response);
+            alert("Profile Updated");
+            location.reload();
+          },
+          error: function () {
+            alert("An error ocurred.Please try again");
+            // location.href = "Welcome.html";
+          },
+        });       
+      
+      })
+
       var role = localStorage.getItem('role');
       if(role>2){
         $("#req-btn").show();

@@ -43,8 +43,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
     elseif (isset($post['update'])) {
       if ($token) {
         $id =  $_GET['id'];
-        $token_user = $token->data->user_id;
-        echo $user->updateUser($id, $post, $token_user);
+        // $token_user = $token->data->user_id;
+        echo $user->updateUser($id, $post);
       } else {
         echo 'Access Denied!';
       }

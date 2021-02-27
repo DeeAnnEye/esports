@@ -217,7 +217,7 @@ class user
         }
     }
 
-    public function updateUser($id, $data, $token_user)
+    public function updateUser($id, $data)
     {
         try {
             //code...
@@ -225,70 +225,43 @@ class user
             // update query
             $query = "UPDATE  $this->table_name " . "
             SET 
-            first_name=:first_name,
-            last_name=:last_name,
             email=:email,
             phone=:phone,
-            password=:password,
-            image=:image,
-            games=:games,
             social_acc=:social_acc,
-            role=:role,
-            language=:language,
             region=:region,
-            mod_request=:mod_request,
-            active=:active,
-            blocked=:blocked,
-            flag=:flag,
-            usertag=:usertag             
-            WHERE user_id = :user_id";
+            usertag=:usertag,
+            language=:language             
+            WHERE user_id =$id";
 
             // prepare query statement
             $stmt = $this->conn->prepare($query);
 
 
             // sanitize
-            // $this->user_id=htmlspecialchars(strip_tags($data['user_id']));
-            $this->first_name = htmlspecialchars(strip_tags($data['first_name']));
-            $this->last_name = htmlspecialchars(strip_tags($data['last_name']));
             $this->usertag = htmlspecialchars(strip_tags($data['usertag']));
             $this->email = htmlspecialchars(strip_tags($data['email']));
             $this->phone = htmlspecialchars(strip_tags($data['phone']));
-            $this->password = htmlspecialchars(strip_tags($data['password']));
-            $this->image = htmlspecialchars(strip_tags($data['image']));
-            $this->games = htmlspecialchars(strip_tags($data['games']));
             $this->social_acc = htmlspecialchars(strip_tags($data['social_acc']));
-            $this->role = htmlspecialchars(strip_tags($data['role']));
             $this->language = htmlspecialchars(strip_tags($data['language']));
             $this->region = htmlspecialchars(strip_tags($data['region']));
-            $this->mod_request = htmlspecialchars(strip_tags($data['mod_request']));
-            $this->active = htmlspecialchars(strip_tags($data['active']));
-            $this->blocked = htmlspecialchars(strip_tags($data['blocked']));
-            $this->flag = htmlspecialchars(strip_tags($data['flag']));
-           
 
             // bind new values
-            $stmt->bindParam(":first_name", $this->first_name);
-            $stmt->bindParam(":last_name", $this->last_name);
             $stmt->bindParam(":usertag", $this->usertag);
             $stmt->bindParam(":email", $this->email);
             $stmt->bindParam(":phone", $this->phone);
-            $stmt->bindParam(":password", $this->password);
-            $stmt->bindParam(":image", $this->image);
-            $stmt->bindParam(":games", $this->games);
             $stmt->bindParam(":social_acc", $this->social_acc);
-            $stmt->bindParam(":role", $this->role);
             $stmt->bindParam(":language", $this->language);
             $stmt->bindParam(":region", $this->region);
-            $stmt->bindParam(":mod_request", $this->mod_request);
-            $stmt->bindParam(":active", $this->active);
-            $stmt->bindParam(":blocked", $this->blocked);
-            $stmt->bindParam(":flag", $this->flag);
-            $stmt->bindParam(":user_id", $id);
 
-            // print_r($stmt->debugDumpParams());
-            // execute the query
-            return json_encode(["success" => $stmt->execute()]);
+            if($stmt->execute()){
+                   // set response code
+                   http_response_code(200);
+                   echo json_encode(array("Update" => "True"));
+            }else{
+                // set response code
+                http_response_code(400);
+                echo json_encode(array("Update" => "False"));
+            }
         } catch (PDOException $e) {
             throw $e;
         }
