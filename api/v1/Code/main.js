@@ -1322,7 +1322,7 @@ $(document).ready(function(){
           <td class="list">${cDate}</td>
           <td class="list">${mDate}</td>
           <td class="list">${e.event_start}</td>
-          <td class="list">00</td>
+          <td class="list">${e.eCount}</td>
           <td class="list">${e.region}</td>
           <td
             id="archive-btn"
@@ -1352,7 +1352,7 @@ $(document).ready(function(){
           <td class="list">${cDate}</td>
           <td class="list">${mDate}</td>
           <td class="list">${e.event_start}</td>
-          <td class="list">00</td>
+          <td class="list">${e.eCount}</td>
           <td class="list">${e.region}</td>
           <td
             id="archive-btn"

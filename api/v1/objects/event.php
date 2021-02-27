@@ -35,8 +35,23 @@ class event
     {
     
         // select all query
-        $query = "SELECT e.*, cu.usertag as cutag, mu.usertag as mutag, g.gametype from events e left join games g on g.id= e.game left join users cu on cu.user_id=e.createdby left join users mu on mu.user_id=e.modifiedby  where e.active=1 order by e.event_name";
-
+        $query = "SELECT
+        e.*, count(er.team_id OR er.player_id) AS eCount,
+        cu.usertag AS cutag,
+        mu.usertag AS mutag,
+        g.gametype
+    FROM
+        EVENTS e
+    LEFT JOIN event_register er ON (e.event_id = er.event_id)
+    LEFT JOIN games g ON g.id = e.game
+    LEFT JOIN users cu ON cu.user_id = e.createdby
+    LEFT JOIN users mu ON mu.user_id = e.modifiedby
+    WHERE
+        e.active = 1
+    GROUP BY
+        e.event_id,
+        e.event_name;";
+        
         // prepare query statement
         $stmt = $this->conn->prepare($query);
 
@@ -67,6 +82,7 @@ class event
                 "modified" => $row['modified'],
                 "modifiedby" => $row['modifiedby'],
                 'mutag' => $row['mutag'],
+                'eCount' => $row['eCount'],
                 "last_date_of_registration" => $row['last_date_of_registration'],
                 "active" => $row['active'],
                 "archive" => $row['archive']
