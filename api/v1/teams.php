@@ -60,6 +60,13 @@ switch ($_SERVER['REQUEST_METHOD']) {
         echo 'Access Denied!';
       }
     }
+    elseif (isset($post['teamname'])) {
+      if ($token) {
+        echo $team->getTeamByName($post);
+      } else {
+        echo 'Access Denied!';
+      }
+    }
     // get all teams
     else {
       if ($token) {

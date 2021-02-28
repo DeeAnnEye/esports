@@ -485,6 +485,7 @@ $(document).ready(function(){
           success: function (response) {
             console.log(response);
             alert("Event Created");
+            location.reload();
           },
           error: function () {
             alert("Event Creation Failed");
@@ -639,10 +640,11 @@ $(document).ready(function(){
           "content-type": "application/json",
           Authorization: "Bearer " + token,
         },
-        success: function (teamevent) {
-          console.log(teamevent);
-          if (teamevent) {
-            $('#event-name').text(teamevent.event_name)
+        success: function (data) {
+          if (data) {
+            // const player = JSON.parse(data.player);
+            const event = JSON.parse(data.event);
+            $('#event-name').text(event.event_name)
           }
         },
         error: function () {
@@ -909,10 +911,38 @@ $(document).ready(function(){
     if($('#resultbr-page').length) {
       const urlParams = new URLSearchParams(window.location.search);
       const eventId = urlParams.get('id');
+      // console.log(eventId);
       var token = localStorage.getItem("token");
       if (!token) {
         location.href = "Welcome.html";
       }
+      $("#back-btn").click(function(e){
+        e.preventDefault();
+        history.back();
+      })
+      $(".pos-block").click(function(e){
+       const pos = $(this).attr('data-pos');
+       $("#pos").text("#"+pos);
+       const data = $('#pos' + pos).data();
+       console.log(data);
+       $("#score-table tbody").empty();
+       Object.keys(data).map(d => {
+         const p = data[d];
+        const item = `<tr>
+        <td class="tbltxt">${p.usertag}</td>
+        <td class="tbltxt">${p.kill}</td>
+        <td class="tbltxt">${p.death}</td>
+        <td class="tbltxt">${p.assist}</td>
+      </tr>`;
+ 
+      $("#score-table tbody").append(item);
+         return d;
+       })
+
+       
+      //  alert(pos);
+      })
+
       $.ajax({
         url: "../results.php?id=" + eventId ,
         type: "GET",
@@ -922,20 +952,31 @@ $(document).ready(function(){
         },
         success: function (data) {
           console.log(data);
-          // if (data) {
-          //   const event = JSON.parse(data.event);
-          //   const team = JSON.parse(data.team);
-          //   $('#event-name').text(event.event_name)
-          //   if (team && team.length) {
-          //     var list = team
-          //     .map((t, i) => {
-          //       return teamItem(t, i);
-          //      })
-          //       .join("");
-          //       // console.log(archives);
-          //   $("#team-list").empty().append(list);
-          //   }
-          // }
+
+          const first = data.find(t => t.position === "1");
+          const second = data.find(t => t.position === "2");
+          const third = data.find(t => t.position === "3");
+          if(first && first.name) {
+          console.log(first.name);
+          $("#pos1").text(first.name);
+          $("#head").text(first.event_name);
+          $("pos1-image").attr("src",first.teamimage)
+          $("#pos1").data(data.filter(t => t.position === '1'))
+          $(".pos-block").eq(1).click();
+
+          }
+          if(second && second.name) {
+            // console.log(first.name);
+            $("#pos2").text(second.name);
+            $("pos2-image").attr("src",second.teamimage)
+            $("#pos2").data(data.filter(t => t.position === '2'))
+            }
+            if(third && third.name) {
+              // console.log(first.name);
+              $("#pos3").text(third.name);
+              $("pos3-image").attr("src",third.teamimage)
+              $("#pos3").data(data.filter(t => t.position === '3'))
+              }
         },
         error: function () {
           alert("An error ocurred.Please try again");
@@ -1045,9 +1086,6 @@ $(document).ready(function(){
                 <td class="list">${t.name}</td>
                 <td class="list">${cDate}</td>
                 <td class="list">${mDate}</td>
-                <td class="list">00</td>
-                <td class="list">00</td>
-                <td class="list">00</td>
                 <td class="list">${t.region}</td>
                 <td id="ban-btn"
                 data-id=${t.id}
@@ -1943,6 +1981,77 @@ $(document).ready(function(){
         },
       });
       // request end
+
+    }
+
+    if($('#teamjoin-page').length){
+      var token = localStorage.getItem("token");
+      if (!token) {
+        location.href = "Welcome.html";
+      }
+
+      // search request
+      $(document).keypress(function (e) {
+        var key = e.which;
+        if(key == 13)  // the enter key code
+         {
+           $('input[name = search]').click();
+           var searchtxt = $("#search-box").val() ;
+
+           var form = new FormData(); 
+           form.append("teamname", "true");
+           form.append("name", searchtxt);
+                 
+             // request to fetch searched team
+           $.ajax({
+             url: "../teams.php" ,
+             type: "POST",
+             data:form,
+             "processData": false,
+             "mimeType": "multipart/form-data",
+             "contentType": false,
+             headers: {
+               Authorization: "Bearer " + token,
+             },
+             success: function (data) {
+               console.log(data);
+               $("#show-team").show(); 
+
+             },
+             error: function () {
+               alert("An error ocurred.Please try again");
+             },
+           });
+         }
+
+     
+       });
+       
+      //  request to fetch teams
+      $.ajax({
+        url: "../teams.php",
+        type: "POST",
+        headers: {
+          "content-type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        success: function (data) {
+          console.log(data);
+          var len = data.length;
+          var teams = [len];
+          for(var i=0;i<=len;i++){
+            data.map((g,i) => {
+              teams[i]= g.name;
+                 })           
+          }  
+          $("#show-team").hide();  
+        },
+        error: function () {
+          alert("An error ocurred.Please try again");
+          // location.href = "Welcome.html";
+        },
+      });
+
 
     }
 

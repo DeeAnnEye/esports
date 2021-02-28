@@ -59,12 +59,16 @@ class result
     {
         // select all query
         $query = "SELECT
-        p.*,r.*
+        r.*, p.player_id,p.`kill` as `kill`,p.death as death,p.assist as assist,
+    u.usertag as usertag,t.`name` as `name`,e.event_name as event_name,t.image as teamimage
     FROM
-        `results` r 
-    LEFT JOIN placements p ON r_event_id=event_id
+        `results` r
+    LEFT JOIN placements p ON p.team_id = r.team_id
+    LEFT JOIN events e on e.event_id=r.r_event_id
+    LEFT JOIN teams t on t.id=r.team_id
+    LEFT JOIN users u on u.user_id=p.player_id
     WHERE
-        event_id = $id;";
+        r.r_event_id = $id;";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -72,9 +76,35 @@ class result
         // execute query
         $stmt->execute();
 
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+      
+        $results = [];
 
-        return json_encode($result);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            // extract row
+            // this will make $row['name'] to
+            // just $name only
+
+            $result_item = array(
+                "result_id" => $row['result_id'],
+                "r_event_id" => $row['r_event_id'],
+                "overview" => $row['overview'],
+                "team_id" => $row['team_id'],
+                "position" => $row['position'],
+                "published" => $row['published'],
+                "player_id" => $row['player_id'],
+                "kill" => $row['kill'],
+                "death" => $row['death'],
+                "assist" => $row['assist'],
+                "usertag" => $row['usertag'],
+                "name" => $row['name'],
+                "event_name" => $row['event_name'],
+                "teamimage" => $row['teamimage']
+            );
+
+            array_push($results, $result_item);
+        }
+
+        return json_encode($results);
     }
 
 

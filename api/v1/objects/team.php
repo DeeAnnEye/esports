@@ -29,7 +29,7 @@ class team
     {
 
         // select all query
-        $query = "SELECT * from teams where active=1 order by name";
+        $query = "SELECT * FROM teams WHERE active = 1";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -55,7 +55,7 @@ class team
                 "modified" => $row['modified'],
                 "modifiedby" => $row['modifiedby'],
                 "active" => $row['active'],
-                "flag" => $row['flag']
+                "flag" => $row['flag'],
             );
 
             array_push($teams, $team_item);
@@ -77,6 +77,33 @@ class team
         id = $id";
         // prepare query statement
         $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute();
+
+        $team = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return json_encode($team);
+    }
+
+    public function getTeamByName($data)
+    {
+
+        $name = htmlspecialchars(strip_tags($data['name']));
+
+        // select all query
+        $query = "SELECT
+        t.*, u.usertag AS cutag
+    FROM
+        teams t
+    LEFT JOIN users u ON u.user_id = t.createdby
+    WHERE
+        `name`='$name'";
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+       
+        // $stmt->bindParam(":name", $this->name);
 
         // execute query
         $stmt->execute();
