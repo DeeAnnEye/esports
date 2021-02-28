@@ -466,9 +466,30 @@ class event
             // bind parameters
             $stmt->bindParam(":event_id", $data['event_id']);
             $stmt->bindParam(":team_id", $data['team_id']);
+            print_r($data['event_id']);
+            print_r(json_decode($data['eventplayers']));
+            $result = $stmt->execute();
+            print_r($result);
 
-            // execute query
-            return json_encode(["success" => $stmt->execute()]);
+            if($result){
+            $players = json_decode($data['eventplayers']);
+            print_r($players);
+            $count = 0;
+            foreach($players as $player) {
+                
+                $playerData=["event_id" => $data['event_id'], "team_id" => $data['team_id'], "player_id" => $player];
+                $playerResult = $this->insertEventPlayers($playerData);
+                if($playerResult) {
+                    $count++;
+                }
+            }
+            
+            if($count == sizeof($players)){
+                return json_encode(["success" => true]);
+            }
+        }      
+            
+            return json_encode(["success" => false]);
         } catch (PDOException $e) {
             throw $e;
         }
@@ -532,7 +553,7 @@ class event
             $stmt->bindParam(":player_id", $data['player_id']);
 
             // execute query
-            return json_encode(["success" => $stmt->execute()]);
+            return  $stmt->execute();
         } catch (PDOException $e) {
             throw $e;
         }

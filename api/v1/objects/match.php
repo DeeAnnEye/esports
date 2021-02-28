@@ -32,7 +32,7 @@ class match
          // execute query
          $stmt->execute();
  
-         $matches = [];
+         $fixture = [];
  
          while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
              // extract row
@@ -46,6 +46,8 @@ class match
                  "team_A" => $row['team_A'],
                  "team_B" => $row['team_B']
              );
+
+
  
              array_push($fixture, $fixture_item);
          }

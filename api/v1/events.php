@@ -33,6 +33,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
       $data  = new StdClass;
       $data->event = $event->getEventById($id);
       $data->team = $event->teamInEvent($id); 
+      // $data->teamplayer = $team->playerInTeam($id);
       echo json_encode($data);
       break;
     } else {

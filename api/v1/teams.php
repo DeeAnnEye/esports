@@ -50,6 +50,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
       echo 'Access Denied!';
     }
   }
+  if (isset($post['teamplayer'])) {
+    if ($token) {
+      $id = $_GET['id'];
+      echo $team->playerInTeam($id);
+  }else{
+    echo 'Access Denied!';
+  }
+}
     //  update team function
     elseif (isset($post['update'])) {
       if ($token) {

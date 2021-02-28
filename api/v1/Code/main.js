@@ -924,7 +924,7 @@ $(document).ready(function(){
        const pos = $(this).attr('data-pos');
        $("#pos").text("#"+pos);
        const data = $('#pos' + pos).data();
-       console.log(data);
+      //  console.log(data);
        $("#score-table tbody").empty();
        Object.keys(data).map(d => {
          const p = data[d];
@@ -1514,10 +1514,8 @@ $(document).ready(function(){
         history.back();
       })
 
-      
-
       $.ajax({
-        url: "../events.php?id=" + eventId ,
+        url: "../events.php?id=" + eventId,
         type: "GET",
         headers: {
           "content-type": "application/json",
@@ -1530,7 +1528,6 @@ $(document).ready(function(){
           //  console.log(teamimage);
           if (data) {
             const event = JSON.parse(data.event);
-            const team = JSON.parse(data.team);
             $('#wallpaper').find('img').attr('src', event.image);
             $('#event-name').text(event.event_name)
             $('#event-start').text(event.event_start)
@@ -1546,15 +1543,56 @@ $(document).ready(function(){
               $("#teamreg").show();
             }
 
-            // $("#player-input").hide();
+            // request to fetch team players
+            var formData = new FormData();
+            formData.append("teamplayer", "true");
+            var teamId = localStorage.getItem("team");
+            $.ajax({
+              url: "../teams.php?id="+ teamId,
+              type: "POST",
+              data: formData,
+              headers: {
+                Authorization: "Bearer " + token,
+              },
+              contentType: false,
+              mimeType: "multipart/form-data",
+              processData: false,
+              success: function (data) {
+                const team = JSON.parse(data);
+                console.log(team);
+                if(playernum != 1){
+                  for(var i=1;i<=playernum;i++){
+                                        
+                  var playerInput = `<select id="pl-${i}" class="inp pl-sm-4 e-player" type="text" placeholder="Player" >`
+                  playerInput += `<option value=''>Select player</option>`;
+                  playerInput += team.map(t => `<option value="${t.player_id}">${t.usertag}</option>`).join('');
+                  playerInput+=`</select>`;
+                  $("#player-input").append(playerInput);
+                    
+                  }                
+                  
+                                  
+                }
+                
+              },
+              error: function () {
+                alert("Couldn't fetch players");
+              },
+            });
 
-            if(playernum != 1){
-            for(var i=1;i<=playernum;i++){
-              // console.log("Hello");
-            var playerInput = `<input id="pl-${i}" class="inp pl-sm-4" type="text" placeholder="Player" />`;
-            $("#player-input").append(playerInput);  
-            }
-          }
+            var checkPlayers = [];
+            $(document).on('change', '.e-player', function(e) {
+             
+              var v = $(this).val();
+              if(!checkPlayers.includes(v)) {
+                checkPlayers.push(v);
+              } else {
+                alert('Player already selected');
+                $(this).val('');
+              }
+              
+
+            });
 
           $("#register-btn").click(function(e){
             e.preventDefault();
@@ -1593,11 +1631,19 @@ $(document).ready(function(){
             else{
 
               var team = localStorage.getItem('team');
+              var players = [];
+              var ePlayer = $(".e-player").map(e => {
+               const v = $(".e-player").eq(e).val();
+               players.push(v);
+                return $(".e-player").eq(e).val()
+              });
+              console.log(ePlayer);
 
               var formData = new FormData();
               formData.append("teamevent", "true");
               formData.append("team_id", team);
               formData.append("event_id", eventId);
+              formData.append("eventplayers",JSON.stringify(players));
       
               $.ajax({
                 url: "../events.php",
@@ -1610,35 +1656,7 @@ $(document).ready(function(){
                 mimeType: "multipart/form-data",
                 processData: false,
                 success: function (response) {
-
-                  for(var i=1;i<=playernum;i++){
-
-                    // var inputs = $('input'); // get all input elements on the page
-                    // var playerId = inputs[i].val(); // find the index of spesific one
-                    // console.log(playerId);
-
-                    // var playerId = $("pl-"+i}).val();
-                    // console.log(playerId);
-                  
-                  $.ajax({
-                    url: "../events.php",
-                    type: "POST",
-                    data: formData,
-                    headers: {
-                      Authorization: "Bearer " + token,
-                    },
-                    contentType: false,
-                    mimeType: "multipart/form-data",
-                    processData: false,
-                    success: function (response) {
-                      
-                    },
-                    error: function () {
-                      alert("Sorry,couldn't register");
-                    },
-                  });
-                }
-
+                console.log(response);
                 },
                 error: function () {
                   alert("Sorry,couldn't register");
@@ -1991,41 +2009,49 @@ $(document).ready(function(){
       }
 
       // search request
-      $(document).keypress(function (e) {
-        var key = e.which;
-        if(key == 13)  // the enter key code
-         {
-           $('input[name = search]').click();
-           var searchtxt = $("#search-box").val() ;
+      $(document).on("change","#search-box",function(e){
+        var v = $(this).val();
+        var data = $(this).data();
+        console.log(v);
+        console.log(data);
+        var idx = Object.keys(data).find(d => parseInt(data[d].id) === parseInt(v));
+        const team = data[idx];
+        $('#team-name').text(team.name);
+        $('#team-region').text(team.region);
+        $('#description').text(team.description);
+        // $('#createdby').text(team.cutag);
+        $('#created').text(team.created)
+        $("#show-team").show();
+      }).on('click','#join-btn',function(e){
 
-           var form = new FormData(); 
-           form.append("teamname", "true");
-           form.append("name", searchtxt);
-                 
-             // request to fetch searched team
-           $.ajax({
-             url: "../teams.php" ,
-             type: "POST",
-             data:form,
-             "processData": false,
-             "mimeType": "multipart/form-data",
-             "contentType": false,
-             headers: {
-               Authorization: "Bearer " + token,
-             },
-             success: function (data) {
-               console.log(data);
-               $("#show-team").show(); 
-
-             },
-             error: function () {
-               alert("An error ocurred.Please try again");
-             },
-           });
-         }
-
-     
-       });
+        var userid = localStorage.getItem("userid");
+        var formData = new FormData();
+        formData.append("team_id", $("#search-box").val() );
+        formData.append("player_id",userid);
+        formData.append("ptype","CARRY");
+        formData.append("jointeam",true);
+        
+        $.ajax({
+          url: "../users.php",
+          type: "POST",
+          data:formData,
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+          contentType: false,
+          mimeType: "multipart/form-data",
+          processData: false,
+          success: function (response) {
+            alert("Joined successfully.");  
+            
+          },
+          error: function () {
+            alert("An error ocurred.Please try again");
+            // location.href = "Welcome.html";
+          },
+        });
+      }) 
+       
        
       //  request to fetch teams
       $.ajax({
@@ -2037,14 +2063,12 @@ $(document).ready(function(){
         },
         success: function (data) {
           console.log(data);
-          var len = data.length;
-          var teams = [len];
-          for(var i=0;i<=len;i++){
-            data.map((g,i) => {
-              teams[i]= g.name;
-                 })           
-          }  
-          $("#show-team").hide();  
+          $('#search-box').data(data).append(`<option value="">Select team</option>`)
+          data.map(t => {
+            $('#search-box').append(`<option value="${t.id}">${t.name}</option>`)
+            return t;
+
+          })
         },
         error: function () {
           alert("An error ocurred.Please try again");

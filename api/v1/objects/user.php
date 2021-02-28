@@ -318,11 +318,13 @@ class user
         try {
             //code...
 
+            // print_r($data);
             // query to insert record
             $query = "INSERT INTO team_player SET
           team_id=:team_id,
           player_id=:player_id,
-          removed=:removed";
+          ptype=:ptype,
+          removed=0";
 
             // prepare query statement
             $stmt = $this->conn->prepare($query);
@@ -330,11 +332,19 @@ class user
             // bind parameters
             $stmt->bindParam(":team_id", $data['team_id']);
             $stmt->bindParam(":player_id", $data['player_id']);
-            $stmt->bindParam(":removed", $data['removed']);
+            $stmt->bindParam(":ptype", $data['ptype']);
+            // $stmt->bindParam(":removed", $data['removed']);
 
+            if($stmt->execute()){
+                // set response code
+                http_response_code(200);
+                echo json_encode(array("Joined" => "True"));
+         }else{
+             // set response code
+             http_response_code(400);
+             echo json_encode(array("Joined" => "False"));
+         }
 
-            // execute query
-            return json_encode(["success" => $stmt->execute()]);
         } catch (PDOException $e) {
             throw $e;
         }

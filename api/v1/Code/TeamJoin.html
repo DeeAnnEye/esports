@@ -31,10 +31,11 @@
             padding-left: 10%;">
                <a href="TeamDefault.html"><button class="btn btn-outline-light" style="width: 5rem;">BACK</button></a>
                 <div style="display: flex;flex-direction: row;justify-content: space-between;">
-                    <input id="search-box" class="input" name="search" style="width: 45%;" type="text" placeholder="Search" autocomplete="off" required>
+                    <select id="search-box" class="input" name="search" style="width: 45%;" type="text" placeholder="Select team" autocomplete="off" required>
+                    </select>
                 </div>
             </div>
-            <div id="show-team" style="width: 100%;
+            <div id="show-team" style="width: 100%; display: none;
             height: 65%;
             background-color: rgba(0,0,0,.6); overflow-y: scroll; color: #C5C6C8;">
              <h3
@@ -42,11 +43,63 @@
              style="
                text-align: center;
                font-size: 2.5rem;
+               padding-bottom: 2rem;
                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                color: #66fcf1;
              "
            >
+           TEAM NAME
            </h3>
+           <div style="display: flex;flex-direction:row;justify-content: space-between;">
+           <h2
+             id="team-region"
+             style="
+               font-size: 2rem;
+               margin-left: 5rem;
+               font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+               color: #66fcf1;
+             "
+           >
+           REGION
+           </h2>
+           <h2
+             id="description"
+             style="
+               margin-right: 5rem;
+               font-size: 2rem;
+               font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+               color: #66fcf1;
+             "
+           >
+          DESCRIPTION
+           </h2>
+          </div>
+          <!-- <h2
+             id="createdby"
+             style="
+               margin-left: 5rem;
+               margin-top: 7rem;
+               font-size: 2rem;
+               font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+               color: #66fcf1;
+             "
+           >
+          createdby
+           </h2> -->
+           <h2
+             id="created"
+             style="
+               margin-left: 5rem;
+               font-size: 2rem;
+               font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+               color: #66fcf1;
+             "
+           >
+          created
+           </h2>  
+           <div style="margin-left: 50%;margin-top: 3rem;">
+             <button id="join-btn" class="btn btn-primary">JOIN</button>
+           </div>       
             </div>
         </div>
 </body>
