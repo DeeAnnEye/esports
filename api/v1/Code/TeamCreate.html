@@ -58,7 +58,8 @@
               type="text"
               placeholder="Team Name"
             />
-            <input
+
+            <!-- <input
               id="region"
               name="region"
               style="
@@ -68,7 +69,7 @@
               "
               type="text"
               placeholder="Region"
-            />
+            /> -->
             <input
               id="description"
               name="description"
@@ -80,10 +81,49 @@
               type="text"
               placeholder="Description"
             />
+
+            <select
+              style="
+                margin-top: 2rem;
+                padding-top: 0.3rem;
+                padding-bottom: 0.3rem;
+              "
+              id="region"
+              name="region"
+              class="mdb-select md-form"
+              searchable="Search here.."
+              required
+            >
+              <option value="" disabled selected>Choose a Region</option>
+              <option value="NA">NA</option>
+              <option value="SA">SA</option>
+              <option value="SEA">SEA</option>
+              <option value="ASIA">ASIA</option>
+              <option value="RU">RU</option>
+              <option value="EU">EU</option>
+              <option value="JAPAN">JAPAN</option>
+            </select>
           </div>
+
           <div style="display: flex; flex-direction: column; margin-top: 2rem">
-            <img src="" alt="" id="pic" />
-            <input id="team-pic" type="file" placeholder="Upload" />
+            <!-- <img src="" alt="" id="pic" /> -->
+            <div class="upld">
+              <div class="input-group mb-3">
+                <div class="custom-file">
+                  <input
+                    type="file"
+                    class="custom-file-input"
+                    id="image-file-1"
+                  />
+                  <label class="custom-file-label" for="inputGroupFile02"
+                    >Choose Team Image</label
+                  >
+                </div>
+                <div class="input-group-append">
+                  <span class="input-group-text" id="image-upload">Upload</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -110,55 +150,121 @@
           e.preventDefault();
           history.back();
         });
+        var rId = 1234;
 
-        $("#team-submit").click(function (e) {
-          e.preventDefault();
-
-          var token = localStorage.getItem("token");
+        function doUpload(file) {
           var userid = localStorage.getItem("userid");
+          var that = this;
+          var formData = new FormData();
 
-          if ($("#team-name").val() === "") {
-            alert("Team name required.");
-            return;
-          }
-          if ($("#region").val() === "") {
-            alert("Region required.");
-            return;
-          }
-          if ($("#description").val() === "") {
-            alert("Description required.");
-            return;
-          }
+          // add assoc key values, this will be posts values
+          formData.append("name", file, file.name);
+          formData.append("rId", rId);
+          formData.append("userid", userid);
 
-          var formData = new FormData(team_form);
-          formData.append("create", "true");
-          formData.append("createdby", userid);
-          formData.append("modifiedby", userid);
-          formData.append("image", null);
+          // formData.append("upload_file", true);
 
           $.ajax({
-            url: "../teams.php",
             type: "POST",
-            data: formData,
+            url: "../events.php",
             headers: {
               Authorization: "Bearer " + token,
             },
+            xhr: function () {
+              var myXhr = $.ajaxSettings.xhr();
+              if (myXhr.upload) {
+                myXhr.upload.addEventListener(
+                  "progress",
+                  function () {},
+                  false
+                );
+              }
+              return myXhr;
+            },
+            success: function (data) {
+              // alert("Image Uploaded");
+            },
+            error: function (error) {
+              // handle error
+            },
+            async: true,
+            data: formData,
+            cache: false,
             contentType: false,
-            mimeType: "multipart/form-data",
             processData: false,
-            success: function (response) {
-              console.log(response);
-              // teamid = response.team;
-              // console.log(teamid);
-
-              alert("Team Created");
-            },
-            error: function () {
-              alert("Team Creation Failed");
-            },
+            timeout: 60000,
           });
-          return false;
-        });
+        }
+        $(document)
+          .on("click", "#image-upload", function (e) {
+            e.preventDefault();
+            var file = $("#image-file-1")[0].files[0];
+            // console.log(file)
+            doUpload(file);
+          })
+          .on("click", "#team-submit", function (e) {
+            e.preventDefault();
+
+            var token = localStorage.getItem("token");
+            var userid = localStorage.getItem("userid");
+
+            if ($("#team-name").val() === "") {
+              alert("Team name required.");
+              return;
+            }
+            var region = $("#region").val();
+            if (region === null) {
+              alert("Team Region required.");
+              return;
+            }
+            if ($("#description").val() === "") {
+              alert("Description required.");
+              return;
+            }
+            var teamImage = $("#image-file-1").val();
+            if (teamImage === "") {
+              alert("Upload team image.");
+              return;
+            }
+
+            var formData = new FormData(team_form);
+            formData.append("create", "true");
+            formData.append("createdby", userid);
+            formData.append("modifiedby", userid);
+            formData.append(
+              "image",
+              "../assets/uploads/" +
+                userid +
+                "/" +
+                rId +
+                "/" +
+                teamImage.replace("C:\\fakepath\\", "")
+            );
+            // formData.append("image", null);
+
+            $.ajax({
+              url: "../teams.php",
+              type: "POST",
+              data: formData,
+              headers: {
+                Authorization: "Bearer " + token,
+              },
+              contentType: false,
+              mimeType: "multipart/form-data",
+              processData: false,
+              success: function (response) {
+                console.log(response);
+                // teamid = response.team;
+                // console.log(teamid);
+
+                alert("Team Created");
+              },
+              error: function () {
+                alert("Team Creation Failed");
+              },
+            });
+            return false;
+          });
       });
     </script>
   </body>
