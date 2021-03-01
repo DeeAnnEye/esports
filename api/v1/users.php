@@ -103,6 +103,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
         echo 'Access Denied!';
       }
     }
+    elseif (isset($post['removeplayer'])) {
+      if ($token) {
+        echo $user->removeFromTeam($post);
+      } else {
+        echo 'Access Denied!';
+      }
+    }
+    
     // get all users
     else {
       if ($token) {
@@ -120,10 +128,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
       if (isset($_GET['id'])) {
         $id =  $_GET['id'];
         echo $user->deleteUser($id);
-      } else {
-
-        echo $user->removeFromTeam($_GET);
-      }
+      } 
     } else {
       echo 'Access Denied!';
     }

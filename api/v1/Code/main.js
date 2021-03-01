@@ -58,7 +58,7 @@ $(document).ready(function(){
           <td class="tbltxt">${p.usertag}</td>
           <td class="tbltxt">${jDate}</td>
           <td class="tbltxt">${p.ptype}</td>
-          <td><button class="btn btn-outline-danger rbtn">REMOVE</button></td>
+          <td><button data-id="${p.player_id}" id="remove-btn" class="btn btn-outline-danger rbtn">REMOVE</button></td>
           `;
          
           $('#player-table tbody').append('<tr>'+tbldata+'</tr>');
@@ -150,6 +150,7 @@ $(document).ready(function(){
           
         })
 
+
         $(document).on('click','#addnew-btn',function(e){
 
           var teamId = localStorage.getItem('team');
@@ -176,6 +177,39 @@ $(document).ready(function(){
             },
             error: function () {
               alert("Player already in team!");
+              // location.href = "Welcome.html";
+            },
+          });
+
+        })
+
+        $(document).on('click','#remove-btn',function(e){
+          e.preventDefault();
+          var playerId = $(this).attr('data-id'); 
+          console.log(playerId);
+          var teamId = localStorage.getItem('team');
+          var formData = new FormData();
+          formData.append("player_id", playerId );
+          formData.append("team_id",teamId);
+          formData.append("removeplayer",true);
+
+          $.ajax({
+            url: "../users.php",
+            type: "POST",
+            data:formData,
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+            contentType: false,
+            mimeType: "multipart/form-data",
+            processData: false,
+            success: function (response) {
+            //  console.log(response); 
+            alert("Player removed.")
+            location.reload();             
+            },
+            error: function () {
+              alert("Couldn't remove player");
               // location.href = "Welcome.html";
             },
           });
