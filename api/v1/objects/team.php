@@ -324,6 +324,7 @@ class team
     public function updateTeam($id, $data)
     {
         try {
+            // print_r($data);
 
             // query to insert record
             $query =  "UPDATE  $this->table_name " . "
@@ -332,13 +333,8 @@ class team
                   image=:image,
                   region=:region,
                   description=:description,
-                  created=:created,
-                  createdby=:createdby,
-                  modified=:modified,
-                  modifiedby=:modifiedby,
-                  active=:active,
-                  flag=:flag
-                  WHERE id = :id";
+                  modifiedby=:modifiedby
+                  WHERE id = $id";
 
             // prepare query
             $stmt = $this->conn->prepare($query);
@@ -348,28 +344,25 @@ class team
             $this->image = htmlspecialchars(strip_tags($data['image']));
             $this->region = htmlspecialchars(strip_tags($data['region']));
             $this->description = htmlspecialchars(strip_tags($data['description']));
-            $this->created = htmlspecialchars(strip_tags($data['created']));
-            $this->createdby = htmlspecialchars(strip_tags($data['createdby']));
-            $this->modified = htmlspecialchars(strip_tags($data['modified']));
             $this->modifiedby = htmlspecialchars(strip_tags($data['modifiedby']));
-            $this->active = htmlspecialchars(strip_tags($data['active']));
-            $this->flag = htmlspecialchars(strip_tags($data['flag']));
 
 
             $stmt->bindParam(":name", $this->name);
             $stmt->bindParam(":image", $this->image);
             $stmt->bindParam(":region", $this->region);
             $stmt->bindParam(":description", $this->description);
-            $stmt->bindParam(":created", $this->created);
-            $stmt->bindParam(":createdby", $this->createdby);
-            $stmt->bindParam(":modified", $this->modified);
             $stmt->bindParam(":modifiedby", $this->modifiedby);
-            $stmt->bindParam(":active", $this->active);
-            $stmt->bindParam(":flag", $this->flag);
-            $stmt->bindParam(":id", $id);
 
+            echo $query;
             // execute query
-            return json_encode(["success" => $stmt->execute()]);
+            if($stmt->execute()){
+                http_response_code(200);
+                echo json_encode(array("message" => "true"));
+            }
+            else{
+                http_response_code(400);
+                echo json_encode(array("message" => "false")); 
+            }
         } catch (PDOException $e) {
             throw $e;
         }

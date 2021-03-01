@@ -104,13 +104,146 @@ $(document).ready(function(){
           $("#region").prop('contentEditable',true);
           $("#description").prop('contentEditable',true);
 
+          var profileimg = `<div class="upld">
+          <div class="input-group mb-3">
+            <div class="custom-file">
+              <input
+                type="file"
+                class="custom-file-input"
+                id="image-file-1"
+              />
+              <label class="custom-file-label" for="inputGroupFile02"
+                >Change Team Image</label
+              >
+            </div>
+            <div class="input-group-append">
+              <span class="input-group-text" id="image-upload">Upload</span>
+            </div>
+          </div>
+        </div>`;
+
+        $("#updt-image").empty().append(profileimg);
+
           $("#edit-btn").hide();
 
           var updt = `
-          <button class="btn btn-outline-light">UPDATE</button>
+          <button id="update-btn" class="btn btn-outline-light">UPDATE</button>
        `;
 
         $("#updt-btn").empty().append(updt);       
+
+        })
+        var rId = 1234;
+
+        function doUpload(file) {
+          var userid = localStorage.getItem("userid");
+          var that = this;
+          var formData = new FormData();
+
+          // add assoc key values, this will be posts values
+          formData.append("name", file, file.name);
+          formData.append("rId", rId);
+          formData.append("userid", userid);
+
+          // formData.append("upload_file", true);
+
+          $.ajax({
+            type: "POST",
+            url: "../events.php",
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+            xhr: function () {
+              var myXhr = $.ajaxSettings.xhr();
+              if (myXhr.upload) {
+                myXhr.upload.addEventListener(
+                  "progress",
+                  function () {},
+                  false
+                );
+              }
+              return myXhr;
+            },
+            success: function (data) {
+              // alert("Image Uploaded");
+            },
+            error: function (error) {
+              // handle error
+            },
+            async: true,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            timeout: 60000,
+          });
+        }
+        $(document)
+          .on("click", "#image-upload", function (e) {
+            e.preventDefault();
+            var file = $("#image-file-1")[0].files[0];
+            // console.log(file)
+            doUpload(file);
+            
+          }).on('click','#update-btn',function(e){
+
+            var userid = localStorage.getItem("userid");
+
+          var team_name = $("#team-name").text();
+          var region = $("#region").text();
+          var description = $("#description").text();
+          var teamImage = $("#image-file-1").val();
+          if (teamImage != "") {
+            var formData = new FormData();
+            formData.append("update", "true");
+            formData.append("name", team_name);
+            formData.append("region", region);
+            formData.append("description", description);
+            formData.append("modifiedby", userid);
+            formData.append(
+              "image",
+              "../assets/uploads/" +
+                userid +
+                "/" +
+                rId +
+                "/" +
+                teamImage.replace("C:\\fakepath\\", "")
+            );
+          }else{
+            var timage = localStorage.getItem("teamimage");
+            // console.log(timage);
+            
+            var formData = new FormData();
+            formData.append("update", "true");
+            formData.append("name", team_name);
+            formData.append("region", region);
+            formData.append("description", description);
+            formData.append("modifiedby", userid);
+            formData.append("image",timage);          
+          }
+          var team = localStorage.getItem('team');
+          $.ajax({
+            url: "../teams.php?id=" + team ,
+            type: "POST",
+            data:formData,
+            "processData": false,
+            "mimeType": "multipart/form-data",
+            "contentType": false,
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+            success: function (response) {
+              console.log(response);
+              alert("Team Profile Updated");
+              location.reload();
+            },
+            error: function () {
+              alert("An error ocurred.Please try again");
+              // location.href = "Welcome.html";
+            },
+          });   
+
+          
 
         })
         $(document).on('click','#add-btn',function(e){
@@ -238,6 +371,7 @@ $(document).ready(function(){
                   var date=datetime.split(' ')[0];
 
                   localStorage.setItem("teamname", team.name);
+                  localStorage.setItem("teamimage", team.image);
 
                   $('#team-name').text(team.name);
                   $('#region').text(team.region);
