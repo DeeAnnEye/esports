@@ -353,7 +353,7 @@ class team
             $stmt->bindParam(":description", $this->description);
             $stmt->bindParam(":modifiedby", $this->modifiedby);
 
-            echo $query;
+            // echo $query;
             // execute query
             if($stmt->execute()){
                 http_response_code(200);

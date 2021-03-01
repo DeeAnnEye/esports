@@ -950,11 +950,82 @@ $(document).ready(function(){
         $("#email").prop('contentEditable',true);
         $("#phone").prop('contentEditable',true);
 
+        var profileimg = `<div class="upld">
+        <div class="input-group mb-3">
+          <div class="custom-file">
+            <input
+              type="file"
+              class="custom-file-input"
+              id="image-file-1"
+            />
+            <label class="custom-file-label" for="inputGroupFile02"
+              >Change Profile Image</label
+            >
+          </div>
+          <div class="input-group-append">
+            <span class="input-group-text" id="image-upload">Upload</span>
+          </div>
+        </div>
+      </div>`;
+
+      $("#pContent").append(profileimg);
+
         $("#update-btn").prop('hidden',false);
         
       })
-      $("#update-btn").click(function(e){
-        e.preventDefault();
+      var rId = 1234;
+
+        function doUpload(file) {
+          var userid = localStorage.getItem("userid");
+          var that = this;
+          var formData = new FormData();
+
+          // add assoc key values, this will be posts values
+          formData.append("name", file, file.name);
+          formData.append("rId", rId);
+          formData.append("userid", userid);
+
+          // formData.append("upload_file", true);
+
+          $.ajax({
+            type: "POST",
+            url: "../events.php",
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+            xhr: function () {
+              var myXhr = $.ajaxSettings.xhr();
+              if (myXhr.upload) {
+                myXhr.upload.addEventListener(
+                  "progress",
+                  function () {},
+                  false
+                );
+              }
+              return myXhr;
+            },
+            success: function (data) {
+              // alert("Image Uploaded");
+            },
+            error: function (error) {
+              // handle error
+            },
+            async: true,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            timeout: 60000,
+          });
+        }
+        $(document).on("click", "#image-upload", function (e) {
+            e.preventDefault();
+            var file = $("#image-file-1")[0].files[0];
+            // console.log(file)
+            doUpload(file);
+            
+          }).on('click','#update-btn',function(e){
+           e.preventDefault();
         
         var username = $("#username").text();
         var region = $("#region").text();
@@ -962,7 +1033,8 @@ $(document).ready(function(){
         var discord = $("#discord").text();
         var email = $("#email").text();
         var phone = $("#phone").text();
-       
+        var userImage = $("#image-file-1").val();
+        if (userImage != "") {
         var form = new FormData();
         form.append("update", "true");
         form.append("usertag", username);
@@ -971,7 +1043,27 @@ $(document).ready(function(){
         form.append("social_acc", discord);
         form.append("email", email);
         form.append("phone", phone);
-
+        form.append(
+          "image",
+          "../assets/uploads/" +
+            userid +
+            "/" +
+            rId +
+            "/" +
+            userImage.replace("C:\\fakepath\\", "")
+        );
+        }else{
+          var uimage = localStorage.getItem("uimage");
+          var form = new FormData();
+          form.append("update", "true");
+          form.append("usertag", username);
+          form.append("region", region);
+          form.append("language", language);
+          form.append("social_acc", discord);
+          form.append("email", email);
+          form.append("phone", phone);
+          form.append("image",uimage); 
+        }
         $.ajax({
           url: "../users.php?id=" + userid ,
           type: "POST",
@@ -1053,6 +1145,8 @@ $(document).ready(function(){
             $('#teamname').text(data.teamname)
             $('#email').text(data.email)
             $('#phone').text(data.phone)
+
+            localStorage.setItem("uimage", data.image);
 
             var req = data.mod_request;
             if(req != 1){

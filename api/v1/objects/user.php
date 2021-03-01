@@ -230,7 +230,8 @@ class user
             social_acc=:social_acc,
             region=:region,
             usertag=:usertag,
-            language=:language             
+            language=:language,
+            image=:image              
             WHERE user_id =$id";
 
             // prepare query statement
@@ -244,6 +245,7 @@ class user
             $this->social_acc = htmlspecialchars(strip_tags($data['social_acc']));
             $this->language = htmlspecialchars(strip_tags($data['language']));
             $this->region = htmlspecialchars(strip_tags($data['region']));
+            $this->image = htmlspecialchars(strip_tags($data['image']));
 
             // bind new values
             $stmt->bindParam(":usertag", $this->usertag);
@@ -252,6 +254,7 @@ class user
             $stmt->bindParam(":social_acc", $this->social_acc);
             $stmt->bindParam(":language", $this->language);
             $stmt->bindParam(":region", $this->region);
+            $stmt->bindParam(":image", $this->image);
 
             if($stmt->execute()){
                    // set response code
