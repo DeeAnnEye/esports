@@ -31,22 +31,48 @@ $(document).ready(function(){
         } else {
             $('#edit-btn').hide();
         }
-       
+        if(role == 3){
+       var tblhead = `  <tr>
+       <th class="tblhead">PLAYER</th>
+       <th class="tblhead">JOINED</th>
+       <th class="tblhead">TYPE</th>
+       <th class="tblhead">MANAGE</th>
+     </tr>`;
+     $('#player-table thead').append(tblhead);
+    }else{
+      var tblhead = `  <tr>
+       <th class="tblhead">PLAYER</th>
+       <th class="tblhead">JOINED</th>
+       <th class="tblhead">TYPE</th>
+     </tr>`;
+     $('#player-table thead').append(tblhead); 
+    }
+
         function playerItem(p, i) {
 
         var joinedDate = p.joined; 
         var jDate=joinedDate.split(' ')[0];
-  
+        var role = localStorage.getItem('role');
+        if(role == 3){
           var tbldata = `
           <td class="tbltxt">${p.usertag}</td>
           <td class="tbltxt">${jDate}</td>
           <td class="tbltxt">${p.ptype}</td>
-          <td><button class="btn btn-outline-danger">REMOVE</button></td>
+          <td><button class="btn btn-outline-danger rbtn">REMOVE</button></td>
           `;
-
          
           $('#player-table tbody').append('<tr>'+tbldata+'</tr>');
-         
+        }
+        else{
+
+          var tbldata = `
+          <td class="tbltxt">${p.usertag}</td>
+          <td class="tbltxt">${jDate}</td>
+          <td class="tbltxt">${p.ptype}</td>
+          `;
+        
+          $('#player-table tbody').append('<tr>'+tbldata+'</tr>');
+        }
         }
         function careerItem(c, i) {
   
@@ -66,6 +92,12 @@ $(document).ready(function(){
           $('#career-table tbody').append('<tr>'+tbldata+'</tr>');
         }
 
+        if(role != 3){
+        $(".rbtn").prop('hidden',true);
+        $("#add-btn").prop('hidden',true);
+        }
+       
+
         $("#edit-btn").click(function(e){
 
           $("#team-name").prop('contentEditable',true);
@@ -81,7 +113,72 @@ $(document).ready(function(){
         $("#updt-btn").empty().append(updt);       
 
         })
-        $("#edit-btn").click(function(e){
+        $(document).on('click','#add-btn',function(e){
+
+          $.ajax({
+            url: "../users.php",
+            type: "POST",
+            headers: {
+              "content-type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+            success: function (data) {
+              // const player = JSON.parse(data);
+              console.log(data);
+              var tbldata = `
+              <td class="tbltxt"><select type="text" placeholder="Select Player" id="player-search"> </select></td>
+              <td class="tbltxt">-</td>
+              <td class="tbltxt"><input type="text" placeholder="Player type" id="ptype"></td>
+              <td class="tbltxt"><button id="addnew-btn" class="btn btn-outline-primary">ADD PLAYER</button></td>
+              `;
+            
+              $('#player-table tbody').append('<tr>'+tbldata+'</tr>');
+
+              $('#player-search').data(data).append(`<option value="">Select Player</option>`)
+              data.map(p => {
+                $('#player-search').append(`<option value="${p.user_id}">${p.usertag}</option>`)
+                return p;
+              });
+            
+            },
+            error: function () {
+              alert("An error ocurred.Please try again");
+              // location.href = "Welcome.html";
+            },
+          });
+         
+          
+        })
+
+        $(document).on('click','#addnew-btn',function(e){
+
+          var teamId = localStorage.getItem('team');
+          var formData = new FormData();
+          formData.append("player_id", $("#player-search").val() );
+          formData.append("team_id",teamId);
+          formData.append("ptype",$("#ptype").val());
+          formData.append("jointeam",true);
+
+          $.ajax({
+            url: "../users.php",
+            type: "POST",
+            data:formData,
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+            contentType: false,
+            mimeType: "multipart/form-data",
+            processData: false,
+            success: function (response) {
+              alert("Joined successfully.");  
+              location.reload();
+              
+            },
+            error: function () {
+              alert("Player already in team!");
+              // location.href = "Welcome.html";
+            },
+          });
 
         })
        
@@ -2012,8 +2109,8 @@ $(document).ready(function(){
       $(document).on("change","#search-box",function(e){
         var v = $(this).val();
         var data = $(this).data();
-        console.log(v);
-        console.log(data);
+        // console.log(v);
+        // console.log(data);
         var idx = Object.keys(data).find(d => parseInt(data[d].id) === parseInt(v));
         const team = data[idx];
         $('#team-name').text(team.name);
